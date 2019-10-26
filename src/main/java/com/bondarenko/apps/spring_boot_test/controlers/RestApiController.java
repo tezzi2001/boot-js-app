@@ -1,6 +1,5 @@
 package com.bondarenko.apps.spring_boot_test.controlers;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -9,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("message")
 public class RestApiController {
     private int counter = 2;
     private List<Map<String, String>> messages = new ArrayList<Map<String, String>>() {{
