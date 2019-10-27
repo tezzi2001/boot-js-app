@@ -1,15 +1,12 @@
 package com.bondarenko.apps.boot_js_app.controlers;
 
+import com.bondarenko.apps.boot_js_app.services.ITestForm;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 public class RestApiController {
-    private int counter = 2;
     private List<Map<String, String>> messages = new ArrayList<Map<String, String>>() {{
         add(new HashMap<String, String>() {{
                 put("id", "1"); put("name", "Bodun");
@@ -38,17 +35,18 @@ public class RestApiController {
         return null;
     }
 
-    @PostMapping
-    public Map<String, String> post(@RequestBody Map<String, String> message) {
-        message.put("id", String.valueOf(counter++));
-        messages.add(message);
-        return message;
-    }
-
     //TODO: fix redirecting
     @GetMapping("/")
     public String getDefault() {
         System.out.println("GET message/");
         return "Main page!";
+    }
+
+    @GetMapping(value = "/form")
+    public @ResponseBody HashMap<String, String> service(@RequestBody ITestForm testForm){
+        return new HashMap<String, String>() {{
+            put("Name", testForm.getName());
+            put("Age", testForm.getAge().toString());
+        }};
     }
 }
