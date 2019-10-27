@@ -44,10 +44,8 @@ public class RestApiController {
     }
 
     @GetMapping(value = "/form", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody HashMap<String, String> service(@RequestBody ITestForm testForm){
-        return new HashMap<String, String>() {{
-            put("Name", testForm.getName());
-            put("Age", testForm.getAge().toString());
-        }};
+    public @ResponseBody void service(@RequestBody ITestForm testForm) {
+        System.out.println("Name: " + testForm.getName());
+        System.out.println("Age: " + testForm.getAge());
     }
 }
