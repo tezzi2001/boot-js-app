@@ -76,33 +76,12 @@
                 <configuration>
                     <mainClass>com.bondarenko.apps.boot_js_app.SpringBootTestApplication</mainClass>
                     <layout>WAR</layout>
+                    <finalName>boot-js-app</finalName>
                 </configuration>
                 <executions>
                     <execution>
                         <goals>
                             <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>appassembler-maven-plugin</artifactId>
-                <version>1.1.1</version>
-                <configuration>
-                    <assembleDirectory>target</assembleDirectory>
-                    <programs>
-                        <program>
-                            <mainClass>com.bondarenko.apps.boot_js_app.SpringBootTestApplication</mainClass>
-                            <name>boot-js-app</name>
-                        </program>
-                    </programs>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>assemble</goal>
                         </goals>
                     </execution>
                 </executions>
