@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.bondarenko.apps</groupId>
-    <artifactId>spring_boot_test</artifactId>
+    <artifactId>boot-js-app</artifactId>
     <version>1.0.1</version>
-    <name>spring_boot_test</name>
-    <description>First project for Spring Boot</description>
+    <name>boot-js-app</name>
+    <description>Spring Boot project for Software Testing</description>
 
     <properties>
         <java.version>1.8</java.version>
@@ -74,7 +74,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>2.2.0.RELEASE</version>
                 <configuration>
-                    <mainClass>com.bondarenko.apps.spring_boot_test.SpringBootTestApplication</mainClass>
+                    <mainClass>com.bondarenko.apps.boot_js_app.SpringBootTestApplication</mainClass>
                     <layout>WAR</layout>
                 </configuration>
                 <executions>
@@ -93,8 +93,8 @@
                     <assembleDirectory>target</assembleDirectory>
                     <programs>
                         <program>
-                            <mainClass>com.bondarenko.apps.spring_boot_test.SpringBootTestApplication</mainClass>
-                            <name>springBootTest</name>
+                            <mainClass>com.bondarenko.apps.boot_js_app.SpringBootTestApplication</mainClass>
+                            <name>boot-js-app</name>
                         </program>
                     </programs>
                 </configuration>
@@ -114,26 +114,6 @@
                     <source>8</source>
                     <target>8</target>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals><goal>copy</goal></goals>
-                        <configuration>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>com.github.jsimone</groupId>
-                                    <artifactId>webapp-runner</artifactId>
-                                    <version>9.0.27.0</version>
-                                    <destFileName>webapp-runner.jar</destFileName>
-                                </artifactItem>
-                            </artifactItems>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>

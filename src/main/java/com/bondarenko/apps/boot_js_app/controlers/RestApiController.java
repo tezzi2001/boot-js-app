@@ -1,4 +1,4 @@
-package com.bondarenko.apps.spring_boot_test.controlers;
+package com.bondarenko.apps.boot_js_app.controlers;
 
 import org.springframework.web.bind.annotation.*;
 
@@ -13,8 +13,13 @@ public class RestApiController {
     private List<Map<String, String>> messages = new ArrayList<Map<String, String>>() {{
         add(new HashMap<String, String>() {{
                 put("id", "1"); put("name", "Bodun");
-            }}
-        );
+        }});
+        add(new HashMap<String, String>() {{
+            put("id", "2"); put("name", "Andrew");
+        }});
+        add(new HashMap<String, String>() {{
+            put("id", "3"); put("name", "Bugai");
+        }});
     }};
 
     @GetMapping("/get")
@@ -44,6 +49,6 @@ public class RestApiController {
     @GetMapping("/")
     public String getDefault() {
         System.out.println("GET message/");
-        return "redirect:/get";
+        return "Main page!";
     }
 }

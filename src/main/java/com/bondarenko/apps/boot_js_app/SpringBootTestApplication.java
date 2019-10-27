@@ -1,4 +1,4 @@
-package com.bondarenko.apps.spring_boot_test;
+package com.bondarenko.apps.boot_js_app;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
