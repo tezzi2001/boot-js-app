@@ -45,8 +45,8 @@ public class RestApiController {
         return "Main page!";
     }
 
-    @GetMapping(value = "/form", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody void service(HttpServletRequest request) {
+    @PostMapping(value = "/form", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public void service(HttpServletRequest request) {
         System.out.println("\tIn service!");
         System.out.println("\tName: " + request.getParameter("name"));
         System.out.println("\tAge: " + request.getParameter("age"));
