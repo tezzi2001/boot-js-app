@@ -1,6 +1,7 @@
 package com.bondarenko.apps.boot_js_app.controlers;
 
 import com.bondarenko.apps.boot_js_app.services.ITestForm;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -42,7 +43,7 @@ public class RestApiController {
         return "Main page!";
     }
 
-    @GetMapping(value = "/form")
+    @GetMapping(value = "/form", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody HashMap<String, String> service(@RequestBody ITestForm testForm){
         return new HashMap<String, String>() {{
             put("Name", testForm.getName());
