@@ -1,9 +1,11 @@
 package com.bondarenko.apps.boot_js_app.controlers;
 
 import com.bondarenko.apps.boot_js_app.services.ITestForm;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 @RestController
@@ -44,8 +46,9 @@ public class RestApiController {
     }
 
     @GetMapping(value = "/form", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody void service(@RequestBody ITestForm testForm) {
-        System.out.println("Name: " + testForm.getName());
-        System.out.println("Age: " + testForm.getAge());
+    public @ResponseBody void service(HttpServletRequest request) {
+        System.out.println("\tIn service!");
+        System.out.println("\tName: " + request.getParameter("name"));
+        System.out.println("\tAge: " + request.getParameter("age"));
     }
 }
