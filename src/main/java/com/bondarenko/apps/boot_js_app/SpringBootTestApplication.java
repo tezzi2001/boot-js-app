@@ -8,7 +8,6 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 @SpringBootApplication
 public class SpringBootTestApplication extends SpringBootServletInitializer {
     public static void main(String[] args) {
-        System.out.println("START!!!");
         SpringApplication.run(SpringBootTestApplication.class, args);
     }
 
