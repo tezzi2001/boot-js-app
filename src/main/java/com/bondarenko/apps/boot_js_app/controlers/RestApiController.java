@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,11 +40,27 @@ public class RestApiController {
      * @return JSON object with field "isAuthorized"
      */
     @PostMapping(value = "/login", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public Map authorize(HttpServletRequest request) {
+    public List authorize(HttpServletRequest request) {
         boolean isAuthorized = service.authorize(request.getParameter("login"), request.getParameter("password"));
-        return new HashMap<String, Boolean>() {{
-            put("isAuthorized", isAuthorized);
-        }};
+        if (isAuthorized) {
+            return new ArrayList<HashMap>() {{
+                add(new HashMap<String, Boolean>() {{
+                        put("isAuthorized", isAuthorized);
+                    }});
+                add(new HashMap<String, String>() {{
+                    put("login", request.getParameter("login"));
+                }});
+            }};
+        } else {
+            return new ArrayList<HashMap>() {{
+                add(new HashMap<String, Boolean>() {{
+                    put("isAuthorized", isAuthorized);
+                }});
+                add(new HashMap<String, String>() {{
+                    put("login", null);
+                }});
+            }};
+        }
     }
 
     /**
@@ -73,6 +90,7 @@ public class RestApiController {
     /**
      * Returns a note from DB specified by its id
      * @see Service#getNoteById(int)
+     * @param id An id that specifies the note
      * @return JSON objects with fields "id", "date", "login" and "record"
      */
     @GetMapping("/get{id}")
