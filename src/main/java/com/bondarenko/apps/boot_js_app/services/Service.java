@@ -37,7 +37,11 @@ public class Service implements IService {
 
     @Override
     public boolean authorize(String login, String password) {
-        return authorRepository.findById(login).isPresent();
+        if (authorRepository.findById(login).isPresent()) {
+            return password.equals(authorRepository.findById(login).get().getPassword());
+        } else {
+            return false;
+        }
     }
 
     @Override
