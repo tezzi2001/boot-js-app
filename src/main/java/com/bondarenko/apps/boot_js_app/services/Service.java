@@ -25,22 +25,26 @@ public class Service implements IService {
 
 
     @Override
-    public boolean register(String login, String password) {
+    public boolean register(String login, String password, String name, String email) {
         if (authorRepository.existsById(login)) {
             return false;
         } else {
-            Author author = new Author(login, password);
+            Author author = new Author(login, password, name, email);
             authorRepository.save(author);
             return true;
         }
     }
 
     @Override
-    public boolean authorize(String login, String password) {
+    public Author authorize(String login, String password) {
         if (authorRepository.findById(login).isPresent()) {
-            return password.equals(authorRepository.findById(login).get().getPassword());
+            if (password.equals(authorRepository.findById(login).get().getPassword())) {
+                return authorRepository.findById(login).get();
+            } else {
+                return null;
+            }
         } else {
-            return false;
+            return null;
         }
     }
 

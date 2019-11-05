@@ -1,5 +1,6 @@
-package com.bondarenko.apps.boot_js_app.controlers;
+package com.bondarenko.apps.boot_js_app.controllers;
 
+import com.bondarenko.apps.boot_js_app.entities.Author;
 import com.bondarenko.apps.boot_js_app.entities.Note;
 import com.bondarenko.apps.boot_js_app.services.IService;
 import com.bondarenko.apps.boot_js_app.services.Service;
@@ -8,7 +9,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,41 +37,35 @@ public class RestApiController {
      * Authorizes the user
      * @see Service#authorize(String, String)
      * @param request this is an input HTML form. It must contain fields "login" and "password"
-     * @return JSON object with field "isAuthorized"
+     * @return JSON object with fields "name", "login" and "email"
      */
     @PostMapping(value = "/login", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public List authorize(HttpServletRequest request) {
-        boolean isAuthorized = service.authorize(request.getParameter("login"), request.getParameter("password"));
-        if (isAuthorized) {
-            return new ArrayList<HashMap>() {{
-                add(new HashMap<String, Boolean>() {{
-                        put("isAuthorized", isAuthorized);
-                    }});
-                add(new HashMap<String, String>() {{
-                    put("login", request.getParameter("login"));
-                }});
+    public Map authorize(HttpServletRequest request) {
+        Author author = service.authorize(request.getParameter("login"), request.getParameter("password"));
+        if (author != null) {
+            return new HashMap<String, String>() {{
+                put("name", author.getName());
+                put("login", author.getLogin());
+                put("email", author.getEmail());
             }};
         } else {
-            return new ArrayList<HashMap>() {{
-                add(new HashMap<String, Boolean>() {{
-                    put("isAuthorized", isAuthorized);
-                }});
-                add(new HashMap<String, String>() {{
-                    put("login", null);
-                }});
+            return new HashMap<String, String>() {{
+                put("name", null);
+                put("login", null);
+                put("email", null);
             }};
         }
     }
 
     /**
      * Registers the user
-     * @see Service#register(String, String)
-     * @param request this is an input HTML form. It must contain fields "login" and "password"
+     * @see Service#register(String, String, String, String)
+     * @param request this is an input HTML form. It must contain fields "login", "password", "name" and "email"
      * @return JSON object with field "isRegistered"
      */
     @PostMapping(value = "/register", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public Map register(HttpServletRequest request) {
-        boolean isRegistered = service.register(request.getParameter("login"), request.getParameter("password"));
+        boolean isRegistered = service.register(request.getParameter("login"), request.getParameter("password"), request.getParameter("name"), request.getParameter("email"));
         return new HashMap<String, Boolean>() {{
             put("isRegistered", isRegistered);
         }};
