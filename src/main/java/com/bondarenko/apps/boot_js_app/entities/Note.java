@@ -16,12 +16,15 @@ public class Note {
     private String record;
     @Column(name = "date", nullable = false)
     private Date date;
+    @Column(name = "name", length = 40, nullable = false)
+    private String name;
 
     public Note() {}
 
-    public Note(String login, String record) {
+    public Note(String login, String record, String name) {
         this.record = record;
         this.login = login;
+        this.name = name;
         this.date = new Date();
     }
 
@@ -55,5 +58,13 @@ public class Note {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
