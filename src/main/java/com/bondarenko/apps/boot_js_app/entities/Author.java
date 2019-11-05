@@ -14,8 +14,16 @@ public class Author {
     private String name;
     @Column(name = "email", length = 40, nullable = false)
     private String email;
+    @Column(name = "role", length = 10, nullable = false)
+    private String role;
 
-    public Author() {}
+    private static final String READER = "READER";
+    private static final String ADMINISTRATOR = "ADMINISTRATOR";
+    private static final String MODERATOR = "MODERATOR";
+
+    public Author() {
+        role = READER;
+    }
 
     public Author(String login, String password, String name, String email) {
         this.login = login;
@@ -54,5 +62,13 @@ public class Author {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }
