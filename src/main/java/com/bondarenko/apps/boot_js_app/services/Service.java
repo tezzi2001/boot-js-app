@@ -57,4 +57,14 @@ public class Service implements IService {
     public Note getNoteById(int id) {
         return noteRepository.findById(id).get();
     }
+
+    @Override
+    public boolean addNote(String login, String name, String record) {
+        if (authorRepository.findById(login).isPresent()) {
+            noteRepository.save(new Note(login, record, name));
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

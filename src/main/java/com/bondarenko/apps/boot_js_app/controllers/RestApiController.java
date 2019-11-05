@@ -92,6 +92,11 @@ public class RestApiController {
         return service.getNoteById(id);
     }
 
+    @PostMapping(value = "/add", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public boolean addNote(HttpServletRequest request) {
+        return service.addNote(request.getParameter("login"), request.getParameter("name"), request.getParameter("record"));
+    }
+
     @Autowired
     public void setService(IService service) {
         this.service = service;
