@@ -7,6 +7,7 @@ import com.bondarenko.apps.boot_js_app.repository.NoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Optional;
 
 @org.springframework.stereotype.Service
 public class Service implements IService {
@@ -23,7 +24,6 @@ public class Service implements IService {
         this.noteRepository = noteRepository;
     }
 
-
     @Override
     public boolean register(String login, String password, String name, String email) {
         if (authorRepository.existsById(login)) {
@@ -37,9 +37,10 @@ public class Service implements IService {
 
     @Override
     public Author authorize(String login, String password) {
-        if (authorRepository.findById(login).isPresent()) {
-            if (password.equals(authorRepository.findById(login).get().getPassword())) {
-                return authorRepository.findById(login).get();
+        Optional<Author> optionalAuthor = authorRepository.findById(login);
+        if (optionalAuthor.isPresent()) {
+            if (password.equals(optionalAuthor.get().getPassword())) {
+                return optionalAuthor.get();
             } else {
                 return null;
             }

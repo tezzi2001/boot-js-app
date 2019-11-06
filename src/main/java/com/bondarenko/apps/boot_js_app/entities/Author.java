@@ -33,6 +33,7 @@ public class Author {
         this.password = password;
         this.name = name;
         this.email = email;
+        role = READER;
     }
 
     public String getLogin() {

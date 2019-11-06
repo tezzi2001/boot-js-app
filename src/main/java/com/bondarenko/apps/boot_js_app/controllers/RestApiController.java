@@ -26,17 +26,6 @@ public class RestApiController {
     private IService service;
 
     /**
-     * Method for testing. Will be deleted in future versions
-     * @deprecated
-     * @return string "Main page!(test)"
-     */
-    @Deprecated
-    @GetMapping("/")
-    public String getDefault() {
-        return "Main page!(test)";
-    }
-
-    /**
      * Authorizes the user
      * @see Service#authorize(String, String)
      * @param request this is an input HTML form. It must contain fields "login" and "password"
