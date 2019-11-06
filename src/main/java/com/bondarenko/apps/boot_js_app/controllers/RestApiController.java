@@ -92,9 +92,18 @@ public class RestApiController {
         return service.getNoteById(id);
     }
 
+    /**
+     * Creates new record in DB
+     * @see Service#addNote(String, String, String)
+     * @param request this is an input HTML form. It must contain fields "login", "name" and "record"
+     * @return JSON object with field "isAdded"
+     */
     @PostMapping(value = "/add", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public boolean addNote(HttpServletRequest request) {
-        return service.addNote(request.getParameter("login"), request.getParameter("name"), request.getParameter("record"));
+    public Map addNote(HttpServletRequest request) {
+        boolean isAdded = service.addNote(request.getParameter("login"), request.getParameter("name"), request.getParameter("record"));
+        return new HashMap<String, Boolean>() {{
+            put("isAdded", isAdded);
+        }};
     }
 
     @Autowired
