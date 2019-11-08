@@ -60,9 +60,9 @@ public class Service implements IService {
     }
 
     @Override
-    public boolean addNote(String login, String name, String record) {
+    public boolean addNote(String login, String name, String record, String title) {
         if (authorRepository.findById(login).isPresent()) {
-            noteRepository.save(new Note(login, record, name));
+            noteRepository.save(new Note(login, record, name, title));
             return true;
         } else {
             return false;

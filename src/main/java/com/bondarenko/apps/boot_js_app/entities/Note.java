@@ -18,13 +18,16 @@ public class Note {
     private Date date;
     @Column(name = "name", length = 40, nullable = false)
     private String name;
+    @Column(name = "title", length = 40, nullable = false)
+    private String title;
 
     public Note() {}
 
-    public Note(String login, String record, String name) {
+    public Note(String login, String record, String name, String title) {
         this.record = record;
         this.login = login;
         this.name = name;
+        this.title = title;
         this.date = new Date();
     }
 
@@ -66,5 +69,13 @@ public class Note {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

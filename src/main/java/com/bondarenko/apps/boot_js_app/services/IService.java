@@ -10,5 +10,5 @@ public interface IService {
     Author authorize(String login, String password);
     List<Note> getNotes();
     Note getNoteById(int id);
-    boolean addNote(String login, String name, String record);
+    boolean addNote(String login, String name, String record, String title);
 }
