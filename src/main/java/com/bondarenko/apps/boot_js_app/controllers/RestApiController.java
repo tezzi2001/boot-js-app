@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,22 +32,28 @@ public class RestApiController {
      * Authorizes the user
      * @see Service#authorize(String, String)
      * @param request this is an input HTML form. It must contain fields "login" and "password"
-     * @return JSON object with fields "name", "login" and "email"
+     * @return JSON object with fields "isAuthorized" and "login"
      */
     @PostMapping(value = "/login", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public Map authorize(HttpServletRequest request) {
-        Author author = service.authorize(request.getParameter("login"), request.getParameter("password"));
-        if (author != null) {
-            return new HashMap<String, String>() {{
-                put("name", author.getName());
-                put("login", author.getLogin());
-                put("email", author.getEmail());
+    public List authorize(HttpServletRequest request) {
+        boolean isAuthorized = service.authorize(request.getParameter("login"), request.getParameter("password"));
+        if (isAuthorized) {
+            return new ArrayList<HashMap>() {{
+                add(new HashMap<String, Boolean>() {{
+                    put("isAuthorized", isAuthorized);
+                }});
+                add(new HashMap<String, String>() {{
+                    put("login", request.getParameter("login"));
+                }});
             }};
         } else {
-            return new HashMap<String, String>() {{
-                put("name", null);
-                put("login", null);
-                put("email", null);
+            return new ArrayList<HashMap>() {{
+                add(new HashMap<String, Boolean>() {{
+                    put("isAuthorized", isAuthorized);
+                }});
+                add(new HashMap<String, String>() {{
+                    put("login", null);
+                }});
             }};
         }
     }
