@@ -4,7 +4,9 @@ import com.bondarenko.apps.boot_js_app.entities.Author;
 import com.bondarenko.apps.boot_js_app.entities.Note;
 import com.bondarenko.apps.boot_js_app.services.IService;
 import com.bondarenko.apps.boot_js_app.services.Service;
+import com.sun.deploy.net.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,7 +33,7 @@ public class RestApiController {
      * @param request this is an input HTML form. It must contain fields "login" and "password"
      * @return JSON object with fields "name", "login" and "email"
      */
-    @GetMapping(value = "/login", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    @PostMapping(value = "/login", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public Map authorize(HttpServletRequest request) {
         Author author = service.authorize(request.getParameter("login"), request.getParameter("password"));
         if (author != null) {
@@ -55,7 +57,7 @@ public class RestApiController {
      * @param request this is an input HTML form. It must contain fields "login", "password", "name" and "email"
      * @return JSON object with field "isRegistered"
      */
-    @GetMapping(value = "/register", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    @PostMapping(value = "/register", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public Map register(HttpServletRequest request) {
         boolean isRegistered = service.register(request.getParameter("login"), request.getParameter("password"), request.getParameter("name"), request.getParameter("email"));
         return new HashMap<String, Boolean>() {{
@@ -90,7 +92,7 @@ public class RestApiController {
      * @param request this is an input HTML form. It must contain fields "login", "name", "record" and "title"
      * @return JSON object with field "isAdded"
      */
-    @GetMapping(value = "/add", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    @PostMapping(value = "/add", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public Map addNote(HttpServletRequest request) {
         boolean isAdded = service.addNote(request.getParameter("login"), request.getParameter("name"), request.getParameter("record"), request.getParameter("title"));
         return new HashMap<String, Boolean>() {{
