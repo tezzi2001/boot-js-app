@@ -1,12 +1,9 @@
 package com.bondarenko.apps.boot_js_app.controllers;
 
-import com.bondarenko.apps.boot_js_app.entities.Author;
 import com.bondarenko.apps.boot_js_app.entities.Note;
 import com.bondarenko.apps.boot_js_app.services.IService;
 import com.bondarenko.apps.boot_js_app.services.Service;
-import com.sun.deploy.net.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
