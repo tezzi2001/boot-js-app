@@ -31,7 +31,7 @@ public class RestApiController {
      * @param request this is an input HTML form. It must contain fields "login" and "password"
      * @return JSON object with fields "isAuthorized" and "login"
      */
-    @PostMapping(value = "/login", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    @PostMapping(value = "/login")
     public List authorize(HttpServletRequest request) {
         boolean isAuthorized = service.authorize(request.getParameter("login"), request.getParameter("password"));
         if (isAuthorized) {
