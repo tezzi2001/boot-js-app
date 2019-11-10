@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface IService {
     boolean register(String login, String password, String name, String email);
-    boolean authorize(String login, String password);
+    Author authorize(String login, String password);
     List<Note> getNotes();
     Note getNoteById(int id);
     boolean addNote(String login, String name, String record, String title);
