@@ -64,6 +64,20 @@ public class RestApiController {
     }
 
     /**
+     * Checks if user with current login exist in DB
+     * @see Service#check(String) 
+     * @param request this is an input HTML form. It must contain field "login"
+     * @return JSON object with field "isExist"
+     */
+    @GetMapping("/check")
+    public Map check(HttpServletRequest request) {
+        boolean isExist = service.check(request.getParameter("login"));
+        return new HashMap<String, Boolean>() {{
+            put("isExist", isExist);
+        }};
+    }
+
+    /**
      * Returns all notes from DB
      * @see Service#getNotes()
      * @return array of JSON objects with fields "id", "date", "login" and "record"

@@ -68,4 +68,9 @@ public class Service implements IService {
             return false;
         }
     }
+
+    @Override
+    public boolean check(String login) {
+        return authorRepository.existsById(login);
+    }
 }
