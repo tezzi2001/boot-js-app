@@ -69,7 +69,7 @@ public class RestApiController {
      * @param request this is an input HTML form. It must contain field "login"
      * @return JSON object with field "isExist"
      */
-    @GetMapping("/check")
+    @PostMapping("/check")
     public Map check(HttpServletRequest request) {
         boolean isExist = service.check(request.getParameter("login"));
         return new HashMap<String, Boolean>() {{
