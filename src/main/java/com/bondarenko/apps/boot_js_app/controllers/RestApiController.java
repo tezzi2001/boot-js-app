@@ -65,13 +65,27 @@ public class RestApiController {
 
     /**
      * Checks if user with current login exist in DB
-     * @see Service#check(String) 
+     * @see Service#checkLogin(String)
      * @param request this is an input HTML form. It must contain field "login"
      * @return JSON object with field "isExist"
      */
-    @PostMapping("/check")
-    public Map check(HttpServletRequest request) {
-        boolean isExist = service.check(request.getParameter("login"));
+    @PostMapping("/checkLogin")
+    public Map checkLogin(HttpServletRequest request) {
+        boolean isExist = service.checkLogin(request.getParameter("login"));
+        return new HashMap<String, Boolean>() {{
+            put("isExist", isExist);
+        }};
+    }
+
+    /**
+     * Checks if user with current email exist in DB
+     * @see Service#checkEmail(String)
+     * @param request this is an input HTML form. It must contain field "email"
+     * @return JSON object with field "isExist"
+     */
+    @PostMapping("/checkEmail")
+    public Map checkEmail(HttpServletRequest request) {
+        boolean isExist = service.checkEmail(request.getParameter("email"));
         return new HashMap<String, Boolean>() {{
             put("isExist", isExist);
         }};

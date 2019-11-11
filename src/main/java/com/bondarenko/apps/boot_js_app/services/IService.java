@@ -11,5 +11,6 @@ public interface IService {
     List<Note> getNotes();
     Note getNoteById(int id);
     boolean addNote(String login, String name, String record, String title);
-    boolean check(String login);
+    boolean checkLogin(String login);
+    boolean checkEmail(String email);
 }

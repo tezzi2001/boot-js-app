@@ -70,7 +70,12 @@ public class Service implements IService {
     }
 
     @Override
-    public boolean check(String login) {
+    public boolean checkLogin(String login) {
         return authorRepository.existsById(login);
+    }
+
+    @Override
+    public boolean checkEmail(String email) {
+        return authorRepository.existsAuthorByEmail(email);
     }
 }
