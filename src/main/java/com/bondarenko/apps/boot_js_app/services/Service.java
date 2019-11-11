@@ -26,7 +26,7 @@ public class Service implements IService {
 
     @Override
     public boolean register(String login, String password, String name, String email) {
-        if (authorRepository.existsById(login)) {
+        if (authorRepository.existsById(login) && authorRepository.existsAuthorByEmail(email)) {
             return false;
         } else {
             Author author = new Author(login, password, name, email);
