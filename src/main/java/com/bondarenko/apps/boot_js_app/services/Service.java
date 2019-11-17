@@ -78,4 +78,15 @@ public class Service implements IService {
     public boolean checkEmail(String email) {
         return authorRepository.existsAuthorByEmail(email);
     }
+
+    @Override
+    public boolean delete(int id) {
+        Note noteToDelete = noteRepository.getOne(id);
+        if (noteToDelete != null) {
+            noteRepository.delete(noteToDelete);
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

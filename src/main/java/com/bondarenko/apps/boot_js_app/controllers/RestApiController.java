@@ -6,10 +6,7 @@ import com.bondarenko.apps.boot_js_app.services.IService;
 import com.bondarenko.apps.boot_js_app.services.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -122,6 +119,20 @@ public class RestApiController {
         boolean isAdded = service.addNote(request.getParameter("login"), request.getParameter("name"), request.getParameter("record"), request.getParameter("title"));
         return new HashMap<String, Boolean>() {{
             put("isAdded", isAdded);
+        }};
+    }
+
+    /**
+     * Deletes the record in DB specified by id
+     * @see Service#delete(int)
+     * @param id An id that specifies the note
+     * @return JSON object with field "isDeleted"
+     */
+    @DeleteMapping("/delete{id}")
+    public Map deleteNote(@PathVariable int id) {
+        boolean isDeleted = service.delete(id);
+        return new HashMap<String, Boolean>() {{
+            put("isDeleted", isDeleted);
         }};
     }
 

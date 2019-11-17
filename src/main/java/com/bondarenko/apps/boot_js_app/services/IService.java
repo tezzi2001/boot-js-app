@@ -13,4 +13,5 @@ public interface IService {
     boolean addNote(String login, String name, String record, String title);
     boolean checkLogin(String login);
     boolean checkEmail(String email);
+    boolean delete(int id);
 }
