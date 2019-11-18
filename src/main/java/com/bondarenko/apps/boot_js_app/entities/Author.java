@@ -21,7 +21,7 @@ public class Author {
     private String role;
 
     private static final String READER = "READER";
-    private static final String ADMINISTRATOR = "ADMINISTRATOR";
+    private static final String ADMINISTRATOR = "ADMIN";
     private static final String MODERATOR = "MODERATOR";
 
     public Author() {
