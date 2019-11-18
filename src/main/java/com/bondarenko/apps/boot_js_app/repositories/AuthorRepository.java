@@ -1,4 +1,4 @@
-package com.bondarenko.apps.boot_js_app.repository;
+package com.bondarenko.apps.boot_js_app.repositories;
 
 import com.bondarenko.apps.boot_js_app.entities.Author;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -18,7 +18,7 @@ import java.net.URISyntaxException;
 @Configuration
 @EnableTransactionManagement
 @ComponentScan("com.bondarenko.apps.boot_js_app")
-@EnableJpaRepositories("com.bondarenko.apps.boot_js_app.repository")
+@EnableJpaRepositories("com.bondarenko.apps.boot_js_app.repositories")
 @PropertySource("classpath:application.properties")
 public class DataConfig {
     @Value("${spring.datasource.url}")

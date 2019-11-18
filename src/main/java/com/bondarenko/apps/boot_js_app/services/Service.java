@@ -2,8 +2,8 @@ package com.bondarenko.apps.boot_js_app.services;
 
 import com.bondarenko.apps.boot_js_app.entities.Author;
 import com.bondarenko.apps.boot_js_app.entities.Note;
-import com.bondarenko.apps.boot_js_app.repository.AuthorRepository;
-import com.bondarenko.apps.boot_js_app.repository.NoteRepository;
+import com.bondarenko.apps.boot_js_app.repositories.AuthorRepository;
+import com.bondarenko.apps.boot_js_app.repositories.NoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
