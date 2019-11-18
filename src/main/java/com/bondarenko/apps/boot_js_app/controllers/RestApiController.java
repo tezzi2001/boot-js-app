@@ -26,7 +26,7 @@ public class RestApiController {
      * Authorizes the user
      * @see Service#authorize(String, String)
      * @param request this is an input HTML form. It must contain fields "login" and "password"
-     * @return JSON object with fields "name", "login" and "email" or JSON object with field "isAuthorized" depending on result of {@link Service#authorize(String, String)}
+     * @return JSON object with fields "name", "login", "email" and "role" or JSON object with field "isAuthorized" depending on result of {@link Service#authorize(String, String)}
      */
     @PostMapping("/login")
     public Map authorize(HttpServletRequest request) {
@@ -37,6 +37,7 @@ public class RestApiController {
                 put("name", author.getName());
                 put("login", author.getLogin());
                 put("email", author.getEmail());
+                put("role", author.getRole());
             }};
         } else {
             return new HashMap<String, String>() {{
