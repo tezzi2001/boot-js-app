@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -19,6 +20,8 @@ import static org.junit.Assert.*;
         @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "/sqlScripts/authorsTable/deleteRows.sql"),
 })
 public class AuthorRepositoryTest {
+    @Autowired
+    private JdbcTemplate template;
     @Autowired
     private AuthorRepository repository;
 
@@ -35,9 +38,11 @@ public class AuthorRepositoryTest {
     }
 
     @Test
+    @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "/sqlScripts/authorsTable/deleteSpecialRows.sql")
     public void saveTest() {
         Author author = repository.save(new Author("special", "password", "special", "special@test.com"));
         assertEquals(author.getLogin(), "special");
+        assertEquals(template.queryForMap("SELECT * FROM authors WHERE login = 'special'").get("login"), "special");
     }
 
     @Test

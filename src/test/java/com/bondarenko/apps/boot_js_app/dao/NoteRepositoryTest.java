@@ -2,12 +2,13 @@ package com.bondarenko.apps.boot_js_app.dao;
 
 import com.bondarenko.apps.boot_js_app.entities.Note;
 import com.bondarenko.apps.boot_js_app.repositories.NoteRepository;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -23,6 +24,8 @@ import static org.junit.Assert.*;
         @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "/sqlScripts/notesTable/deleteRows.sql"),
 })
 public class NoteRepositoryTest {
+    @Autowired
+    private JdbcTemplate template;
     @Autowired
     private NoteRepository repository;
 
@@ -54,19 +57,17 @@ public class NoteRepositoryTest {
     }
 
     @Test
-    @Sql("/sqlScripts/notesTable/deleteSpecialRows.sql")
+    @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "/sqlScripts/notesTable/deleteSpecialRows.sql")
     public void saveTest() {
         Note note = repository.save(new Note("special", "briefDescription", "fullDescription", "special", "title"));
         assertEquals(note.getLogin(), "special");
+        assertEquals(template.queryForMap("SELECT * FROM notes WHERE login = 'special'").get("login"), "special");
     }
 
     @Test
     public void deleteByIdTest() {
         repository.deleteById(1);
-        try {
-            repository.deleteById(2);
-        } catch (EmptyResultDataAccessException e) {
-            assertTrue(true);
-        }
+        Assertions.assertThrows(EmptyResultDataAccessException.class, () -> template.queryForMap("SELECT * FROM notes WHERE id = 1"));
+        Assertions.assertThrows(EmptyResultDataAccessException.class, () -> repository.deleteById(2));
     }
 }
