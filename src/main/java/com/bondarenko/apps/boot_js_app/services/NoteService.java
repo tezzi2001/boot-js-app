@@ -1,5 +1,6 @@
 package com.bondarenko.apps.boot_js_app.services;
 
+import com.bondarenko.apps.boot_js_app.entities.BasicNote;
 import com.bondarenko.apps.boot_js_app.entities.Note;
 import com.bondarenko.apps.boot_js_app.repositories.AuthorRepository;
 import com.bondarenko.apps.boot_js_app.repositories.NoteRepository;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class NoteService implements INoteService {
@@ -24,13 +26,13 @@ public class NoteService implements INoteService {
     }
 
     @Override
-    public List<Note> getNotes() {
-        return noteRepository.findAll();
+    public List<BasicNote> getNotes() {
+        return noteRepository.findAll().stream().map(BasicNote::new).collect(Collectors.toList());
     }
 
     @Override
-    public Note getNoteById(int id) {
-        return noteRepository.findById(id).get();
+    public BasicNote getNoteById(int id) {
+        return noteRepository.findById(id).get().toBasicNote();
     }
 
     @Override
