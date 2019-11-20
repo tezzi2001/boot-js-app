@@ -45,12 +45,7 @@ public class NoteService implements INoteService {
 
     @Override
     public boolean delete(int id) {
-        Note noteToDelete = noteRepository.getOne(id);
-        if (noteToDelete != null) {
-            noteRepository.delete(noteToDelete);
-            return true;
-        } else {
-            return false;
-        }
+        noteRepository.deleteById(id);
+        return true;
     }
 }

@@ -1,0 +1,1 @@
+INSERT INTO notes (id, "date", login, name, record, title) VALUES (1, '2019-11-19', 'login1', 'name', '1 record in table', 'title');
