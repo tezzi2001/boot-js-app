@@ -1,4 +1,0 @@
-CREATE TABLE authors (login VARCHAR(20) PRIMARY KEY NOT NULL, password VARCHAR(20) NOT NULL );
-CREATE TABLE notes (id SERIAL PRIMARY KEY NOT NULL, login VARCHAR(20) NOT NULL, record VARCHAR(1024) NOT NULL, date DATE NOT NULL );
-INSERT INTO authors VALUES ('tezzi', 'default');
-INSERT INTO notes VALUES (1, '2019-11-03', 'tezzi', 'test record');
