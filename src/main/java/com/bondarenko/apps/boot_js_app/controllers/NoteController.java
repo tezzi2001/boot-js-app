@@ -48,13 +48,13 @@ public class NoteController {
 
     /**
      * Creates new record in DB
-     * @see INoteService#addNote(String, String, String, String)
+     * @see INoteService#addNote(String, String, String, String, String)
      * @param request this is an input HTML form. It must contain fields "login", "name", "record" and "title"
      * @return JSON object with field "isAdded"
      */
     @PostMapping("/add")
     public Map addNote(HttpServletRequest request) {
-        boolean isAdded = noteService.addNote(request.getParameter("login"), request.getParameter("name"), request.getParameter("record"), request.getParameter("title"));
+        boolean isAdded = noteService.addNote(request.getParameter("login"), request.getParameter("briefDescription"), request.getParameter("fullDescription"), request.getParameter("name"), request.getParameter("title"));
         return new HashMap<String, Boolean>() {{
             put("isAdded", isAdded);
         }};

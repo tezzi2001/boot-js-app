@@ -12,6 +12,8 @@ public class Note {
     private Integer id;
     @Column(name = "login", length = 20, nullable = false)
     private String login;
+    @Column(name = "brief_description", length = 1024, nullable = false)
+    private String briefDescription;
     @Column(name = "full_description", length = 1024, nullable = false)
     private String fullDescription;
     @Column(name = "date", nullable = false)
@@ -23,7 +25,8 @@ public class Note {
 
     public Note() {}
 
-    public Note(String login, String fullDescription, String name, String title) {
+    public Note(String login, String briefDescription, String fullDescription, String name, String title) {
+        this.briefDescription = briefDescription;
         this.fullDescription = fullDescription;
         this.login = login;
         this.name = name;
@@ -77,5 +80,13 @@ public class Note {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getBriefDescription() {
+        return briefDescription;
+    }
+
+    public void setBriefDescription(String briefDescription) {
+        this.briefDescription = briefDescription;
     }
 }
