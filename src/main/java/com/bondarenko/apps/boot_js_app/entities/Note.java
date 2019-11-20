@@ -5,32 +5,22 @@ import java.util.Date;
 
 @Entity
 @Table(name = "notes")
-public class Note {
+public class Note extends BasicNote {
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
     private Integer id;
     @Column(name = "login", length = 20, nullable = false)
     private String login;
-    @Column(name = "brief_description", length = 1024, nullable = false)
-    private String briefDescription;
-    @Column(name = "full_description", length = 1024, nullable = false)
-    private String fullDescription;
-    @Column(name = "date", nullable = false)
-    private Date date;
     @Column(name = "name", length = 40, nullable = false)
     private String name;
-    @Column(name = "title", length = 40, nullable = false)
-    private String title;
 
-    public Note() {}
+    public Note() {};
 
     public Note(String login, String briefDescription, String fullDescription, String name, String title) {
-        this.briefDescription = briefDescription;
-        this.fullDescription = fullDescription;
+        super(briefDescription, fullDescription, title);
         this.login = login;
         this.name = name;
-        this.title = title;
         this.date = new Date();
     }
 
