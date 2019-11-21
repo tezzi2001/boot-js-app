@@ -40,35 +40,29 @@ public class NoteRepositoryTest {
         int i = 2;
 
         for (Note note: list) {
-            assertEquals(note.getLogin(), "login" + i);
+            assertEquals(note.getLogin(), "login" + i); // Positive test; condition: current login exists in DB.
             i++;
         }
     }
 
     @Test
     public void findByIdTest() {
-        assertTrue(repository.findById(1).isPresent());
-        assertFalse(repository.findById(2).isPresent());
-    }
-
-    @Test
-    public void getOneTest() {
-        assertEquals(repository.getOne(1).getLogin(), "login");
-        assertEquals(repository.getOne(2).getLogin(), "not a login");
+        assertTrue(repository.findById(1).isPresent()); // Positive test; condition: current login specified by id exists in DB.
+        assertFalse(repository.findById(2).isPresent()); // Negative test; condition: current login specified by id does not exist in DB.
     }
 
     @Test
     @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "/sqlScripts/notesTable/deleteSpecialRows.sql")
     public void saveTest() {
         Note note = repository.save(new Note("special", "briefDescription", "fullDescription", "special", "title"));
-        assertEquals(note.getLogin(), "special");
-        assertEquals(template.queryForMap("SELECT * FROM notes WHERE login = 'special'").get("login"), "special");
+        assertEquals(note.getLogin(), "special"); // Positive test; condition: the note has been saved to embedded DB.
+        assertEquals(template.queryForMap("SELECT * FROM notes WHERE login = 'special'").get("login"), "special"); // Positive test; condition: the note has been saved to DB.
     }
 
     @Test
     public void deleteByIdTest() {
         repository.deleteById(1);
-        Assertions.assertThrows(EmptyResultDataAccessException.class, () -> template.queryForMap("SELECT * FROM notes WHERE id = 1"));
-        Assertions.assertThrows(EmptyResultDataAccessException.class, () -> repository.deleteById(2));
+        Assertions.assertThrows(EmptyResultDataAccessException.class, () -> template.queryForMap("SELECT * FROM notes WHERE id = 1")); // Positive test; condition: the note specified by id has been deleted from DB.
+        Assertions.assertThrows(EmptyResultDataAccessException.class, () -> repository.deleteById(2)); // Negative test; condition: the note specified by id has not been deleted from DB.
     }
 }
