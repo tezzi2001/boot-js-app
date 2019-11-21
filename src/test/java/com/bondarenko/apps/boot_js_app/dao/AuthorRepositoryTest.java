@@ -27,27 +27,27 @@ public class AuthorRepositoryTest {
 
     @Test
     public void existsByIdTest() {
-        assertTrue(repository.existsById("login"));
-        assertFalse(repository.existsById("not a login"));
+        assertTrue(repository.existsById("login")); // Positive test; condition: the author specified by login exists in DB.
+        assertFalse(repository.existsById("not a login")); // Negative test; condition: the author specified by login does not exist in DB.
     }
 
     @Test
     public void existsAuthorByEmailTest() {
-        assertTrue(repository.existsAuthorByEmail("login@test.com"));
-        assertFalse(repository.existsAuthorByEmail("not an email"));
+        assertTrue(repository.existsAuthorByEmail("login@test.com")); // Positive test; condition: the author specified by email exists in DB.
+        assertFalse(repository.existsAuthorByEmail("not an email")); // Negative test; condition: the author specified by email does not exist in DB.
     }
 
     @Test
     @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "/sqlScripts/authorsTable/deleteSpecialRows.sql")
     public void saveTest() {
         Author author = repository.save(new Author("special", "password", "special", "special@test.com"));
-        assertEquals(author.getLogin(), "special");
-        assertEquals(template.queryForMap("SELECT * FROM authors WHERE login = 'special'").get("login"), "special");
+        assertEquals(author.getLogin(), "special"); // Positive test; condition: the author has been saved to embedded DB.
+        assertEquals(template.queryForMap("SELECT * FROM authors WHERE login = 'special'").get("login"), "special"); // Positive test; condition: the author has been saved to DB.
     }
 
     @Test
     public void findByIdTest() {
-        assertTrue(repository.findById("login").isPresent());
-        assertFalse(repository.findById("not a login").isPresent());
+        assertTrue(repository.findById("login").isPresent()); // Positive test; condition: the author specified by login exists in DB.
+        assertFalse(repository.findById("not a login").isPresent()); // Negative test; condition: the author specified by login does not exist in DB.
     }
 }
