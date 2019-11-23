@@ -38,7 +38,6 @@ public class DataConfig {
     @Bean
     public DataSource dataSource() {
         String databaseUrl = System.getenv("DATABASE_URL");
-
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(DCN);
         if (databaseUrl == null) {
@@ -47,6 +46,7 @@ public class DataConfig {
             dataSource.setUsername(USERNAME);
         } else {
             URI dbUri;
+            databaseUrl += "?useUnicode=true&amp;characterEncoding=UTF-8";
             try {
                 dbUri = new URI(databaseUrl);
                 String username = dbUri.getUserInfo().split(":")[0];
