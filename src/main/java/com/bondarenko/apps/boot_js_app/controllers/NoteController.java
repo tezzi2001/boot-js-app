@@ -50,7 +50,7 @@ public class NoteController {
     /**
      * Creates new record in DB
      * @see INoteService#addNote(String, String, String, String, String)
-     * @param request this is an input HTML form. It must contain fields "login", "name", "record" and "title"
+     * @param request this is an input HTML form. It must contain fields "login", "briefDescription", "fullDescription", "name" and "title"
      * @return JSON object with field "isAdded"
      */
     @PostMapping("/add")
