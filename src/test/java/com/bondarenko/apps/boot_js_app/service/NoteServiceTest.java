@@ -62,7 +62,7 @@ public class NoteServiceTest {
     })
     public void addNoteTest() {
         assertTrue(service.addNote(new Note("br_desc", "fll_desc", "special"), "login")); // Positive test; condition: current login exists in DB.
-        assertFalse(service.addNote(new Note("br_desc", "fll_desc", "special"), "login")); // Negative test; condition: current login does not exist in DB.
+        assertFalse(service.addNote(new Note("br_desc", "fll_desc", "special"), "logan")); // Negative test; condition: current login does not exist in DB.
     }
 
     @Test

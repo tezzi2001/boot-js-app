@@ -34,6 +34,7 @@ public class NoteRepositoryTest {
             @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "/sqlScripts/notesTable/deleteRows.sql"),
             @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "/sqlScripts/notesTable/addSpecialRows.sql"),
             @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "/sqlScripts/notesTable/deleteSpecialRows.sql"),
+            @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "/sqlScripts/notesTable/deleteRows.sql"),
     })
     public void findAllTest() {
         List<Note> list = repository.findAll();
@@ -54,9 +55,9 @@ public class NoteRepositoryTest {
     @Test
     @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "/sqlScripts/notesTable/deleteSpecialRows.sql")
     public void saveTest() {
-        Note note = repository.save(new Note("special", "fullDescription", "title"));
-        assertEquals(note.getBriefDescription(), "special"); // Positive test; condition: the note has been saved to embedded DB.
-        assertEquals(template.queryForMap("SELECT * FROM notes WHERE brief_description = 'special'").get("brief_description"), "special"); // Positive test; condition: the note has been saved to DB.
+        Note note = repository.save(new Note("briefDescriptionForSave", "fullDescription", "special"));
+        assertEquals(note.getBriefDescription(), "briefDescriptionForSave"); // Positive test; condition: the note has been saved to embedded DB.
+        assertEquals(template.queryForMap("SELECT brief_description FROM notes WHERE brief_description = 'briefDescriptionForSave'").get("brief_description"), "briefDescriptionForSave"); // Positive test; condition: the note has been saved to DB.
     }
 
     @Test
