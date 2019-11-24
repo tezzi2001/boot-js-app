@@ -20,9 +20,9 @@ public class Author {
     @Column(name = "role", length = 10, nullable = false)
     private String role;
 
-    private static final String READER = "READER";
-    private static final String ADMINISTRATOR = "ADMIN";
-    private static final String MODERATOR = "MODERATOR";
+    public static final String READER = "READER";
+    public static final String ADMINISTRATOR = "ADMIN";
+    public static final String MODERATOR = "MODERATOR";
 
     public Author() {
         role = READER;

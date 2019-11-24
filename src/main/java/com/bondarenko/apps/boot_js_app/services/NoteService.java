@@ -1,5 +1,6 @@
 package com.bondarenko.apps.boot_js_app.services;
 
+import com.bondarenko.apps.boot_js_app.entities.Author;
 import com.bondarenko.apps.boot_js_app.entities.Note;
 import com.bondarenko.apps.boot_js_app.repositories.AuthorRepository;
 import com.bondarenko.apps.boot_js_app.repositories.NoteRepository;
@@ -36,8 +37,13 @@ public class NoteService implements INoteService {
     @Override
     public boolean addNote(String login, String briefDescription, String fullDescription, String title) {
         if (authorRepository.findById(login).isPresent()) {
-            noteRepository.save(new Note(briefDescription, fullDescription, title));
-            return true;
+            Author author = authorRepository.getAuthorByLoginEquals(login);
+            if (author.getRole().equals(Author.ADMINISTRATOR) || author.getRole().equals(Author.MODERATOR)) {
+                noteRepository.save(new Note(briefDescription, fullDescription, title));
+                return true;
+            } else {
+                return false;
+            }
         } else {
             return false;
         }
