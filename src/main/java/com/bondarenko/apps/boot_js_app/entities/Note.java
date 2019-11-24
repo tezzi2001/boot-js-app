@@ -28,10 +28,6 @@ public class Note {
         this.date = new Date();
     }
 
-    public BasicNote toBasicNote() {
-        return new BasicNote(getBriefDescription(), getFullDescription(), getTitle(), getDate());
-    }
-
     public String getFullDescription() {
         return fullDescription;
     }

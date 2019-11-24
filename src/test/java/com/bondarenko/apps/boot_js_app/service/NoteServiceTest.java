@@ -1,6 +1,6 @@
 package com.bondarenko.apps.boot_js_app.service;
 
-import com.bondarenko.apps.boot_js_app.entities.BasicNote;
+import com.bondarenko.apps.boot_js_app.entities.Note;
 import com.bondarenko.apps.boot_js_app.services.INoteService;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
@@ -31,10 +31,10 @@ public class NoteServiceTest {
             @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "/sqlScripts/notesTable/deleteSpecialRows.sql"),
     })
     public void getNotesTest() {
-        List<BasicNote> list = service.getNotes();
+        List<Note> list = service.getNotes();
         int i = 2;
 
-        for (BasicNote note: list) {
+        for (Note note: list) {
             assertEquals(note.getBriefDescription(), "brief_description" + i); // Positive test; condition: notes exist in DB.
             i++;
         }

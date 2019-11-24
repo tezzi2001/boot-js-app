@@ -1,6 +1,4 @@
 package com.bondarenko.apps.boot_js_app.controllers;
-
-import com.bondarenko.apps.boot_js_app.entities.BasicNote;
 import com.bondarenko.apps.boot_js_app.entities.Note;
 import com.bondarenko.apps.boot_js_app.services.INoteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +27,10 @@ public class NoteController {
     /**
      * Returns all notes from DB
      * @see INoteService#getNotes()
-     * @return array of JSON objects with fields "briefDescription", "fullDescription", "date" and "title"
+     * @return array of JSON objects with fields "id", "briefDescription", "fullDescription", "date" and "title"
      */
     @GetMapping("/getAll")
-    public List<BasicNote> getNotes() {
+    public List<Note> getNotes() {
         return noteService.getNotes();
     }
 
@@ -40,10 +38,10 @@ public class NoteController {
      * Returns a note from DB specified by its id
      * @see INoteService#getNoteById(int)
      * @param id An id that specifies the note
-     * @return JSON object with fields "briefDescription", "fullDescription", "date" and "title"
+     * @return JSON object with fields "id", "briefDescription", "fullDescription", "date" and "title"
      */
     @GetMapping("/get{id}")
-    public BasicNote getNote(@PathVariable int id) {
+    public Note getNote(@PathVariable int id) {
         return noteService.getNoteById(id);
     }
 
