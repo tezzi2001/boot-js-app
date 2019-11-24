@@ -1,1 +1,1 @@
-DELETE FROM notes WHERE name = 'special';
+DELETE FROM notes WHERE title = 'special';

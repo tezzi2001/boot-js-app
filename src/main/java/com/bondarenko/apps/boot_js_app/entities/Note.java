@@ -10,10 +10,6 @@ public class Note {
     @GeneratedValue
     @Column(name = "id", nullable = false)
     private Integer id;
-    @Column(name = "login", length = 20, nullable = false)
-    private String login;
-    @Column(name = "name", length = 40, nullable = false)
-    private String name;
     @Column(name = "brief_description", length = 1024, nullable = false)
     private String briefDescription;
     @Column(name = "full_description", length = 1024, nullable = false)
@@ -25,25 +21,15 @@ public class Note {
 
     public Note() {}
 
-    public Note(String login, String briefDescription, String fullDescription, String name, String title) {
-        this.login = login;
+    public Note(String briefDescription, String fullDescription, String title) {
         this.briefDescription = briefDescription;
         this.fullDescription = fullDescription;
-        this.name = name;
         this.title = title;
         this.date = new Date();
     }
 
     public BasicNote toBasicNote() {
         return new BasicNote(getBriefDescription(), getFullDescription(), getTitle(), getDate());
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
     }
 
     public String getFullDescription() {
@@ -68,14 +54,6 @@ public class Note {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getTitle() {

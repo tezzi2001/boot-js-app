@@ -40,7 +40,7 @@ public class NoteRepositoryTest {
         int i = 2;
 
         for (Note note: list) {
-            assertEquals(note.getLogin(), "login" + i); // Positive test; condition: current login exists in DB.
+            assertEquals(note.getBriefDescription(), "brief_description" + i); // Positive test; condition: current briefDescription exists in DB.
             i++;
         }
     }
@@ -54,9 +54,9 @@ public class NoteRepositoryTest {
     @Test
     @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "/sqlScripts/notesTable/deleteSpecialRows.sql")
     public void saveTest() {
-        Note note = repository.save(new Note("special", "briefDescription", "fullDescription", "special", "title"));
-        assertEquals(note.getLogin(), "special"); // Positive test; condition: the note has been saved to embedded DB.
-        assertEquals(template.queryForMap("SELECT * FROM notes WHERE login = 'special'").get("login"), "special"); // Positive test; condition: the note has been saved to DB.
+        Note note = repository.save(new Note("special", "fullDescription", "title"));
+        assertEquals(note.getBriefDescription(), "special"); // Positive test; condition: the note has been saved to embedded DB.
+        assertEquals(template.queryForMap("SELECT * FROM notes WHERE brief_description = 'special'").get("brief_description"), "special"); // Positive test; condition: the note has been saved to DB.
     }
 
     @Test

@@ -94,8 +94,7 @@ public class NoteControllerTest {
     })
     public void addTest() throws Exception {
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("/add");
-        request.param("name", "special")
-                .param("title", "til`t")
+        request.param("title", "til`t")
                 .param("login", "borov")
                 .param("briefDescription", "positive test")
                 .param("fullDescription", "test of add() method");
@@ -105,8 +104,7 @@ public class NoteControllerTest {
         result.andExpect(jsonPath("$.isAdded").value("false"));
 
         request = MockMvcRequestBuilders.post("/add");
-        request.param("name", "special")
-                .param("title", "til`t")
+        request.param("title", "til`t")
                 .param("login", "login")
                 .param("briefDescription", "test")
                 .param("fullDescription", "test of add() method");

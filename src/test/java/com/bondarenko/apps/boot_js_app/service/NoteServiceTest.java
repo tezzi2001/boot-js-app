@@ -61,8 +61,8 @@ public class NoteServiceTest {
             @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "/sqlScripts/notesTable/deleteSpecialRows.sql"),
     })
     public void addNoteTest() {
-        assertTrue(service.addNote("login", "br_desc", "fll_desc", "special", "title1")); // Positive test; condition: current login exists in DB.
-        assertFalse(service.addNote("logan", "br_desc", "fll_desc", "special", "title2")); // Negative test; condition: current login does not exist in DB.
+        assertTrue(service.addNote("login", "br_desc", "fll_desc", "special")); // Positive test; condition: current login exists in DB.
+        assertFalse(service.addNote("logan", "br_desc", "fll_desc", "special")); // Negative test; condition: current login does not exist in DB.
     }
 
     @Test

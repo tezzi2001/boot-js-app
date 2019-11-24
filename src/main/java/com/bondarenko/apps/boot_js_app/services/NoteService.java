@@ -36,9 +36,9 @@ public class NoteService implements INoteService {
     }
 
     @Override
-    public boolean addNote(String login, String briefDescription, String fullDescription, String name, String title) {
+    public boolean addNote(String login, String briefDescription, String fullDescription, String title) {
         if (authorRepository.findById(login).isPresent()) {
-            noteRepository.save(new Note(login, briefDescription, fullDescription, name, title));
+            noteRepository.save(new Note(briefDescription, fullDescription, title));
             return true;
         } else {
             return false;
