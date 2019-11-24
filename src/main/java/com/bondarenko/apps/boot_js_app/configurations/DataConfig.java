@@ -16,7 +16,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 @Configuration
-@EnableTransactionManagement
 @ComponentScan("com.bondarenko.apps.boot_js_app")
 @EnableJpaRepositories("com.bondarenko.apps.boot_js_app.repositories")
 @PropertySource("classpath:application.properties")
@@ -29,11 +28,6 @@ public class DataConfig {
     private String USERNAME;
     @Value("${spring.datasource.password}")
     private String PASSWORD;
-
-    @Bean
-    PlatformTransactionManager transactionManager() {
-        return new DataSourceTransactionManager(dataSource());
-    }
 
     @Bean
     public DataSource dataSource() {
