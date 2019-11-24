@@ -6,6 +6,6 @@ import java.util.List;
 public interface INoteService {
     List<Note> getNotes();
     Note getNoteById(int id);
-    boolean addNote(String login, String briefDescription, String fullDescription, String title);
+    boolean addNote(Note note, String login);
     boolean delete(int id);
 }

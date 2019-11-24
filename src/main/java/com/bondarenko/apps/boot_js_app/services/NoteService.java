@@ -35,11 +35,11 @@ public class NoteService implements INoteService {
     }
 
     @Override
-    public boolean addNote(String login, String briefDescription, String fullDescription, String title) {
+    public boolean addNote(Note note, String login) {
         if (authorRepository.findById(login).isPresent()) {
             Author author = authorRepository.getAuthorByLoginEquals(login);
             if (author.getRole().equals(Author.ADMINISTRATOR) || author.getRole().equals(Author.MODERATOR)) {
-                noteRepository.save(new Note(briefDescription, fullDescription, title));
+                noteRepository.save(note);
                 return true;
             } else {
                 return false;
