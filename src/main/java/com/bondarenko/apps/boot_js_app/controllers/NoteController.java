@@ -43,7 +43,7 @@ public class NoteController {
      */
     @GetMapping("/get{id}")
     public Note getNote(@PathVariable int id, HttpServletResponse response) {
-        if (noteService.existsById(id)) {
+        if (!noteService.existsById(id)) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return null;
         }
