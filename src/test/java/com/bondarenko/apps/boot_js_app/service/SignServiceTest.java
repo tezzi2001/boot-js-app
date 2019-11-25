@@ -2,6 +2,7 @@ package com.bondarenko.apps.boot_js_app.service;
 
 import com.bondarenko.apps.boot_js_app.services.ISignService;
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -30,11 +31,14 @@ public class SignServiceTest {
     }
 
     @Test
+    @SqlGroup({
+            @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "/sqlScripts/authorsTable/addHashedRows.sql"),
+    })
     public void authorizeTest() {
         assertNull(service.authorize("logan", "password")); // Negative test; condition: current login does not match login in DB.
-        assertNull(service.authorize("login", "passworld")); // Negative test; condition: current password does not match password in DB.
+        assertNull(service.authorize("loginH", "passworld")); // Negative test; condition: current password does not match password in DB.
         assertNull(service.authorize("logan", "passworld")); // Negative test; condition: current login and password do not match login and password in DB.
-        assertNotNull(service.authorize("login", "password")); // Positive test; condition: current login and password match login and password in DB.
+        assertNotNull(service.authorize("loginH", "password")); // Positive test; condition: current login and password match login and password in DB.
     }
 
     @Test
