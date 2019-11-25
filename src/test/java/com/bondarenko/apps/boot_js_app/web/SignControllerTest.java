@@ -35,16 +35,17 @@ public class SignControllerTest {
     }
 
     @Test
+    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "/sqlScripts/authorsTable/addHashedRows.sql")
     public void authorizeTest() throws Exception {
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("/login");
-        request.param("login", "login")
+        request.param("login", "loginH")
                 .param("password", "password");
         ResultActions result = mockMvc.perform(request);
         result.andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"));
         result.andExpect(jsonPath("$.isAuthorized").value("true"))
-                .andExpect(jsonPath("$.name").value("none"))
-                .andExpect(jsonPath("$.login").value("login"))
+                .andExpect(jsonPath("$.name").value("special"))
+                .andExpect(jsonPath("$.login").value("loginH"))
                 .andExpect(jsonPath("$.email").value("login@test.com"))
                 .andExpect(jsonPath("$.role").value("ADMIN"));
 
@@ -59,7 +60,7 @@ public class SignControllerTest {
 
 
         request = MockMvcRequestBuilders.post("/login");
-        request.param("login", "login")
+        request.param("login", "loginH")
                 .param("password", "passworld");
         result = mockMvc.perform(request);
         result.andExpect(status().isOk())
