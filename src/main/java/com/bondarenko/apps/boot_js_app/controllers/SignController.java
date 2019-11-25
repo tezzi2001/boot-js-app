@@ -63,7 +63,15 @@ public class SignController {
      * @return JSON object with field "isRegistered"
      */
     @PostMapping("/register")
-    public Map register(HttpServletRequest request) {
+    public Map register(HttpServletRequest request, HttpServletResponse response) {
+        String login = request.getParameter("login");
+        String password = request.getParameter("password");
+        String name = request.getParameter("name");
+        String email = request.getParameter("email");
+        if (login == null || password == null || name == null || email == null) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return null;
+        }
         boolean isRegistered = signService.register(request.getParameter("login"), request.getParameter("password"), request.getParameter("name"), request.getParameter("email"));
         return new HashMap<String, Boolean>() {{
             put("isRegistered", isRegistered);
