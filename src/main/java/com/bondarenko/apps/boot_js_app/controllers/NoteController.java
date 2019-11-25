@@ -84,7 +84,11 @@ public class NoteController {
      * @return JSON object with field "isDeleted"
      */
     @DeleteMapping("/delete{id}")
-    public Map deleteNote(@PathVariable int id) {
+    public Map deleteNote(@PathVariable int id, HttpServletResponse response) {
+        if (!noteService.existsById(id)) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return null;
+        }
         boolean isDeleted = noteService.delete(id);
         return new HashMap<String, Boolean>() {{
             put("isDeleted", isDeleted);
