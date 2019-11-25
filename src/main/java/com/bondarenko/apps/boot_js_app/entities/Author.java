@@ -11,7 +11,7 @@ public class Author {
     @Id
     @Column(name = "login", length = 20, nullable = false)
     private String login;
-    @Column(name = "password", length = 20, nullable = false)
+    @Column(name = "password", length = 60, nullable = false)
     private String password;
     @Column(name = "name", length = 40, nullable = false)
     private String name;
