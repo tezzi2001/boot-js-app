@@ -74,12 +74,9 @@ public class NoteController {
                 put("isAdded", "false");
             }};
         } else {
-            return new HashMap<String, String>() {{
-                put("isAdded", "true");
-                put("brief_description", resultNote.getBriefDescription());
-                put("full_description", resultNote.getFullDescription());
-                put("title", resultNote.getTitle());
-                put("date", resultNote.getDate().toString());
+            return new HashMap<String, Object>() {{
+                put("note", resultNote);
+                put("isAdded", true);
             }};
         }
 
