@@ -46,7 +46,7 @@ public class SignControllerTest {
                 .andExpect(jsonPath("$.name").value("none"))
                 .andExpect(jsonPath("$.login").value("login"))
                 .andExpect(jsonPath("$.email").value("login@test.com"))
-                .andExpect(jsonPath("$.role").value("READER"));
+                .andExpect(jsonPath("$.role").value("ADMIN"));
 
 
         request = MockMvcRequestBuilders.post("/login");
