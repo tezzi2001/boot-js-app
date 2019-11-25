@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,7 +53,14 @@ public class NoteController {
      * @return JSON object with fields "id", "isAdded", "brief_description", "full_description", "title", and "date"
      */
     @PostMapping("/add")
-    public Map addNote(HttpServletRequest request) {
+    public Map addNote(HttpServletRequest request, HttpServletResponse response) {
+        String briefDescription = request.getParameter("briefDescription");
+        String fullDescription = request.getParameter("fullDescription");
+        String title = request.getParameter("title");
+        if (briefDescription == null || fullDescription == null || title == null) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return null;
+        }
         Note note = new Note(request.getParameter("briefDescription"), request.getParameter("fullDescription"), request.getParameter("title"));
         boolean isAdded = noteService.addNote(note, request.getParameter("login"));
         return new HashMap<String, String>() {{
