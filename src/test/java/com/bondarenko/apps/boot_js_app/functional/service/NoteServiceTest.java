@@ -1,4 +1,4 @@
-package com.bondarenko.apps.boot_js_app.service;
+package com.bondarenko.apps.boot_js_app.functional.service;
 
 import com.bondarenko.apps.boot_js_app.entities.Note;
 import com.bondarenko.apps.boot_js_app.services.INoteService;

@@ -1,8 +1,7 @@
-package com.bondarenko.apps.boot_js_app.service;
+package com.bondarenko.apps.boot_js_app.functional.service;
 
 import com.bondarenko.apps.boot_js_app.services.ISignService;
 import org.junit.Test;
-import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

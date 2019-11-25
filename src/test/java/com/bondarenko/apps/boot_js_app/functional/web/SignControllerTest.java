@@ -1,4 +1,4 @@
-package com.bondarenko.apps.boot_js_app.web;
+package com.bondarenko.apps.boot_js_app.functional.web;
 
 import org.junit.Before;
 import org.junit.Test;
