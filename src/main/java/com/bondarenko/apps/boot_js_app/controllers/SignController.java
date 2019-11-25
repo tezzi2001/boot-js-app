@@ -104,8 +104,13 @@ public class SignController {
      * @return JSON object with field "isExist"
      */
     @PostMapping("/checkEmail")
-    public Map checkEmail(HttpServletRequest request) {
-        boolean isExist = signService.checkEmail(request.getParameter("email"));
+    public Map checkEmail(HttpServletRequest request, HttpServletResponse response) {
+        String email = request.getParameter("email");
+        if (email == null) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return null;
+        }
+        boolean isExist = signService.checkEmail(email);
         return new HashMap<String, Boolean>() {{
             put("isExist", isExist);
         }};
