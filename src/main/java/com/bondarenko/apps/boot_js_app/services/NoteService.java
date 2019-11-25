@@ -35,17 +35,17 @@ public class NoteService implements INoteService {
     }
 
     @Override
-    public boolean addNote(Note note, String login) {
+    public Note addNote(Note note, String login) {
         if (authorRepository.findById(login).isPresent()) {
             Author author = authorRepository.getAuthorByLoginEquals(login);
             if (author.getRole().equals(Author.ADMINISTRATOR) || author.getRole().equals(Author.MODERATOR)) {
-                noteRepository.save(note);
-                return true;
+                note = noteRepository.save(note);
+                return note;
             } else {
-                return false;
+                return null;
             }
         } else {
-            return false;
+            return null;
         }
     }
 

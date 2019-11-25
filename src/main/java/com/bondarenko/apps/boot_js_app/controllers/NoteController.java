@@ -61,20 +61,28 @@ public class NoteController {
         String briefDescription = request.getParameter("briefDescription");
         String fullDescription = request.getParameter("fullDescription");
         String title = request.getParameter("title");
+        Note note;
+        Note resultNote;
         if (briefDescription == null || fullDescription == null || title == null) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return null;
         }
-        Note note = new Note(request.getParameter("briefDescription"), request.getParameter("fullDescription"), request.getParameter("title"));
-        boolean isAdded = noteService.addNote(note, request.getParameter("login"));
-        return new HashMap<String, String>() {{
-            put("isAdded", String.valueOf(isAdded));
-            put("id", note.getId().toString());
-            put("brief_description", note.getBriefDescription());
-            put("full_description", note.getFullDescription());
-            put("title", note.getTitle());
-            put("date", note.getDate().toString());
-        }};
+        note = new Note(briefDescription, fullDescription, title);
+        resultNote = noteService.addNote(note, request.getParameter("login"));
+        if (resultNote == null) {
+            return new HashMap<String, String>() {{
+                put("isAdded", "false");
+            }};
+        } else {
+            return new HashMap<String, String>() {{
+                put("isAdded", "true");
+                put("brief_description", resultNote.getBriefDescription());
+                put("full_description", resultNote.getFullDescription());
+                put("title", resultNote.getTitle());
+                put("date", resultNote.getDate().toString());
+            }};
+        }
+
     }
 
     /**
