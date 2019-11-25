@@ -85,7 +85,12 @@ public class SignController {
      * @return JSON object with field "isExist"
      */
     @PostMapping("/checkLogin")
-    public Map checkLogin(HttpServletRequest request) {
+    public Map checkLogin(HttpServletRequest request, HttpServletResponse response) {
+        String login = request.getParameter("login");
+        if (login == null) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return null;
+        }
         boolean isExist = signService.checkLogin(request.getParameter("login"));
         return new HashMap<String, Boolean>() {{
             put("isExist", isExist);
