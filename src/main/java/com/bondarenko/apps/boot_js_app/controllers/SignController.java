@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,7 +33,13 @@ public class SignController {
      * @return JSON object with fields "name", "login", "email" and "role" or JSON object with field "isAuthorized"
      */
     @PostMapping("/login")
-    public Map authorize(HttpServletRequest request) {
+    public Map authorize(HttpServletRequest request, HttpServletResponse response) {
+        String login = request.getParameter("login");
+        String password = request.getParameter("password");
+        if (login == null || password == null) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return null;
+        }
         Author author = signService.authorize(request.getParameter("login"), request.getParameter("password"));
         if (author != null) {
             return new HashMap<String, String>() {{
