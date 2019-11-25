@@ -42,7 +42,11 @@ public class NoteController {
      * @return JSON object with fields "id", "briefDescription", "fullDescription", "date" and "title"
      */
     @GetMapping("/get{id}")
-    public Note getNote(@PathVariable int id) {
+    public Note getNote(@PathVariable int id, HttpServletResponse response) {
+        if (noteService.existsById(id)) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return null;
+        }
         return noteService.getNoteById(id);
     }
 

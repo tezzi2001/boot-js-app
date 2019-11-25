@@ -54,4 +54,9 @@ public class NoteService implements INoteService {
         noteRepository.deleteById(id);
         return true;
     }
+
+    @Override
+    public boolean existsById(int id) {
+        return noteRepository.existsById(id);
+    }
 }
