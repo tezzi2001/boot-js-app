@@ -42,19 +42,19 @@ public class NoteControllerTest {
         ResultActions result = mockMvc.perform(request);
         result.andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
-                .andExpect(jsonPath("$[0].title").value("title2"));
+                .andExpect(jsonPath("$[0].title").value("special"));
         result.andExpect(jsonPath("$[0].date").value("2019-11-18T22:00:00.000+0000"))
                 .andExpect(jsonPath("$[0].briefDescription").value("brief_description2"))
                 .andExpect(jsonPath("$[0].fullDescription").value("full_description2"));
-        result.andExpect(jsonPath("$[1].title").value("title3"))
+        result.andExpect(jsonPath("$[1].title").value("special"))
                 .andExpect(jsonPath("$[1].date").value("2019-11-18T22:00:00.000+0000"))
                 .andExpect(jsonPath("$[1].briefDescription").value("brief_description3"))
                 .andExpect(jsonPath("$[1].fullDescription").value("full_description3"));
-        result.andExpect(jsonPath("$[2].title").value("title4"))
+        result.andExpect(jsonPath("$[2].title").value("special"))
                 .andExpect(jsonPath("$[2].date").value("2019-11-18T22:00:00.000+0000"))
                 .andExpect(jsonPath("$[2].briefDescription").value("brief_description4"))
                 .andExpect(jsonPath("$[2].fullDescription").value("full_description4"));
-        result.andExpect(jsonPath("$[3].title").value("title5"))
+        result.andExpect(jsonPath("$[3].title").value("special"))
                 .andExpect(jsonPath("$[3].date").value("2019-11-18T22:00:00.000+0000"))
                 .andExpect(jsonPath("$[3].briefDescription").value("brief_description5"))
                 .andExpect(jsonPath("$[3].fullDescription").value("full_description5"));
