@@ -124,7 +124,7 @@ public class NoteControllerTest {
             @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "/sqlScripts/notesTable/addRows.sql"),
             @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "/sqlScripts/notesTable/deleteRows.sql"),
     })
-    public void deleteTest() throws Exception{
+    public void deleteNoteTest() throws Exception{
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.delete("/delete1");
         ResultActions result = mockMvc.perform(request);
         result.andExpect(status().isOk())
