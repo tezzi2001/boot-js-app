@@ -18,11 +18,11 @@ import java.util.Map;
  */
 @RestController
 public class NoteController {
-    private INoteService noteService;
+    private INoteService service;
 
     @Autowired
-    public void setNoteService(INoteService noteService) {
-        this.noteService = noteService;
+    public void setService(INoteService service) {
+        this.service = service;
     }
 
     /**
@@ -32,7 +32,7 @@ public class NoteController {
      */
     @GetMapping("/getAll")
     public List<Note> getNotes() {
-        return noteService.getNotes();
+        return service.getNotes();
     }
 
     /**
@@ -44,11 +44,11 @@ public class NoteController {
      */
     @GetMapping("/get{id}")
     public Note getNote(@PathVariable int id, HttpServletResponse response) {
-        if (!noteService.existsById(id)) {
+        if (!service.existsById(id)) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return null;
         }
-        return noteService.getNoteById(id);
+        return service.getNoteById(id);
     }
 
     /**
@@ -63,14 +63,13 @@ public class NoteController {
         String briefDescription = request.getParameter("briefDescription");
         String fullDescription = request.getParameter("fullDescription");
         String title = request.getParameter("title");
-        Note note;
+        String login = request.getParameter("login");
         Note resultNote;
         if (briefDescription == null || fullDescription == null || title == null) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return null;
         }
-        note = new Note(briefDescription, fullDescription, title);
-        resultNote = noteService.addNote(note, request.getParameter("login"));
+        resultNote = service.addNote(new Note(briefDescription, fullDescription, title), login);
         if (resultNote == null) {
             return new HashMap<String, String>() {{
                 put("isAdded", "false");
@@ -90,18 +89,18 @@ public class NoteController {
 
     /**
      * Deletes the record in DB specified by id
-     * @see INoteService#delete(int)
+     * @see INoteService#deleteNote(int)
      * @param id An id that specifies the note
      * @param response HTTP response of the servlet
      * @return JSON object with field "isDeleted" or HTTP response with empty body and status 400
      */
     @DeleteMapping("/delete{id}")
     public Map deleteNote(@PathVariable int id, HttpServletResponse response) {
-        if (!noteService.existsById(id)) {
+        if (!service.existsById(id)) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return null;
         }
-        boolean isDeleted = noteService.delete(id);
+        boolean isDeleted = service.deleteNote(id);
         return new HashMap<String, Boolean>() {{
             put("isDeleted", isDeleted);
         }};

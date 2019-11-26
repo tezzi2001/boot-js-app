@@ -29,8 +29,7 @@ public class SignService implements ISignService {
         if (authorRepository.existsById(login) || authorRepository.existsAuthorByEmail(email)) {
             return false;
         } else {
-            Author author = new Author(login, hashedPassword, name, email);
-            authorRepository.save(author);
+            authorRepository.save(new Author(login, hashedPassword, name, email));
             return true;
         }
     }
@@ -41,12 +40,9 @@ public class SignService implements ISignService {
         if (optionalAuthor.isPresent()) {
             if (BCrypt.checkpw(password+localParameter, optionalAuthor.get().getPassword())) {
                 return optionalAuthor.get();
-            } else {
-                return null;
             }
-        } else {
-            return null;
         }
+        return null;
     }
 
     @Override

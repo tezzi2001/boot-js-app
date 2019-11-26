@@ -19,11 +19,11 @@ import java.util.Map;
  */
 @RestController
 public class SignController {
-    private ISignService signService;
+    private ISignService service;
 
     @Autowired
-    public void setSignService(ISignService signService) {
-        this.signService = signService;
+    public void setService(ISignService service) {
+        this.service = service;
     }
 
     /**
@@ -41,7 +41,7 @@ public class SignController {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return null;
         }
-        Author author = signService.authorize(request.getParameter("login"), request.getParameter("password"));
+        Author author = service.authorize(login, password);
         if (author != null) {
             return new HashMap<String, String>() {{
                 put("isAuthorized", "true");
@@ -74,7 +74,7 @@ public class SignController {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return null;
         }
-        boolean isRegistered = signService.register(request.getParameter("login"), request.getParameter("password"), request.getParameter("name"), request.getParameter("email"));
+        boolean isRegistered = service.register(login, password, name, email);
         return new HashMap<String, Boolean>() {{
             put("isRegistered", isRegistered);
         }};
@@ -94,7 +94,7 @@ public class SignController {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return null;
         }
-        boolean isExist = signService.checkLogin(request.getParameter("login"));
+        boolean isExist = service.checkLogin(login);
         return new HashMap<String, Boolean>() {{
             put("isExist", isExist);
         }};
@@ -114,7 +114,7 @@ public class SignController {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return null;
         }
-        boolean isExist = signService.checkEmail(email);
+        boolean isExist = service.checkEmail(email);
         return new HashMap<String, Boolean>() {{
             put("isExist", isExist);
         }};

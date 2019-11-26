@@ -39,18 +39,14 @@ public class NoteService implements INoteService {
         if (authorRepository.findById(login).isPresent()) {
             Author author = authorRepository.getAuthorByLoginEquals(login);
             if (author.getRole().equals(Author.ADMINISTRATOR) || author.getRole().equals(Author.MODERATOR)) {
-                note = noteRepository.save(note);
-                return note;
-            } else {
-                return null;
+                return noteRepository.save(note);
             }
-        } else {
-            return null;
         }
+        return null;
     }
 
     @Override
-    public boolean delete(int id) {
+    public boolean deleteNote(int id) {
         noteRepository.deleteById(id);
         return true;
     }

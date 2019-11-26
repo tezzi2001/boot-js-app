@@ -70,9 +70,9 @@ public class NoteServiceTest {
             @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "/sqlScripts/notesTable/addRows.sql"),
             @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "/sqlScripts/notesTable/deleteRows.sql"),
     })
-    public void deleteTest() {
-        service.delete(1);
+    public void deleteNoteTest() {
+        service.deleteNote(1);
         Assertions.assertThrows(EmptyResultDataAccessException.class, () -> template.queryForMap("SELECT * FROM notes WHERE id = 1")); // Positive test; condition: the note specified by id has been deleted in DB;
-        Assertions.assertThrows(EmptyResultDataAccessException.class, () -> service.delete(2)); // Negative test; condition: the note specified by id has not been deleted in DB;
+        Assertions.assertThrows(EmptyResultDataAccessException.class, () -> service.deleteNote(2)); // Negative test; condition: the note specified by id has not been deleted in DB;
     }
 }

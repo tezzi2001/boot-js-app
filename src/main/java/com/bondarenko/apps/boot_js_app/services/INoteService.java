@@ -7,6 +7,6 @@ public interface INoteService {
     List<Note> getNotes();
     Note getNoteById(int id);
     Note addNote(Note note, String login);
-    boolean delete(int id);
+    boolean deleteNote(int id);
     boolean existsById(int id);
 }
