@@ -80,7 +80,7 @@ public class NoteController {
                 put("brief_description", resultNote.getBriefDescription());
                 put("full_description", resultNote.getFullDescription());
                 put("title", resultNote.getTitle());
-                put("date", resultNote.getDate().toString());
+                put("date", resultNote.getDate());
                 put("id", resultNote.getId().toString());
             }};
         }

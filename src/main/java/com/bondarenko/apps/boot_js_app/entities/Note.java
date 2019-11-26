@@ -1,7 +1,10 @@
 package com.bondarenko.apps.boot_js_app.entities;
 
 import javax.persistence.*;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Entity
 @Table(name = "notes")
@@ -36,8 +39,9 @@ public class Note {
         this.fullDescription = fullDescription;
     }
 
-    public Date getDate() {
-        return date;
+    public String getDate() { ;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        return dateFormat.format(date);
     }
 
     public void setDate(Date date) {
