@@ -3,8 +3,6 @@ package com.bondarenko.apps.boot_js_app.entities;
 import javax.persistence.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Entity
 @Table(name = "notes")
