@@ -11,13 +11,13 @@ public class Note {
     @GeneratedValue
     @Column(name = "id", nullable = false)
     private Integer id;
-    @Column(name = "brief_description", length = 1024, nullable = false)
+    @Column(name = "brief_description", length = 400, nullable = false)
     private String briefDescription;
-    @Column(name = "full_description", length = 1024, nullable = false)
+    @Column(name = "full_description", length = 2500, nullable = false)
     private String fullDescription;
     @Column(name = "date", nullable = false)
     private Date date;
-    @Column(name = "title", length = 40, nullable = false)
+    @Column(name = "title", length = 80, nullable = false)
     private String title;
 
     public Note() {}
