@@ -30,7 +30,8 @@ public class SignController {
      * Authorizes the user
      * @see ISignService#authorize(String, String)
      * @param request this is an input HTML form. It must contain fields "login" and "password"
-     * @return JSON object with fields "name", "login", "email" and "role" or JSON object with field "isAuthorized"
+     * @param response HTTP response of the servlet
+     * @return JSON object with fields "name", "login", "email" and "role" or JSON object with field "isAuthorized" or HTTP response with empty body and status 400
      */
     @PostMapping("/login")
     public Map authorize(HttpServletRequest request, HttpServletResponse response) {
@@ -60,7 +61,8 @@ public class SignController {
      * Registers the user
      * @see ISignService#register(String, String, String, String)
      * @param request this is an input HTML form. It must contain fields "login", "password", "name" and "email"
-     * @return JSON object with field "isRegistered"
+     * @param response HTTP response of the servlet
+     * @return JSON object with field "isRegistered" or HTTP response with empty body and status 400
      */
     @PostMapping("/register")
     public Map register(HttpServletRequest request, HttpServletResponse response) {
@@ -82,7 +84,8 @@ public class SignController {
      * Checks if user with current login exist in DB
      * @see ISignService#checkLogin(String)
      * @param request this is an input HTML form. It must contain field "login"
-     * @return JSON object with field "isExist"
+     * @param response HTTP response of the servlet
+     * @return JSON object with field "isExist" or HTTP response with empty body and status 400
      */
     @PostMapping("/checkLogin")
     public Map checkLogin(HttpServletRequest request, HttpServletResponse response) {
@@ -101,7 +104,8 @@ public class SignController {
      * Checks if user with current email exist in DB
      * @see ISignService#checkEmail(String)
      * @param request this is an input HTML form. It must contain field "email"
-     * @return JSON object with field "isExist"
+     * @param response HTTP response of the servlet
+     * @return JSON object with field "isExist" or HTTP response with empty body and status 400
      */
     @PostMapping("/checkEmail")
     public Map checkEmail(HttpServletRequest request, HttpServletResponse response) {

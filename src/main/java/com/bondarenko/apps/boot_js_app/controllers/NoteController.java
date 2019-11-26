@@ -39,7 +39,8 @@ public class NoteController {
      * Returns a note from DB specified by its id
      * @see INoteService#getNoteById(int)
      * @param id An id that specifies the note
-     * @return JSON object with fields "id", "briefDescription", "fullDescription", "date" and "title"
+     * @param response HTTP response of the servlet
+     * @return JSON object with fields "id", "briefDescription", "fullDescription", "date" and "title" or HTTP response with empty body and status 400
      */
     @GetMapping("/get{id}")
     public Note getNote(@PathVariable int id, HttpServletResponse response) {
@@ -54,7 +55,8 @@ public class NoteController {
      * Creates new record in DB
      * @see INoteService#addNote(Note, String)
      * @param request this is an input HTML form. It must contain fields "login", "briefDescription", "fullDescription" and "title"
-     * @return JSON object with fields "id", "isAdded", "brief_description", "full_description", "title", and "date"
+     * @param response HTTP response of the servlet
+     * @return JSON object with fields "id", "isAdded", "brief_description", "full_description", "title", and "date" or JSON object with field "isAdded" or HTTP response with empty body and status 400
      */
     @PostMapping("/add")
     public Map addNote(HttpServletRequest request, HttpServletResponse response) {
@@ -90,7 +92,8 @@ public class NoteController {
      * Deletes the record in DB specified by id
      * @see INoteService#delete(int)
      * @param id An id that specifies the note
-     * @return JSON object with field "isDeleted"
+     * @param response HTTP response of the servlet
+     * @return JSON object with field "isDeleted" or HTTP response with empty body and status 400
      */
     @DeleteMapping("/delete{id}")
     public Map deleteNote(@PathVariable int id, HttpServletResponse response) {
