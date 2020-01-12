@@ -16,6 +16,7 @@ import java.util.Map;
  * @author Bohdan Bondarenko
  * @version 1.0.1
  */
+@CrossOrigin(origins = {"https://vuejs-news-app.herokuapp.com/"})
 @RestController
 public class NoteController {
     private INoteService service;

@@ -3,6 +3,7 @@ package com.bondarenko.apps.boot_js_app.controllers;
 import com.bondarenko.apps.boot_js_app.entities.Author;
 import com.bondarenko.apps.boot_js_app.services.ISignService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,6 +19,7 @@ import java.util.Map;
  * @version 1.0.1
  */
 @RestController
+@CrossOrigin(origins = {"https://vuejs-news-app.herokuapp.com/"})
 public class SignController {
     private ISignService service;
 
