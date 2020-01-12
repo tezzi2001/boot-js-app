@@ -1,11 +1,16 @@
 package com.bondarenko.apps.boot_js_app.entities;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity
 @Table(name = "notes")
+@Data
+@NoArgsConstructor
 public class Note {
     @Id
     @GeneratedValue
@@ -20,8 +25,6 @@ public class Note {
     @Column(name = "title", length = 80, nullable = false)
     private String title;
 
-    public Note() {}
-
     public Note(String briefDescription, String fullDescription, String title) {
         this.briefDescription = briefDescription;
         this.fullDescription = fullDescription;
@@ -29,44 +32,8 @@ public class Note {
         this.date = new Date();
     }
 
-    public String getFullDescription() {
-        return fullDescription;
-    }
-
-    public void getFullDescription(String fullDescription) {
-        this.fullDescription = fullDescription;
-    }
-
     public String getDate() { ;
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         return dateFormat.format(date);
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getBriefDescription() {
-        return briefDescription;
-    }
-
-    public void setBriefDescription(String briefDescription) {
-        this.briefDescription = briefDescription;
     }
 }
