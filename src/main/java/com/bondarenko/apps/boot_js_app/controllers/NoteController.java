@@ -16,6 +16,7 @@ import java.util.Map;
  * @author Bohdan Bondarenko
  * @version 1.0.1
  */
+@CrossOrigin(origins = {"https://vuejs-news-app.herokuapp.com"})
 @RestController
 public class NoteController {
     private INoteService service;
@@ -31,7 +32,6 @@ public class NoteController {
      * @return array of JSON objects with fields "id", "briefDescription", "fullDescription", "date" and "title"
      */
     @GetMapping("/getAll")
-    @CrossOrigin(origins = {"https://vuejs-news-app.herokuapp.com"})
     public List<Note> getNotes() {
         return service.getNotes();
     }
