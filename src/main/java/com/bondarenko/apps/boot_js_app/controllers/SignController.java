@@ -19,7 +19,6 @@ import java.util.Map;
  * @version 1.0.1
  */
 @RestController
-@CrossOrigin(origins = {"https://vuejs-news-app.herokuapp.com/"})
 public class SignController {
     private ISignService service;
 
