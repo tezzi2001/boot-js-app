@@ -1,0 +1,23 @@
+$errorFontSize: 12px;
+$errorColor: #e74c3c;
+
+* {
+    box-sizing: border-box;
+}
+
+.full-height {
+    height: 100%;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.input-field-width {
+    width: 250px;
+}
+
+.error-text {
+    font-size: $errorFontSize;
+    color: $errorColor;
+}

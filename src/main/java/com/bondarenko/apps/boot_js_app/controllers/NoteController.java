@@ -17,6 +17,7 @@ import java.util.Map;
  * @version 1.0.1
  */
 @RestController
+@CrossOrigin(origins = "http://localhost:8080")
 public class NoteController {
     private INoteService service;
 

@@ -1,12 +1,18 @@
 package com.bondarenko.apps.boot_js_app.entities;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+
+@Data
 @Entity
 @Table(name = "authors")
+@NoArgsConstructor
 public class Author {
     @Id
     @Column(name = "login", length = 20, nullable = false)
@@ -18,61 +24,57 @@ public class Author {
     @Column(name = "email", length = 40, nullable = false)
     private String email;
     @Column(name = "role", length = 10, nullable = false)
-    private String role;
+    private String role = READER;
 
     public static final String READER = "READER";
     public static final String ADMINISTRATOR = "ADMIN";
     public static final String MODERATOR = "MODERATOR";
 
-    public Author() {
-        role = READER;
-    }
 
     public Author(String login, String password, String name, String email) {
         this.login = login;
         this.password = password;
         this.name = name;
         this.email = email;
-        role = READER;
     }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
+//
+//    public String getLogin() {
+//        return login;
+//    }
+//
+//    public void setLogin(String login) {
+//        this.login = login;
+//    }
+//
+//    public String getPassword() {
+//        return password;
+//    }
+//
+//    public void setPassword(String password) {
+//        this.password = password;
+//    }
+//
+//    public String getName() {
+//        return name;
+//    }
+//
+//    public void setName(String name) {
+//        this.name = name;
+//    }
+//
+//    public String getEmail() {
+//        return email;
+//    }
+//
+//    public void setEmail(String email) {
+//        this.email = email;
+//    }
+//
+//    public String getRole() {
+//        return role;
+//    }
+//
+//    public void setRole(String role) {
+//        this.role = role;
+//    }
 }

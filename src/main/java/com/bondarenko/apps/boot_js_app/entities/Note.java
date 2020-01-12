@@ -1,11 +1,14 @@
 package com.bondarenko.apps.boot_js_app.entities;
 
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity
 @Table(name = "notes")
+@NoArgsConstructor
 public class Note {
     @Id
     @GeneratedValue
@@ -19,8 +22,6 @@ public class Note {
     private Date date;
     @Column(name = "title", length = 80, nullable = false)
     private String title;
-
-    public Note() {}
 
     public Note(String briefDescription, String fullDescription, String title) {
         this.briefDescription = briefDescription;
