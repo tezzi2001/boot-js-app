@@ -7,7 +7,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Inheritance(strategy= InheritanceType.TABLE_PER_CLASS)
-public abstract class BaseEntity {
+abstract class BaseEntity {
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)

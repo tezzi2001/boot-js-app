@@ -13,6 +13,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -61,8 +62,8 @@ public class NoteServiceTest {
             @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "/sqlScripts/notesTable/deleteSpecialRows.sql"),
     })
     public void addNoteTest() {
-        assertNotNull(service.addNote(new Note("br_desc", "fll_desc", "special"), "login")); // Positive test; condition: current login exists in DB.
-        assertNull(service.addNote(new Note("br_desc", "fll_desc", "special"), "logan")); // Negative test; condition: current login does not exist in DB.
+        assertNotNull(service.addNote(new Note("br_desc", "fll_desc", new Date(), "special"), "login")); // Positive test; condition: current login exists in DB.
+        assertNull(service.addNote(new Note("br_desc", "fll_desc", new Date(), "special"), "logan")); // Negative test; condition: current login does not exist in DB.
     }
 
     @Test

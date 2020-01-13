@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -70,7 +71,7 @@ public class NoteController {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return null;
         }
-        resultNote = service.addNote(new Note(briefDescription, fullDescription, title), login);
+        resultNote = service.addNote(new Note(briefDescription, fullDescription, new Date(), title), login);
         if (resultNote == null) {
             return new HashMap<String, String>() {{
                 put("isAdded", "false");

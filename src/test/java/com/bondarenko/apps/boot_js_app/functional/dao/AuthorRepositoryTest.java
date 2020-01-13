@@ -40,7 +40,7 @@ public class AuthorRepositoryTest {
     @Test
     @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "/sqlScripts/authorsTable/deleteSpecialRows.sql")
     public void saveTest() {
-        Author author = repository.save(new Author("special", "password", "special", "special@test.com"));
+        Author author = repository.save(new Author("special", "password", "special", "special@test.com", Author.READER));
         assertEquals(author.getLogin(), "special"); // Positive test; condition: the author has been saved to embedded DB.
         assertEquals(template.queryForMap("SELECT * FROM authors WHERE login = 'special'").get("login"), "special"); // Positive test; condition: the author has been saved to DB.
     }
