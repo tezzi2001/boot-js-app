@@ -18,7 +18,7 @@ import java.util.Map;
  * @author Bohdan Bondarenko
  * @version 1.0.1
  */
-@CrossOrigin(origins = {"https://vuejs-news-app.herokuapp.com"})
+@CrossOrigin(origins = {"https://vuejs-news-app.herokuapp.com", "http://vuejs-news-app.herokuapp.com"})
 @RestController
 public class SignController {
     private ISignService service;
