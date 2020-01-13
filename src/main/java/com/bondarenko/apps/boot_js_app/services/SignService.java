@@ -28,7 +28,7 @@ public class SignService implements ISignService {
         if (authorRepository.existsById(login) || authorRepository.existsAuthorByEmail(email)) {
             return false;
         } else {
-            authorRepository.save(new Author(login, hashedPassword, name, email));
+            authorRepository.save(new Author(login, hashedPassword, name, email, Author.READER));
             return true;
         }
     }

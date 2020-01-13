@@ -1,5 +1,6 @@
 package com.bondarenko.apps.boot_js_app.entities;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ import javax.persistence.Table;
 @Table(name = "authors")
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class Author {
     @Id
     @Column(name = "login", length = 20, nullable = false)
@@ -28,12 +30,4 @@ public class Author {
     public static final String READER = "READER";
     public static final String ADMINISTRATOR = "ADMIN";
     public static final String MODERATOR = "MODERATOR";
-
-    public Author(String login, String password, String name, String email) {
-        this.login = login;
-        this.password = password;
-        this.name = name;
-        this.email = email;
-        role = READER;
-    }
 }
