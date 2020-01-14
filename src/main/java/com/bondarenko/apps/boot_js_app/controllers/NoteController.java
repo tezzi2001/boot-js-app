@@ -1,6 +1,8 @@
 package com.bondarenko.apps.boot_js_app.controllers;
 import com.bondarenko.apps.boot_js_app.entities.Note;
+import com.bondarenko.apps.boot_js_app.services.IJWTService;
 import com.bondarenko.apps.boot_js_app.services.INoteService;
+import com.bondarenko.apps.boot_js_app.services.ISignService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,11 +22,23 @@ import java.util.Map;
 @CrossOrigin(origins = {"https://vuejs-news-app.herokuapp.com", "http://vuejs-news-app.herokuapp.com", "http://localhost:8080"})
 @RestController
 public class NoteController {
-    private INoteService service;
+    private INoteService noteService;
+    private IJWTService JWTService;
+    private ISignService signService;
+
+    @Autowired
+    public void setService(ISignService service) {
+        this.signService = service;
+    }
 
     @Autowired
     public void setService(INoteService service) {
-        this.service = service;
+        this.noteService = service;
+    }
+
+    @Autowired
+    public void setService(IJWTService service) {
+        this.JWTService = service;
     }
 
     /**
@@ -34,7 +48,7 @@ public class NoteController {
      */
     @GetMapping("/getAll")
     public List<Note> getNotes() {
-        return service.getNotes();
+        return noteService.getNotes();
     }
 
     /**
@@ -46,11 +60,11 @@ public class NoteController {
      */
     @GetMapping("/get{id}")
     public Note getNote(@PathVariable int id, HttpServletResponse response) {
-        if (!service.existsById(id)) {
+        if (!noteService.existsById(id)) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return null;
         }
-        return service.getNoteById(id);
+        return noteService.getNoteById(id);
     }
 
     /**
@@ -67,11 +81,18 @@ public class NoteController {
         String title = request.getParameter("title");
         String login = request.getParameter("login");
         Note resultNote;
-        if (briefDescription == null || fullDescription == null || title == null) {
+        boolean loginExists = false;
+
+        try {
+            loginExists = signService.checkLogin(JWTService.getAuthorFromToken(request.getParameter("token")).getLogin());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (briefDescription == null || fullDescription == null || title == null || loginExists) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return null;
         }
-        resultNote = service.addNote(new Note(briefDescription, fullDescription, new Date(), title), login);
+        resultNote = noteService.addNote(new Note(briefDescription, fullDescription, new Date(), title), login);
         if (resultNote == null) {
             return new HashMap<String, String>() {{
                 put("isAdded", "false");
@@ -98,11 +119,11 @@ public class NoteController {
      */
     @DeleteMapping("/delete{id}")
     public Map deleteNote(@PathVariable int id, HttpServletResponse response) {
-        if (!service.existsById(id)) {
+        if (!noteService.existsById(id)) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return null;
         }
-        boolean isDeleted = service.deleteNote(id);
+        boolean isDeleted = noteService.deleteNote(id);
         return new HashMap<String, Boolean>() {{
             put("isDeleted", isDeleted);
         }};
