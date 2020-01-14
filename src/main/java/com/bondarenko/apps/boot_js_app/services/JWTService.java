@@ -23,6 +23,7 @@ public class JWTService implements IJWTService {
     public String getToken(String login, String password) {
         if (login == null || password == null) return null;
         Author author = service.authorize(login, password);
+        if (author == null) return null;
         Map<String, Object> tokenData = new HashMap<>();
         tokenData.put("login", author.getLogin());
         tokenData.put("name", author.getName());
