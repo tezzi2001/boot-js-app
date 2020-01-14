@@ -1,6 +1,7 @@
 package com.bondarenko.apps.boot_js_app.controllers;
 
 import com.bondarenko.apps.boot_js_app.entities.Author;
+import com.bondarenko.apps.boot_js_app.services.IJWTService;
 import com.bondarenko.apps.boot_js_app.services.ISignService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -23,10 +24,16 @@ import java.util.Map;
 @RestController
 public class SignController {
     private ISignService service;
+    private IJWTService JWTService;
 
     @Autowired
     public void setService(ISignService service) {
         this.service = service;
+    }
+
+    @Autowired
+    public void setService(IJWTService service) {
+        this.JWTService = service;
     }
 
     /**
@@ -40,28 +47,13 @@ public class SignController {
     public Map authorize(HttpServletRequest request, HttpServletResponse response) {
         String login = request.getParameter("login");
         String password = request.getParameter("password");
-        HttpSession session = request.getSession();
-        session.setMaxInactiveInterval(3600);
         if (login == null || password == null) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return null;
         }
-        Author author = service.authorize(login, password);
-        if (author != null) {
-            session.setAttribute("author", author);
-            return new HashMap<String, String>() {{
-                put("isAuthorized", "true");
-                put("name", author.getName());
-                put("login", author.getLogin());
-                put("email", author.getEmail());
-                put("role", author.getRole());
-            }};
-        } else {
-            session.invalidate();
-            return new HashMap<String, String>() {{
-                put("isAuthorized", "false");
-            }};
-        }
+        return new HashMap<String, String>() {{
+            put("token", JWTService.getToken(login, password));
+        }};
     }
 
     /**
