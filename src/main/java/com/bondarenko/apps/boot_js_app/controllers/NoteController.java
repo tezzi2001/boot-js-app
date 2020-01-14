@@ -107,11 +107,4 @@ public class NoteController {
             put("isDeleted", isDeleted);
         }};
     }
-
-    @GetMapping("/info")
-    public Map getInfo(HttpServletRequest request) {
-        return new HashMap<String, Object>() {{
-            put("author", request.getSession().getAttribute("author"));
-        }};
-    }
 }
