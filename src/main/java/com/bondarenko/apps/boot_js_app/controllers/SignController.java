@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,12 +40,15 @@ public class SignController {
     public Map authorize(HttpServletRequest request, HttpServletResponse response) {
         String login = request.getParameter("login");
         String password = request.getParameter("password");
+        HttpSession session = request.getSession();
+        session.setMaxInactiveInterval(3600);
         if (login == null || password == null) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return null;
         }
         Author author = service.authorize(login, password);
         if (author != null) {
+            session.setAttribute("author", author);
             return new HashMap<String, String>() {{
                 put("isAuthorized", "true");
                 put("name", author.getName());
@@ -53,6 +57,7 @@ public class SignController {
                 put("role", author.getRole());
             }};
         } else {
+            session.invalidate();
             return new HashMap<String, String>() {{
                 put("isAuthorized", "false");
             }};
