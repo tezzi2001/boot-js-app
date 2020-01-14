@@ -1,4 +1,5 @@
 package com.bondarenko.apps.boot_js_app.controllers;
+import com.bondarenko.apps.boot_js_app.entities.Author;
 import com.bondarenko.apps.boot_js_app.entities.Note;
 import com.bondarenko.apps.boot_js_app.services.IJWTService;
 import com.bondarenko.apps.boot_js_app.services.INoteService;
@@ -81,14 +82,17 @@ public class NoteController {
         String title = request.getParameter("title");
         String login = request.getParameter("login");
         Note resultNote;
-        boolean loginExists = false;
+        boolean loginExists;
 
         try {
             loginExists = signService.checkLogin(JWTService.getAuthorFromToken(request.getParameter("token")).getLogin());
         } catch (Exception e) {
             e.printStackTrace();
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return null;
         }
-        if (briefDescription == null || fullDescription == null || title == null || loginExists) {
+
+        if (briefDescription == null || fullDescription == null || title == null || !loginExists) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return null;
         }
@@ -118,8 +122,21 @@ public class NoteController {
      * @return JSON object with field "isDeleted" or HTTP response with empty body and status 400
      */
     @DeleteMapping("/delete{id}")
-    public Map deleteNote(@PathVariable int id, HttpServletResponse response) {
-        if (!noteService.existsById(id)) {
+    public Map deleteNote(@PathVariable int id, HttpServletResponse response, HttpServletRequest request) {
+        boolean loginExists;
+        boolean isAdmin = false;
+
+        try {
+            Author author = JWTService.getAuthorFromToken(request.getParameter("token"));
+            loginExists = signService.checkLogin(author.getLogin());
+            if(author.getRole().equals(Author.ADMINISTRATOR)) isAdmin = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return null;
+        }
+
+        if (!noteService.existsById(id) || !loginExists || !isAdmin) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return null;
         }
