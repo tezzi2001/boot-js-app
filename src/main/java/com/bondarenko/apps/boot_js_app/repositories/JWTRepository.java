@@ -5,4 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface JWTRepository  extends JpaRepository<JWT, String> {
     JWT deleteJWTByRefreshToken(String refreshToken);
+    boolean existsJWTByFingerprint(String fingerprint);
+    void deleteJWTByFingerprint(String fingerprint);
 }

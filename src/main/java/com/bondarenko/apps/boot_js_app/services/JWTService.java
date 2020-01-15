@@ -65,6 +65,9 @@ public class JWTService implements IJWTService {
     @Override
     public Map<String, String> getTokens(String login, String password, String fingerprint) {
         Map<String, String> tokens = new HashMap<>();
+
+        if (jwtRepository.existsJWTByFingerprint(fingerprint)) jwtRepository.deleteJWTByFingerprint(fingerprint);
+
         if (login == null || password == null || fingerprint == null) {
             tokens.put("status", "NULL_FIELD");
             return tokens;
