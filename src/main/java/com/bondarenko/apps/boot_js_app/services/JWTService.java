@@ -28,6 +28,11 @@ public class JWTService implements IJWTService {
         Map<String, String> tokens = new HashMap<>();
         JWT session = jwtRepository.deleteJWTByRefreshToken(oldRefreshToken);
 
+        if (session == null) {
+            tokens.put("status", "INVALID_TOKEN");
+            return tokens;
+        }
+
         if (session.getExpiresAt().before(new Date())) {
             tokens.put("status", "TOKEN_EXPIRED");
             return tokens;
@@ -39,7 +44,11 @@ public class JWTService implements IJWTService {
         }
 
         Author author = service.authorize(session.getLogin());
-        if (author == null) return null;
+        if (author == null) {
+            tokens.put("status", "INVALID_USER");
+            return tokens;
+        }
+
         tokens.put("status", "OK");
         tokens.put("accessToken", generateAccessToken(author));
         tokens.put("refreshToken", generateRefreshToken());
