@@ -4,8 +4,10 @@ import com.bondarenko.apps.boot_js_app.entities.Author;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.impl.crypto.MacProvider;
 import org.springframework.stereotype.Service;
 
+import java.security.Key;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,7 +15,7 @@ import java.util.Map;
 @Service
 public class JWTService implements IJWTService {
     private ISignService service;
-    private String key = "GYu7uiUYT87ghUG6gG7IK65o0YT7Jh98H7y7H8Mj8h8H65UC32DD1gfk4d678h8JDkl5fy89FHsfH89fs0if8T6d80sif098SDHffDFfGV786gUH9yN87G7tJP0987HNu7tTHn88jklFP7gh5dfHUh797";
+    private Key key = MacProvider.generateKey();
 
     public JWTService(ISignService service) {
         this.service = service;
