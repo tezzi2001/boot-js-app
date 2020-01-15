@@ -64,7 +64,6 @@ public class JWTService implements IJWTService {
         return tokens;
     }
 
-
     @Override
     public Map<String, String> getTokens(String login, String password, String fingerprint) {
         Map<String, String> tokens = new HashMap<>();

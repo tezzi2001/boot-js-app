@@ -45,13 +45,12 @@ public class SignController {
     public Map authorize(HttpServletRequest request, HttpServletResponse response) {
         String login = request.getParameter("login");
         String password = request.getParameter("password");
+        String fingerprint = request.getParameter("fingerprint");
         if (login == null || password == null) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return null;
         }
-        return new HashMap<String, String>() {{
-            put("token", JWTService.getToken(login, password));
-        }};
+        return JWTService.getTokens(login, password, fingerprint);
     }
 
     /**
