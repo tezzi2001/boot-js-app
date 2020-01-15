@@ -54,6 +54,9 @@ public class JWTService implements IJWTService {
             return tokens;
         }
 
+        session.setUpdatedAt(new Date());
+        session.setExpiresAt(new Date(System.currentTimeMillis()+7*60*60*1000));
+        jwtRepository.save(session);
         tokens.put("status", "OK");
         tokens.put("accessToken", generateAccessToken(author));
         tokens.put("refreshToken", generateRefreshToken());
