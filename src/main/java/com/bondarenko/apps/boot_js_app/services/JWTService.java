@@ -28,6 +28,11 @@ public class JWTService implements IJWTService {
         Map<String, String> tokens = new HashMap<>();
         JWT session = jwtRepository.deleteJWTByRefreshToken(oldRefreshToken);
 
+        if (oldRefreshToken == null || fingerprint == null) {
+            tokens.put("status", "NULL_FIELD");
+            return tokens;
+        }
+
         if (session == null) {
             tokens.put("status", "INVALID_TOKEN");
             return tokens;
