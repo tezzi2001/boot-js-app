@@ -1,9 +1,7 @@
 package com.bondarenko.apps.boot_js_app.entities;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,8 +12,6 @@ import java.util.Date;
 @Table(name = "tokens")
 @Data
 @EqualsAndHashCode(callSuper = true)
-@NoArgsConstructor
-@AllArgsConstructor
 public class JWT extends BaseEntity{
     @Column(name = "login", length = 60, nullable = false)
     private String login;
@@ -29,4 +25,16 @@ public class JWT extends BaseEntity{
     private Date createdAt;
     @Column(name = "updatedAt", nullable = false)
     private Date updatedAt;
+
+    public JWT(String login, String refreshToken, String fingerprint, Date expiresAt, Date createdAt, Date updatedAt) {
+        this.login = login;
+        this.refreshToken = refreshToken;
+        this.fingerprint = fingerprint;
+        this.expiresAt = expiresAt;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public JWT() {
+    }
 }

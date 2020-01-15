@@ -47,6 +47,21 @@ public class JWTService implements IJWTService {
         return tokens;
     }
 
+
+    @Override
+    public Map<String, String> getTokens(String login, String password, String fingerprint) {
+        Map<String, String> tokens = new HashMap<>();
+        if (login == null || password == null || fingerprint == null) return null;
+        Author author = service.authorize(login, password);
+        if (author == null) return null;
+        String refreshToken = generateRefreshToken();
+        jwtRepository.save(new JWT(login, refreshToken, fingerprint, new Date(System.currentTimeMillis()+7*60*60*1000), new Date(), new Date()));
+        tokens.put("status", "OK");
+        tokens.put("accessToken", generateAccessToken(author));
+        tokens.put("refreshToken", refreshToken);
+        return tokens;
+    }
+
     @Override
     @Deprecated
     public String getToken(String login, String password) {
