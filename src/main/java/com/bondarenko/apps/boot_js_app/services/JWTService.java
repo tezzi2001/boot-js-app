@@ -65,9 +65,15 @@ public class JWTService implements IJWTService {
     @Override
     public Map<String, String> getTokens(String login, String password, String fingerprint) {
         Map<String, String> tokens = new HashMap<>();
-        if (login == null || password == null || fingerprint == null) return null;
+        if (login == null || password == null || fingerprint == null) {
+            tokens.put("status", "NULL_FIELD");
+            return tokens;
+        }
         Author author = service.authorize(login, password);
-        if (author == null) return null;
+        if (author == null) {
+            tokens.put("status", "INVALID_USER");
+            return tokens;
+        }
         String refreshToken = generateRefreshToken();
         jwtRepository.save(new JWT(login, refreshToken, fingerprint, new Date(System.currentTimeMillis()+7*60*60*1000), new Date(), new Date()));
         tokens.put("status", "OK");
