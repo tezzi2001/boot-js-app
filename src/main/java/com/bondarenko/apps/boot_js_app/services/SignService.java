@@ -34,6 +34,12 @@ public class SignService implements ISignService {
     }
 
     @Override
+    public Author authorize(String login) {
+        Optional<Author> optionalAuthor = authorRepository.findById(login);
+        return optionalAuthor.orElse(null);
+    }
+
+    @Override
     public Author authorize(String login, String password) {
         Optional<Author> optionalAuthor = authorRepository.findById(login);
         if (optionalAuthor.isPresent()) {
