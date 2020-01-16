@@ -80,12 +80,14 @@ public class NoteController {
         String briefDescription = request.getParameter("briefDescription");
         String fullDescription = request.getParameter("fullDescription");
         String title = request.getParameter("title");
-        String login = request.getParameter("login");
+        String token = request.getParameter("token");
         Note resultNote;
         boolean loginExists;
+        Author author;
 
         try {
-            loginExists = signService.checkLogin(JWTService.getAuthorFromToken(request.getParameter("token")).getLogin());
+            author = JWTService.getAuthorFromToken(token);
+            loginExists = signService.checkLogin(author.getLogin());
         } catch (Exception e) {
             e.printStackTrace();
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -96,7 +98,7 @@ public class NoteController {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return null;
         }
-        resultNote = noteService.addNote(new Note(briefDescription, fullDescription, new Date(), title), login);
+        resultNote = noteService.addNote(new Note(briefDescription, fullDescription, new Date(), title), author.getLogin());
         if (resultNote == null) {
             return new HashMap<String, String>() {{
                 put("isAdded", "false");
