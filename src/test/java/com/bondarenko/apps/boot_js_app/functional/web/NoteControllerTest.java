@@ -1,6 +1,8 @@
 package com.bondarenko.apps.boot_js_app.functional.web;
 
+import com.bondarenko.apps.boot_js_app.services.JWTService;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class NoteControllerTest {
     @Autowired
     WebApplicationContext wac;
+    @Autowired
+    JWTService service;
     private MockMvc mockMvc;
 
     @Before
@@ -85,16 +89,19 @@ public class NoteControllerTest {
         result.andExpect(status().isBadRequest());
     }
 
+    @Ignore
     @Test
     @SqlGroup({
-            @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "/sqlScripts/authorsTable/addRows.sql"),
+            @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "/sqlScripts/notesTable/addRows.sql"),
+            @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "/sqlScripts/notesTable/deleteRows.sql"),
+            @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "/sqlScripts/authorsTable/addHashedRows.sql"),
             @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "/sqlScripts/notesTable/deleteSpecialRows.sql"),
-            @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "/sqlScripts/authorsTable/deleteRows.sql"),
+            @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "/sqlScripts/authorsTable/deleteSpecialRows.sql"),
     })
     public void addTest() throws Exception {
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("/add");
         request.param("title", "special")
-                .param("login", "borov")
+                .param("token", service.getTokens("login", "password", "test").get("accessToken"))
                 .param("briefDescription", "positive test")
                 .param("fullDescription", "test of add() method");
         ResultActions result = mockMvc.perform(request);
@@ -104,7 +111,7 @@ public class NoteControllerTest {
 
         request = MockMvcRequestBuilders.post("/add");
         request.param("title", "special")
-                .param("login", "login")
+                .param("token", service.getTokens("login", "password", "test").get("accessToken"))
                 .param("briefDescription", "test")
                 .param("fullDescription", "test of add() method");
         result = mockMvc.perform(request);
@@ -119,13 +126,17 @@ public class NoteControllerTest {
         result.andExpect(status().isBadRequest());
     }
 
+    @Ignore
     @Test
     @SqlGroup({
+            @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "/sqlScripts/authorsTable/addHashedRows.sql"),
+            @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "/sqlScripts/authorsTable/deleteSpecialRows.sql"),
             @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "/sqlScripts/notesTable/addRows.sql"),
             @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "/sqlScripts/notesTable/deleteRows.sql"),
     })
     public void deleteNoteTest() throws Exception{
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.delete("/delete1");
+        request.param("token", service.getTokens("login", "password", "test").get("accessToken"));
         ResultActions result = mockMvc.perform(request);
         result.andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"));
@@ -133,6 +144,7 @@ public class NoteControllerTest {
 
 
         request = MockMvcRequestBuilders.delete("/delete2");
+        request.param("token", service.getTokens("login", "password", "test").get("accessToken"));
         result = mockMvc.perform(request);
         result.andExpect(status().isBadRequest());
 
