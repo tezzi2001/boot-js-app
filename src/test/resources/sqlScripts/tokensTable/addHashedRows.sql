@@ -1,0 +1,1 @@
+INSERT INTO tokens (id, created_at, expires_at, fingerprint, login, updated_at, refresh_token) VALUES (1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + time '00:00:05', 'test', 'loginH', current_timestamp, 'testToken');

@@ -26,14 +26,18 @@ public class JWTService implements IJWTService {
     @Override
     public Map<String, String> refreshTokens(String oldRefreshToken, String fingerprint) {
         Map<String, String> tokens = new HashMap<>();
-        JWT session = jwtRepository.deleteJWTByRefreshToken(oldRefreshToken);
 
         if (oldRefreshToken == null || fingerprint == null) {
             tokens.put("status", "NULL_FIELD");
             return tokens;
         }
 
-        if (session == null) {
+        Optional<JWT> optSession = jwtRepository.findJWTByRefreshToken(oldRefreshToken);
+        JWT session;
+        if (optSession.isPresent()) {
+            session = optSession.get();
+            jwtRepository.deleteJWTByRefreshToken(oldRefreshToken);
+        } else {
             tokens.put("status", "INVALID_TOKEN");
             return tokens;
         }
@@ -54,12 +58,14 @@ public class JWTService implements IJWTService {
             return tokens;
         }
 
+        String refreshToken = generateRefreshToken();
         session.setUpdatedAt(new Date());
         session.setExpiresAt(new Date(System.currentTimeMillis()+7*60*60*1000));
+        session.setRefreshToken(refreshToken);
         jwtRepository.save(session);
         tokens.put("status", "OK");
         tokens.put("accessToken", generateAccessToken(author));
-        tokens.put("refreshToken", generateRefreshToken());
+        tokens.put("refreshToken", refreshToken);
 
         return tokens;
     }

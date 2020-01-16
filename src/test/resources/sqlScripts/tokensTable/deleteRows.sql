@@ -1,1 +1,1 @@
-DELETE FROM tokens WHERE login = 'login';
+DELETE FROM tokens WHERE login = 'login' or login = 'loginH';

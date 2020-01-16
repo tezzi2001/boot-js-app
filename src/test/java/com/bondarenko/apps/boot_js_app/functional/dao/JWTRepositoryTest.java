@@ -27,8 +27,11 @@ public class JWTRepositoryTest {
             @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "/sqlScripts/tokensTable/deleteRows.sql")
     })
     public void deleteJWTByRefreshTokenTest() {
-        assertNotNull(repository.deleteJWTByRefreshToken("testToken"));
-        assertNull(repository.deleteJWTByRefreshToken("null"));
+        repository.deleteJWTByRefreshToken("testToken");
+        assertThrows(Exception.class, () -> template.queryForMap("SELECT * FROM tokens WHERE fingerprint = 'test'"));
+        assertThrows(Exception.class, () -> template.queryForMap("SELECT * FROM tokens WHERE fingerprint = 'null'"));
+        repository.deleteJWTByRefreshToken("null");
+        assertThrows(Exception.class, () -> template.queryForMap("SELECT * FROM tokens WHERE fingerprint = 'null'"));
     }
 
     @Test

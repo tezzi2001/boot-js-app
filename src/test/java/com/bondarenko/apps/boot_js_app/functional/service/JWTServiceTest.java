@@ -29,15 +29,29 @@ public class JWTServiceTest {
     private JdbcTemplate template;
 
     @Test
-    public void refreshTokensNegativeTest() throws InterruptedException {
+    public void refreshTokensNegativeTest() {
         assertEquals("NULL_FIELD", service.refreshTokens(null, null).get("status"));
         assertEquals("INVALID_SESSION", service.refreshTokens("testToken", "fingerprint").get("status"));
         assertEquals("INVALID_TOKEN", service.refreshTokens("invalidToken", "fingerprint").get("status"));
-        wait(10000);
+    }
+
+    @Test
+    @SqlGroup({
+            @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "/sqlScripts/tokensTable/addRows.sql"),
+            @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "/sqlScripts/tokensTable/deleteRows.sql"),
+    })
+    public void refreshTokensNegativeOnExpireTest() throws InterruptedException {
+        Thread.sleep(10000);
         assertEquals("TOKEN_EXPIRED", service.refreshTokens("testToken", "test").get("status"));
     }
 
     @Test
+    @SqlGroup({
+            @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "/sqlScripts/tokensTable/addRows.sql"),
+            @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "/sqlScripts/tokensTable/deleteRows.sql"),
+            @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "/sqlScripts/authorsTable/addRows.sql"),
+            @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "/sqlScripts/authorsTable/deleteRows.sql"),
+    })
     public void refreshTokensPositiveTest() {
         Map result = service.refreshTokens("testToken", "test");
         assertEquals("OK", result.get("status"));
@@ -46,13 +60,14 @@ public class JWTServiceTest {
 
     @Test
     @SqlGroup({
-            @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "/sqlScripts/authorsTable/addRows.sql"),
-            @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "/sqlScripts/authorsTable/deleteRows.sql"),
+            @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "/sqlScripts/tokensTable/addHashedRows.sql"),
+            @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "/sqlScripts/authorsTable/addHashedRows.sql"),
+            @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "/sqlScripts/authorsTable/deleteSpecialRows.sql"),
     })
     public void getTokensPositiveTest() {
-        Map result = service.getTokens("login", "password", "test");
+        Map result = service.getTokens("loginH", "password", "test");
         assertEquals("OK", result.get("status"));
-        assertEquals(result.get("refreshToken"), template.queryForMap("SELECT * FROM tokens WHERE login = 'login'").get("refresh_token"));
+        assertEquals(result.get("refreshToken"), template.queryForMap("SELECT * FROM tokens WHERE login = 'loginH'").get("refresh_token"));
     }
 
     @Test
