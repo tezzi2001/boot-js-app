@@ -71,7 +71,7 @@ public class NoteController {
     /**
      * Creates new record in DB
      * @see INoteService#addNote(Note, String)
-     * @param request this is an input HTML form. It must contain fields "login", "briefDescription", "fullDescription" and "title"
+     * @param request this is an input HTML form. It must contain fields "token", "briefDescription", "fullDescription" and "title"
      * @param response HTTP response of the servlet
      * @return JSON object with fields "id", "isAdded", "brief_description", "full_description", "title", and "date" or JSON object with field "isAdded" or HTTP response with empty body and status 400
      */
@@ -120,6 +120,7 @@ public class NoteController {
      * Deletes the record in DB specified by id
      * @see INoteService#deleteNote(int)
      * @param id An id that specifies the note
+     * @param request this is an input HTML form. It must contain field "token"
      * @param response HTTP response of the servlet
      * @return JSON object with field "isDeleted" or HTTP response with empty body and status 400
      */

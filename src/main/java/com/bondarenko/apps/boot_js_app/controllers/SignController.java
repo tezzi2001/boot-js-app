@@ -37,9 +37,9 @@ public class SignController {
     /**
      * Authorizes the user
      * @see ISignService#authorize(String, String)
-     * @param request this is an input HTML form. It must contain fields "login" and "password"
+     * @param request this is an input HTML form. It must contain fields "login", "password" and "fingerprint"
      * @param response HTTP response of the servlet
-     * @return JSON object with fields "name", "login", "email" and "role" or JSON object with field "isAuthorized" or HTTP response with empty body and status 400
+     * @return JSON object with fields "status", "accessToken" and "refreshToken" or HTTP response with empty body and status 400
      */
     @PostMapping("/login")
     public Map authorize(HttpServletRequest request, HttpServletResponse response) {
