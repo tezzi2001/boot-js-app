@@ -115,4 +115,18 @@ public class SignController {
             put("isExist", isExist);
         }};
     }
+
+    /**
+     * Refreshes refreshToken
+     * @see IJWTService#refreshTokens(String, String)
+     * @param request this is an input HTML form. It must contain fields "refreshToken" and "fingerprint"
+     * @return JSON object with fields "status", "accessToken" and "refreshToken"
+     */
+    @PostMapping("/refresh")
+    public Map refresh(HttpServletRequest request) {
+        String refreshToken = request.getParameter("refreshToken");
+        String fingerprint = request.getParameter("fingerprint");
+
+        return JWTService.refreshTokens(refreshToken, fingerprint);
+    }
 }
