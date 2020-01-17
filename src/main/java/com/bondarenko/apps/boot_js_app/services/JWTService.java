@@ -6,6 +6,7 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.bondarenko.apps.boot_js_app.domain.entities.Author;
 import com.bondarenko.apps.boot_js_app.domain.entities.Session;
+import com.bondarenko.apps.boot_js_app.domain.json.JWT;
 import com.bondarenko.apps.boot_js_app.repositories.JWTRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.crypto.keygen.KeyGenerators;
@@ -104,7 +105,7 @@ public class JWTService implements IJWTService {
                     .build();
             DecodedJWT jwt = verifier.verify(token);
             ObjectMapper mapper = new ObjectMapper();
-            return mapper.readValue(Base64.getDecoder().decode(jwt.getPayload()), Author.class);
+            return mapper.readValue(Base64.getDecoder().decode(jwt.getPayload()), JWT.class).toAuthor();
         } catch (JWTVerificationException e){
             System.out.println("Invalid signature");
             return null;
