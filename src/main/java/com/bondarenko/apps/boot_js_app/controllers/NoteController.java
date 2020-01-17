@@ -1,6 +1,6 @@
 package com.bondarenko.apps.boot_js_app.controllers;
-import com.bondarenko.apps.boot_js_app.entities.Author;
-import com.bondarenko.apps.boot_js_app.entities.Note;
+import com.bondarenko.apps.boot_js_app.domain.entities.Author;
+import com.bondarenko.apps.boot_js_app.domain.entities.Note;
 import com.bondarenko.apps.boot_js_app.services.IJWTService;
 import com.bondarenko.apps.boot_js_app.services.INoteService;
 import com.bondarenko.apps.boot_js_app.services.ISignService;

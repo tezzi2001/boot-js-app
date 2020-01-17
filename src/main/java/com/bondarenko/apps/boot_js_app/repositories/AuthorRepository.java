@@ -1,6 +1,6 @@
 package com.bondarenko.apps.boot_js_app.repositories;
 
-import com.bondarenko.apps.boot_js_app.entities.Author;
+import com.bondarenko.apps.boot_js_app.domain.entities.Author;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

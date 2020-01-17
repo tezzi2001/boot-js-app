@@ -1,5 +1,5 @@
 package com.bondarenko.apps.boot_js_app.services;
-import com.bondarenko.apps.boot_js_app.entities.Note;
+import com.bondarenko.apps.boot_js_app.domain.entities.Note;
 
 import java.util.List;
 

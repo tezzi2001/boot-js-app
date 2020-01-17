@@ -1,4 +1,4 @@
-package com.bondarenko.apps.boot_js_app.entities;
+package com.bondarenko.apps.boot_js_app.domain.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

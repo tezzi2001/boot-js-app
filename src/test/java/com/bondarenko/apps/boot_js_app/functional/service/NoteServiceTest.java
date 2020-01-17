@@ -1,6 +1,6 @@
 package com.bondarenko.apps.boot_js_app.functional.service;
 
-import com.bondarenko.apps.boot_js_app.entities.Note;
+import com.bondarenko.apps.boot_js_app.domain.entities.Note;
 import com.bondarenko.apps.boot_js_app.services.INoteService;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;

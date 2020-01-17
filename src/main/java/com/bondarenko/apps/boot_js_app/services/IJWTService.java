@@ -1,6 +1,6 @@
 package com.bondarenko.apps.boot_js_app.services;
 
-import com.bondarenko.apps.boot_js_app.entities.Author;
+import com.bondarenko.apps.boot_js_app.domain.entities.Author;
 
 import java.util.Map;
 

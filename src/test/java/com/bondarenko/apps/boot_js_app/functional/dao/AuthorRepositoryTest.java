@@ -1,6 +1,6 @@
 package com.bondarenko.apps.boot_js_app.functional.dao;
 
-import com.bondarenko.apps.boot_js_app.entities.Author;
+import com.bondarenko.apps.boot_js_app.domain.entities.Author;
 import com.bondarenko.apps.boot_js_app.repositories.AuthorRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;

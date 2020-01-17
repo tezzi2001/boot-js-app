@@ -1,6 +1,6 @@
 package com.bondarenko.apps.boot_js_app.functional.dao;
 
-import com.bondarenko.apps.boot_js_app.entities.Note;
+import com.bondarenko.apps.boot_js_app.domain.entities.Note;
 import com.bondarenko.apps.boot_js_app.repositories.NoteRepository;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
