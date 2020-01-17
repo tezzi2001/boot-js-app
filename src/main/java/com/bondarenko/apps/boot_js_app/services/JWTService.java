@@ -1,8 +1,13 @@
 package com.bondarenko.apps.boot_js_app.services;
 
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.bondarenko.apps.boot_js_app.entities.Author;
 import com.bondarenko.apps.boot_js_app.entities.JWT;
 import com.bondarenko.apps.boot_js_app.repositories.JWTRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -16,7 +21,7 @@ import java.util.*;
 public class JWTService implements IJWTService {
     private ISignService service;
     private JWTRepository jwtRepository;
-    private Key key = MacProvider.generateKey();
+    private Key key = MacProvider.generateKey(SignatureAlgorithm.HS256);
 
     public JWTService(ISignService service, JWTRepository jwtRepository) {
         this.service = service;
@@ -116,10 +121,22 @@ public class JWTService implements IJWTService {
     @Override
     @Deprecated
     public Author getAuthorFromToken(String token) throws Exception{
+//        try {
+//            return (Author) Jwts.parser().setSigningKey(key).parse(token).getBody();
+//        } catch (Exception ex) {
+//            throw new Exception("Token corrupted!");
+//        }
+        Algorithm algorithm = Algorithm.HMAC256("secret");
         try {
-            return (Author) Jwts.parser().setSigningKey(key).parse(token).getBody();
-        } catch (Exception ex) {
-            throw new Exception("Token corrupted!");
+            JWTVerifier verifier = com.auth0.jwt.JWT.require(algorithm)
+//                    .withIssuer("auth0")
+                    .build(); //Reusable verifier instance
+            DecodedJWT jwt = verifier.verify(token);
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.readValue(Base64.getDecoder().decode(jwt.getPayload()), Author.class);
+        } catch (JWTVerificationException exception){
+            System.out.println("Invalid signature");
+            return null;
         }
     }
 
@@ -134,15 +151,34 @@ public class JWTService implements IJWTService {
     }
 
     private String generateAccessToken(Author author) {
-        Map<String, Object> tokenData = new HashMap<>();
-        tokenData.put("login", author.getLogin());
-        tokenData.put("name", author.getName());
-        tokenData.put("email", author.getEmail());
-        tokenData.put("role", author.getRole());
-        Date date = new Date(System.currentTimeMillis()+20*60*1000);
-        JwtBuilder jwtBuilder = Jwts.builder();
-        jwtBuilder.setExpiration(date);
-        jwtBuilder.setClaims(tokenData);
-        return jwtBuilder.signWith(SignatureAlgorithm.HS256, key).compact();
+//        Map<String, Object> tokenData = new HashMap<>();
+//        tokenData.put("login", author.getLogin());
+//        tokenData.put("name", author.getName());
+//        tokenData.put("email", author.getEmail());
+//        tokenData.put("role", author.getRole());
+//        Date date = new Date(System.currentTimeMillis()+20*60*1000);
+//        JwtBuilder jwtBuilder = Jwts.builder();
+//        jwtBuilder.setExpiration(date);
+//        jwtBuilder.setClaims(tokenData);
+//        return jwtBuilder.signWith(SignatureAlgorithm.HS256, key).compact();
+        Algorithm algorithm = Algorithm.HMAC256("secret");
+        String token = com.auth0.jwt.JWT
+                .create()
+                .withClaim("login", author.getLogin())
+                .withClaim("name", author.getName())
+                .withClaim("email", author.getEmail())
+                .withClaim("role", author.getRole())
+                .withIssuedAt(new Date())
+                .withExpiresAt(new Date(System.currentTimeMillis()+20*60*1000))
+                .sign(algorithm);
+        try {
+            JWTVerifier verifier = com.auth0.jwt.JWT.require(algorithm)
+//                    .withIssuer("auth0")
+                    .build(); //Reusable verifier instance
+            DecodedJWT jwt = verifier.verify(token);
+        } catch (JWTVerificationException exception){
+            System.out.println("Invalid signature");
+        }
+        return token;
     }
 }

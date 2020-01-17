@@ -89,7 +89,7 @@ public class NoteControllerTest {
         result.andExpect(status().isBadRequest());
     }
 
-    @Ignore
+//    @Ignore
     @Test
     @SqlGroup({
             @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "/sqlScripts/notesTable/addRows.sql"),
@@ -126,7 +126,7 @@ public class NoteControllerTest {
         result.andExpect(status().isBadRequest());
     }
 
-    @Ignore
+//    @Ignore
     @Test
     @SqlGroup({
             @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "/sqlScripts/authorsTable/addHashedRows.sql"),

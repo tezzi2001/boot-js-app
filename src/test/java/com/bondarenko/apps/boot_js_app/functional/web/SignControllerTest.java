@@ -35,7 +35,7 @@ public class SignControllerTest {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).dispatchOptions(true).build();
     }
 
-    @Ignore
+//    @Ignore
     @Test
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "/sqlScripts/authorsTable/addHashedRows.sql")
     public void authorizeTest() throws Exception {
