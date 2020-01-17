@@ -124,7 +124,7 @@ public class NoteController {
      * @param response HTTP response of the servlet
      * @return JSON object with field "isDeleted" or HTTP response with empty body and status 400
      */
-    @DeleteMapping("/delete{id}")
+    @PostMapping("/delete{id}")
     public Map deleteNote(@PathVariable int id, HttpServletResponse response, HttpServletRequest request) {
         boolean loginExists;
         boolean isAdmin = false;
