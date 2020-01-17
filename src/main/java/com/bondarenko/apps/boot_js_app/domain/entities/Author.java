@@ -11,27 +11,22 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "authors")
 @Data
-//@JsonPropertyOrder({"login", "name", "email", "role"})
 public class Author {
     @Id
     @Column(name = "login", length = 20, nullable = false)
     @JsonProperty("login")
-    private String login;
+    protected String login;
     @Column(name = "password", length = 60, nullable = false)
     private String password;
     @Column(name = "name", length = 40, nullable = false)
     @JsonProperty("name")
-    private String name;
+    protected String name;
     @Column(name = "email", length = 40, nullable = false)
     @JsonProperty("email")
-    private String email;
+    protected String email;
     @Column(name = "role", length = 10, nullable = false)
     @JsonProperty("role")
-    private String role;
-    @JsonProperty("exp")
-    private String exp;
-    @JsonProperty("iat")
-    private String iat;
+    protected String role;
 
 
     public static final String READER = "READER";
