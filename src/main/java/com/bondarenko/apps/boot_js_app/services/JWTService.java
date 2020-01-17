@@ -22,6 +22,9 @@ public class JWTService implements IJWTService {
     private Algorithm algorithm;
     private String issuer;
 
+    private final int ACCESS_TOKEN_DURATION = 20*60*1000; // 20 minutes
+    private final int REFRESH_TOKEN_DURATION = 7*24*60*60*1000; // Token expires in 7 days
+
     public JWTService(ISignService service, JWTRepository jwtRepository) {
         this.service = service;
         this.jwtRepository = jwtRepository;
@@ -66,7 +69,7 @@ public class JWTService implements IJWTService {
 
         String refreshToken = generateRefreshToken();
         session.setUpdatedAt(new Date());
-        session.setExpiresAt(new Date(System.currentTimeMillis()+7*60*60*1000));
+        session.setExpiresAt(new Date(System.currentTimeMillis()+REFRESH_TOKEN_DURATION));
         session.setRefreshToken(refreshToken);
         jwtRepository.save(session);
         tokens.put("status", "OK");
@@ -92,7 +95,7 @@ public class JWTService implements IJWTService {
             return tokens;
         }
         String refreshToken = generateRefreshToken();
-        jwtRepository.save(new Session(login, refreshToken, fingerprint, new Date(System.currentTimeMillis()+7*60*60*1000), new Date(), new Date()));
+        jwtRepository.save(new Session(login, refreshToken, fingerprint, new Date(System.currentTimeMillis()+REFRESH_TOKEN_DURATION), new Date(), new Date()));
         tokens.put("status", "OK");
         tokens.put("accessToken", generateAccessToken(author));
         tokens.put("refreshToken", refreshToken);
@@ -122,7 +125,7 @@ public class JWTService implements IJWTService {
                 .create()
                 .withIssuer(issuer)
                 .withIssuedAt(new Date())
-                .withExpiresAt(new Date(System.currentTimeMillis()+7*60*60*1000)) // Token expires in 7 days
+                .withExpiresAt(new Date(System.currentTimeMillis()+REFRESH_TOKEN_DURATION))
                 .sign(algorithm);
     }
 
@@ -135,7 +138,7 @@ public class JWTService implements IJWTService {
                 .withClaim("role", author.getRole())
                 .withIssuer(issuer)
                 .withIssuedAt(new Date())
-                .withExpiresAt(new Date(System.currentTimeMillis()+20*60*1000)) // Token expires in 20 minutes
+                .withExpiresAt(new Date(System.currentTimeMillis()+ACCESS_TOKEN_DURATION))
                 .sign(algorithm);
     }
 }
