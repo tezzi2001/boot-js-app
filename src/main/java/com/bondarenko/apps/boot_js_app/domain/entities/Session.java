@@ -12,7 +12,7 @@ import java.util.Date;
 @Table(name = "tokens")
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class JWT extends BaseEntity{
+public class Session extends BaseEntity{
     @Column(name = "login", length = 60, nullable = false)
     private String login;
     @Column(name = "refreshToken", length = 1300, nullable = false)
@@ -26,7 +26,7 @@ public class JWT extends BaseEntity{
     @Column(name = "updatedAt", nullable = false)
     private Date updatedAt;
 
-    public JWT(String login, String refreshToken, String fingerprint, Date expiresAt, Date createdAt, Date updatedAt) {
+    public Session(String login, String refreshToken, String fingerprint, Date expiresAt, Date createdAt, Date updatedAt) {
         this.login = login;
         this.refreshToken = refreshToken;
         this.fingerprint = fingerprint;
@@ -35,6 +35,6 @@ public class JWT extends BaseEntity{
         this.updatedAt = updatedAt;
     }
 
-    public JWT() {
+    public Session() {
     }
 }

@@ -5,7 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.bondarenko.apps.boot_js_app.domain.entities.Author;
-import com.bondarenko.apps.boot_js_app.domain.entities.JWT;
+import com.bondarenko.apps.boot_js_app.domain.entities.Session;
 import com.bondarenko.apps.boot_js_app.repositories.JWTRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.crypto.keygen.KeyGenerators;
@@ -35,8 +35,8 @@ public class JWTService implements IJWTService {
             return tokens;
         }
 
-        Optional<JWT> optSession = jwtRepository.findJWTByRefreshToken(oldRefreshToken);
-        JWT session;
+        Optional<Session> optSession = jwtRepository.findJWTByRefreshToken(oldRefreshToken);
+        Session session;
         if (optSession.isPresent()) {
             session = optSession.get();
             jwtRepository.deleteJWTByRefreshToken(oldRefreshToken);
@@ -89,7 +89,7 @@ public class JWTService implements IJWTService {
             return tokens;
         }
         String refreshToken = generateRefreshToken();
-        jwtRepository.save(new JWT(login, refreshToken, fingerprint, new Date(System.currentTimeMillis()+7*60*60*1000), new Date(), new Date()));
+        jwtRepository.save(new Session(login, refreshToken, fingerprint, new Date(System.currentTimeMillis()+7*60*60*1000), new Date(), new Date()));
         tokens.put("status", "OK");
         tokens.put("accessToken", generateAccessToken(author));
         tokens.put("refreshToken", refreshToken);
