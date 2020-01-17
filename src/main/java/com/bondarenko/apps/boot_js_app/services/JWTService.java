@@ -20,11 +20,13 @@ public class JWTService implements IJWTService {
     private ISignService service;
     private JWTRepository jwtRepository;
     private Algorithm algorithm;
+    private String issurer;
 
     public JWTService(ISignService service, JWTRepository jwtRepository) {
         this.service = service;
         this.jwtRepository = jwtRepository;
         algorithm = Algorithm.HMAC256(KeyGenerators.secureRandom(50).generateKey());
+        issurer = "heroku:spring-boot-rest-api-app";
     }
 
     @Override
@@ -101,7 +103,7 @@ public class JWTService implements IJWTService {
     public Author getAuthorFromToken(String token) {
         try {
             JWTVerifier verifier = com.auth0.jwt.JWT.require(algorithm)
-                    .withIssuer("heroku:spring-boot-rest-api-app")
+                    .withIssuer(issurer)
                     .build();
             DecodedJWT jwt = verifier.verify(token);
             ObjectMapper mapper = new ObjectMapper();
@@ -118,7 +120,7 @@ public class JWTService implements IJWTService {
     private String generateRefreshToken() {
         return com.auth0.jwt.JWT
                 .create()
-                .withIssuer("heroku:spring-boot-rest-api-app")
+                .withIssuer(issurer)
                 .withIssuedAt(new Date())
                 .withExpiresAt(new Date(System.currentTimeMillis()+7*60*60*1000)) // Token expires in 7 days
                 .sign(algorithm);
@@ -131,7 +133,7 @@ public class JWTService implements IJWTService {
                 .withClaim("name", author.getName())
                 .withClaim("email", author.getEmail())
                 .withClaim("role", author.getRole())
-                .withIssuer("heroku:spring-boot-rest-api-app")
+                .withIssuer(issurer)
                 .withIssuedAt(new Date())
                 .withExpiresAt(new Date(System.currentTimeMillis()+20*60*1000)) // Token expires in 20 minutes
                 .sign(algorithm);
