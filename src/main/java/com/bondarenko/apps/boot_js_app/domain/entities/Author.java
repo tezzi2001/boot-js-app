@@ -1,7 +1,9 @@
 package com.bondarenko.apps.boot_js_app.domain.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +13,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "authors")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Author {
     @Id
     @Column(name = "login", length = 20, nullable = false)
@@ -32,15 +36,4 @@ public class Author {
     public static final String READER = "READER";
     public static final String ADMINISTRATOR = "ADMIN";
     public static final String MODERATOR = "MODERATOR";
-
-    public Author(String login, String password, String name, String email, String role) {
-        this.login = login;
-        this.password = password;
-        this.name = name;
-        this.email = email;
-        this.role = role;
-    }
-
-    public Author() {
-    }
 }
