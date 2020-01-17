@@ -8,24 +8,22 @@ import com.bondarenko.apps.boot_js_app.entities.Author;
 import com.bondarenko.apps.boot_js_app.entities.JWT;
 import com.bondarenko.apps.boot_js_app.repositories.JWTRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.impl.crypto.MacProvider;
+import org.springframework.security.crypto.keygen.KeyGenerators;
 import org.springframework.stereotype.Service;
 
-import java.security.Key;
+import java.io.IOException;
 import java.util.*;
 
 @Service
 public class JWTService implements IJWTService {
     private ISignService service;
     private JWTRepository jwtRepository;
-    private Key key = MacProvider.generateKey(SignatureAlgorithm.HS256);
+    private Algorithm algorithm;
 
     public JWTService(ISignService service, JWTRepository jwtRepository) {
         this.service = service;
         this.jwtRepository = jwtRepository;
+        algorithm = Algorithm.HMAC256(KeyGenerators.secureRandom(50).generateKey());
     }
 
     @Override
@@ -99,86 +97,42 @@ public class JWTService implements IJWTService {
     }
 
     @Override
-    @Deprecated
-    public String getToken(String login, String password) {
-        if (login == null || password == null) return null;
-        Author author = service.authorize(login, password);
-        if (author == null) return null;
-        Map<String, Object> tokenData = new HashMap<>();
-        tokenData.put("login", author.getLogin());
-        tokenData.put("name", author.getName());
-        tokenData.put("email", author.getEmail());
-        tokenData.put("role", author.getRole());
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.YEAR, 100);
-        tokenData.put("token_expiration_date", calendar.getTime());
-        JwtBuilder jwtBuilder = Jwts.builder();
-        jwtBuilder.setExpiration(calendar.getTime());
-        jwtBuilder.setClaims(tokenData);
-        return jwtBuilder.signWith(SignatureAlgorithm.HS512, key).compact();
-    }
-
-    @Override
-    @Deprecated
-    public Author getAuthorFromToken(String token) throws Exception{
-//        try {
-//            return (Author) Jwts.parser().setSigningKey(key).parse(token).getBody();
-//        } catch (Exception ex) {
-//            throw new Exception("Token corrupted!");
-//        }
-        Algorithm algorithm = Algorithm.HMAC256("secret");
+    public Author getAuthorFromToken(String token) {
         try {
             JWTVerifier verifier = com.auth0.jwt.JWT.require(algorithm)
-//                    .withIssuer("auth0")
-                    .build(); //Reusable verifier instance
+                    .withIssuer("heroku:spring-boot-rest-api-app")
+                    .build();
             DecodedJWT jwt = verifier.verify(token);
             ObjectMapper mapper = new ObjectMapper();
             return mapper.readValue(Base64.getDecoder().decode(jwt.getPayload()), Author.class);
-        } catch (JWTVerificationException exception){
+        } catch (JWTVerificationException e){
             System.out.println("Invalid signature");
+            return null;
+        } catch (IOException e) {
+            System.out.println("Can not parse JSON");
             return null;
         }
     }
 
     private String generateRefreshToken() {
-        Date expDate = new Date(System.currentTimeMillis()+7*60*60*1000);
-        Map<String, Object> tokenData = new HashMap<>();
-        tokenData.put("token_expiration_date", expDate);
-        JwtBuilder jwtBuilder = Jwts.builder();
-        jwtBuilder.setExpiration(expDate);
-        jwtBuilder.setClaims(tokenData);
-        return jwtBuilder.signWith(SignatureAlgorithm.HS256, key).compact();
+        return com.auth0.jwt.JWT
+                .create()
+                .withIssuer("heroku:spring-boot-rest-api-app")
+                .withIssuedAt(new Date())
+                .withExpiresAt(new Date(System.currentTimeMillis()+7*60*60*1000)) // Token expires in 7 days
+                .sign(algorithm);
     }
 
     private String generateAccessToken(Author author) {
-//        Map<String, Object> tokenData = new HashMap<>();
-//        tokenData.put("login", author.getLogin());
-//        tokenData.put("name", author.getName());
-//        tokenData.put("email", author.getEmail());
-//        tokenData.put("role", author.getRole());
-//        Date date = new Date(System.currentTimeMillis()+20*60*1000);
-//        JwtBuilder jwtBuilder = Jwts.builder();
-//        jwtBuilder.setExpiration(date);
-//        jwtBuilder.setClaims(tokenData);
-//        return jwtBuilder.signWith(SignatureAlgorithm.HS256, key).compact();
-        Algorithm algorithm = Algorithm.HMAC256("secret");
-        String token = com.auth0.jwt.JWT
+        return com.auth0.jwt.JWT
                 .create()
                 .withClaim("login", author.getLogin())
                 .withClaim("name", author.getName())
                 .withClaim("email", author.getEmail())
                 .withClaim("role", author.getRole())
+                .withIssuer("heroku:spring-boot-rest-api-app")
                 .withIssuedAt(new Date())
-                .withExpiresAt(new Date(System.currentTimeMillis()+20*60*1000))
+                .withExpiresAt(new Date(System.currentTimeMillis()+20*60*1000)) // Token expires in 20 minutes
                 .sign(algorithm);
-        try {
-            JWTVerifier verifier = com.auth0.jwt.JWT.require(algorithm)
-//                    .withIssuer("auth0")
-                    .build(); //Reusable verifier instance
-            DecodedJWT jwt = verifier.verify(token);
-        } catch (JWTVerificationException exception){
-            System.out.println("Invalid signature");
-        }
-        return token;
     }
 }
