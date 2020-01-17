@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class NoteService implements INoteService {
@@ -31,7 +32,8 @@ public class NoteService implements INoteService {
 
     @Override
     public Note getNoteById(int id) {
-        return noteRepository.findById(id).get();
+        Optional<Note> optionalNote = noteRepository.findById(id);
+        return optionalNote.orElse(null);
     }
 
     @Override

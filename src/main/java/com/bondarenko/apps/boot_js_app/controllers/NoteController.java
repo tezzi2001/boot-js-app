@@ -56,15 +56,10 @@ public class NoteController {
      * Returns a note from DB specified by its id
      * @see INoteService#getNoteById(int)
      * @param id An id that specifies the note
-     * @param response HTTP response of the servlet
-     * @return JSON object with fields "id", "briefDescription", "fullDescription", "date" and "title" or HTTP response with empty body and status 400
+     * @return JSON object with fields "id", "briefDescription", "fullDescription", "date" and "title"
      */
     @GetMapping("/get{id}")
-    public Note getNote(@PathVariable int id, HttpServletResponse response) {
-        if (!noteService.existsById(id)) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return null;
-        }
+    public Note getNote(@PathVariable int id) {
         return noteService.getNoteById(id);
     }
 
