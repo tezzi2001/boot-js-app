@@ -66,49 +66,32 @@ public class NoteController {
     /**
      * Creates new record in DB
      * @see INoteService#addNote(Note, String)
-     * @param request this is an input HTML form. It must contain fields "token", "briefDescription", "fullDescription" and "title"
      * @param response HTTP response of the servlet
      * @return JSON object with fields "id", "isAdded", "brief_description", "full_description", "title", and "date" or JSON object with field "isAdded" or HTTP response with empty body and status 400
      */
     @PostMapping("/add")
-    public Map addNote(HttpServletRequest request, HttpServletResponse response) {
-        String briefDescription = request.getParameter("briefDescription");
-        String fullDescription = request.getParameter("fullDescription");
-        String title = request.getParameter("title");
-        String token = request.getParameter("token");
-        Note resultNote;
-        boolean loginExists;
-        Author author;
-
+    public Map addNote(String token, String briefDescription, String fullDescription, String title, HttpServletResponse response) {
         try {
-            author = JWTService.getAuthorFromToken(token);
-            loginExists = signService.checkLogin(author.getLogin());
-        } catch (Exception e) {
-            e.printStackTrace();
+            Map<String, String> responseBody = new HashMap<>();
+            Note note;
+            Author author = JWTService.getAuthorFromToken(token);
+
+            note = noteService.addNote(new Note(briefDescription, fullDescription, new Date(), title), author.getLogin());
+            if (note == null) {
+                responseBody.put("isAdded", "false");
+            } else {
+                responseBody.put("isAdded", "true");
+                responseBody.put("brief_description", note.getBriefDescription());
+                responseBody.put("full_description", note.getFullDescription());
+                responseBody.put("title", note.getTitle());
+                responseBody.put("date", note.getDate());
+                responseBody.put("id", note.getId().toString());
+            }
+            return responseBody;
+        } catch (NullPointerException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return null;
         }
-
-        if (briefDescription == null || fullDescription == null || title == null || !loginExists) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return null;
-        }
-        resultNote = noteService.addNote(new Note(briefDescription, fullDescription, new Date(), title), author.getLogin());
-        if (resultNote == null) {
-            return new HashMap<String, String>() {{
-                put("isAdded", "false");
-            }};
-        } else {
-            return new HashMap<String, String>() {{
-                put("isAdded", "true");
-                put("brief_description", resultNote.getBriefDescription());
-                put("full_description", resultNote.getFullDescription());
-                put("title", resultNote.getTitle());
-                put("date", resultNote.getDate());
-                put("id", resultNote.getId().toString());
-            }};
-        }
-
     }
 
     /**

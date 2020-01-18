@@ -7,5 +7,5 @@ import java.util.Map;
 public interface IJWTService {
     Map<String, String> getTokens(String login, String password, String fingerprint);
     Map<String, String> refreshTokens(String oldRefreshToken, String fingerprint);
-    Author getAuthorFromToken(String token) throws Exception;
+    Author getAuthorFromToken(String token);
 }
