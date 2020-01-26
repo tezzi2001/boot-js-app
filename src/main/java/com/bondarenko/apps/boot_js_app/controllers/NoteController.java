@@ -70,17 +70,15 @@ public class NoteController {
     /**
      * Creates new record in DB
      * @see INoteService#addNote(Note, String)
-     * @param response HTTP response of the servlet
      * @return JSON object with fields "id", "isAdded", "brief_description", "full_description", "title", and "date" or JSON object with field "isAdded" or HTTP response with empty body and status 400
      */
     @PostMapping("/add")
-    public Map addNote(String token, String briefDescription, String fullDescription, String title, HttpServletResponse response) {
+    public Map addNote(String token, String briefDescription, String fullDescription, String title) {
         try {
             Map<String, String> responseBody = new HashMap<>();
-            Note note;
             Author author = JWTService.getAuthorFromToken(token);
+            Note note = noteService.addNote(new Note(briefDescription, fullDescription, new Date(), title), author.getLogin());
 
-            note = noteService.addNote(new Note(briefDescription, fullDescription, new Date(), title), author.getLogin());
             if (note == null) {
                 responseBody.put("isAdded", "false");
             } else {
