@@ -103,32 +103,26 @@ public class NoteController {
      * Deletes the record in DB specified by id
      * @see INoteService#deleteNote(int)
      * @param id An id that specifies the note
-     * @param request this is an input HTML form. It must contain field "token"
-     * @param response HTTP response of the servlet
      * @return JSON object with field "isDeleted" or HTTP response with empty body and status 400
      */
     @PostMapping("/delete{id}")
-    public Map deleteNote(@PathVariable int id, HttpServletResponse response, HttpServletRequest request) {
-        boolean loginExists;
-        boolean isAdmin = false;
-
+    public Map deleteNote(@PathVariable int id, String token) {
         try {
-            Author author = JWTService.getAuthorFromToken(request.getParameter("token"));
-            loginExists = signService.checkLogin(author.getLogin());
-            if(author.getRole().equals(Author.ADMINISTRATOR)) isAdmin = true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return null;
-        }
+            Author author = JWTService.getAuthorFromToken(token);
+            boolean isAdmin = author.getRole().equals(Author.ADMINISTRATOR);
+            boolean isLoginExists = signService.checkLogin(author.getLogin());
+            boolean isIdExists = noteService.existsById(id);
 
-        if (!noteService.existsById(id) || !loginExists || !isAdmin) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return null;
-        }
-        boolean isDeleted = noteService.deleteNote(id);
-        return new HashMap<String, Boolean>() {{
-            put("isDeleted", isDeleted);
-        }};
+            if (!(isAdmin && isLoginExists && isIdExists))  throw new UnsupportedOperationException("Admin = " + isAdmin + " login = " + isLoginExists + "ID = " + isIdExists);
+
+            return new HashMap<String, Boolean>() {{
+                put("isDeleted", noteService.deleteNote(id));
+            }};
+        } catch (JWTVerificationException e){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid signature", e);
+        } catch (IOException e) {
+            throw new ResponseStatusException(HttpStatus.I_AM_A_TEAPOT, "Can not parse JSON", e);
+        } catch (UnsupportedOperationException e){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not enough permissions to perform action", e);        }
     }
 }
