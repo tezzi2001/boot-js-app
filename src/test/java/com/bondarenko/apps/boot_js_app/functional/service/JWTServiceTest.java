@@ -13,6 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Map;
 
@@ -74,7 +75,7 @@ public class JWTServiceTest {
     }
 
     @Test
-    public void getAuthorFromTokenNegativeTest() {
+    public void getAuthorFromTokenNegativeTest() throws IOException {
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
         service.getAuthorFromToken("invalid_token");

@@ -1,14 +1,18 @@
 package com.bondarenko.apps.boot_js_app.controllers;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.bondarenko.apps.boot_js_app.domain.entities.Author;
 import com.bondarenko.apps.boot_js_app.domain.entities.Note;
 import com.bondarenko.apps.boot_js_app.services.IJWTService;
 import com.bondarenko.apps.boot_js_app.services.INoteService;
 import com.bondarenko.apps.boot_js_app.services.ISignService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -89,8 +93,11 @@ public class NoteController {
             }
             return responseBody;
         } catch (NullPointerException e) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return null;
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Received JSON has null parameter(s)", e);
+        } catch (JWTVerificationException e){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid signature", e);
+        } catch (IOException e) {
+            throw new ResponseStatusException(HttpStatus.I_AM_A_TEAPOT, "Can not parse JSON", e);
         }
     }
 

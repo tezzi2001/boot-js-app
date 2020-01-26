@@ -103,21 +103,13 @@ public class JWTService implements IJWTService {
     }
 
     @Override
-    public Author getAuthorFromToken(String token) {
-        try {
-            JWTVerifier verifier = com.auth0.jwt.JWT.require(algorithm)
-                    .withIssuer(issuer)
-                    .build();
-            DecodedJWT jwt = verifier.verify(token);
-            ObjectMapper mapper = new ObjectMapper();
-            return mapper.readValue(Base64.getDecoder().decode(jwt.getPayload()), JWT.class).toAuthor();
-        } catch (JWTVerificationException e){
-            System.out.println("Invalid signature");
-            return null;
-        } catch (IOException e) {
-            System.out.println("Can not parse JSON");
-            return null;
-        }
+    public Author getAuthorFromToken(String token) throws IOException {
+        JWTVerifier verifier = com.auth0.jwt.JWT.require(algorithm)
+                .withIssuer(issuer)
+                .build();
+        DecodedJWT jwt = verifier.verify(token);
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.readValue(Base64.getDecoder().decode(jwt.getPayload()), JWT.class).toAuthor();
     }
 
     private String generateRefreshToken() {
