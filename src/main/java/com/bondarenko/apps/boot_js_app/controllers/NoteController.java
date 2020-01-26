@@ -28,7 +28,7 @@ import java.util.Map;
 @RestController
 public class NoteController {
     private INoteService noteService;
-    private IJWTService JWTService;
+    private IJWTService jwtService;
     private ISignService signService;
 
     @Autowired
@@ -43,7 +43,7 @@ public class NoteController {
 
     @Autowired
     public void setService(IJWTService service) {
-        this.JWTService = service;
+        this.jwtService = service;
     }
 
     /**
@@ -76,7 +76,7 @@ public class NoteController {
     public Map addNote(String token, String briefDescription, String fullDescription, String title) {
         try {
             Map<String, String> responseBody = new HashMap<>();
-            Author author = JWTService.getAuthorFromToken(token);
+            Author author = jwtService.getAuthorFromToken(token);
             Note note = noteService.addNote(new Note(briefDescription, fullDescription, new Date(), title), author.getLogin());
 
             if (note == null) {
@@ -108,7 +108,7 @@ public class NoteController {
     @PostMapping("/delete{id}")
     public Map deleteNote(@PathVariable int id, String token) {
         try {
-            Author author = JWTService.getAuthorFromToken(token);
+            Author author = jwtService.getAuthorFromToken(token);
             boolean isAdmin = author.getRole().equals(Author.ADMINISTRATOR);
             boolean isLoginExists = signService.checkLogin(author.getLogin());
             boolean isIdExists = noteService.existsById(id);
