@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,112 +20,92 @@ import java.util.Map;
 @CrossOrigin(origins = {"https://vuejs-news-app.herokuapp.com", "http://vuejs-news-app.herokuapp.com", "http://localhost:8080"})
 @RestController
 public class SignController {
-    private ISignService service;
-    private IJWTService JWTService;
+    private ISignService signService;
+    private IJWTService jwtService;
 
     @Autowired
     public void setService(ISignService service) {
-        this.service = service;
+        this.signService = service;
     }
 
     @Autowired
     public void setService(IJWTService service) {
-        this.JWTService = service;
+        this.jwtService = service;
     }
 
     /**
      * Authorizes the user
      * @see ISignService#authorize(String, String)
-     * @param request this is an input HTML form. It must contain fields "login", "password" and "fingerprint"
      * @param response HTTP response of the servlet
      * @return JSON object with fields "status", "accessToken" and "refreshToken" or HTTP response with empty body and status 400
      */
     @PostMapping("/login")
-    public Map authorize(HttpServletRequest request, HttpServletResponse response) {
-        String login = request.getParameter("login");
-        String password = request.getParameter("password");
-        String fingerprint = request.getParameter("fingerprint");
+    public Map authorize(String login, String password, String fingerprint, HttpServletResponse response) {
         if (login == null || password == null) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return null;
         }
-        return JWTService.getTokens(login, password, fingerprint);
+        return jwtService.getTokens(login, password, fingerprint);
     }
 
     /**
      * Registers the user
      * @see ISignService#register(String, String, String, String)
-     * @param request this is an input HTML form. It must contain fields "login", "password", "name" and "email"
      * @param response HTTP response of the servlet
      * @return JSON object with field "isRegistered" or HTTP response with empty body and status 400
      */
     @PostMapping("/register")
-    public Map register(HttpServletRequest request, HttpServletResponse response) {
-        String login = request.getParameter("login");
-        String password = request.getParameter("password");
-        String name = request.getParameter("name");
-        String email = request.getParameter("email");
+    public Map register(String login, String password, String name, String email, HttpServletResponse response) {
         if (login == null || password == null || name == null || email == null) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return null;
         }
-        boolean isRegistered = service.register(login, password, name, email);
         return new HashMap<String, Boolean>() {{
-            put("isRegistered", isRegistered);
+            put("isRegistered", signService.register(login, password, name, email));
         }};
     }
 
     /**
      * Checks if user with current login exist in DB
      * @see ISignService#checkLogin(String)
-     * @param request this is an input HTML form. It must contain field "login"
      * @param response HTTP response of the servlet
      * @return JSON object with field "isExist" or HTTP response with empty body and status 400
      */
     @PostMapping("/checkLogin")
-    public Map checkLogin(HttpServletRequest request, HttpServletResponse response) {
-        String login = request.getParameter("login");
+    public Map checkLogin(String login, HttpServletResponse response) {
         if (login == null) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return null;
         }
-        boolean isExist = service.checkLogin(login);
         return new HashMap<String, Boolean>() {{
-            put("isExist", isExist);
+            put("isExist", signService.checkLogin(login));
         }};
     }
 
     /**
      * Checks if user with current email exist in DB
      * @see ISignService#checkEmail(String)
-     * @param request this is an input HTML form. It must contain field "email"
      * @param response HTTP response of the servlet
      * @return JSON object with field "isExist" or HTTP response with empty body and status 400
      */
     @PostMapping("/checkEmail")
-    public Map checkEmail(HttpServletRequest request, HttpServletResponse response) {
-        String email = request.getParameter("email");
+    public Map checkEmail(String email, HttpServletResponse response) {
         if (email == null) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return null;
         }
-        boolean isExist = service.checkEmail(email);
         return new HashMap<String, Boolean>() {{
-            put("isExist", isExist);
+            put("isExist", signService.checkEmail(email));
         }};
     }
 
     /**
      * Refreshes refreshToken
      * @see IJWTService#refreshTokens(String, String)
-     * @param request this is an input HTML form. It must contain fields "refreshToken" and "fingerprint"
      * @return JSON object with fields "status", "accessToken" and "refreshToken"
      */
     @PostMapping("/refresh")
-    public Map refresh(HttpServletRequest request) {
-        String refreshToken = request.getParameter("refreshToken");
-        String fingerprint = request.getParameter("fingerprint");
-
-        return JWTService.refreshTokens(refreshToken, fingerprint);
+    public Map refresh(String refreshToken, String fingerprint) {
+        return jwtService.refreshTokens(refreshToken, fingerprint);
     }
 }
