@@ -22,7 +22,7 @@ public class JWTService implements IJWTService {
     private Algorithm algorithm;
     private String issuer;
 
-    private final int ACCESS_TOKEN_DURATION = 20*60*1000; // 20 minutes
+    private final int ACCESS_TOKEN_DURATION = 1*60*1000; // 1 minutes
     private final int REFRESH_TOKEN_DURATION = 7*24*60*60*1000; // Token expires in 7 days
 
     public JWTService(ISignService service, JWTRepository jwtRepository) {
