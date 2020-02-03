@@ -55,13 +55,14 @@ public class SignController {
      * @return JSON object with field "isRegistered" or HTTP response with empty body and status 400
      */
     @PostMapping("/register")
-    public Map register(String login, String password, String name, String email, HttpServletResponse response) {
+    public Map register(String login, String password, String fingerprint, String name, String email, HttpServletResponse response) {
         if (login == null || password == null || name == null || email == null) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return null;
         }
-        return new HashMap<String, Boolean>() {{
-            put("isRegistered", signService.register(login, password, name, email));
+        return new HashMap<String, String>() {{
+            put("isRegistered", String.valueOf(signService.register(login, password, name, email)));
+            putAll(jwtService.getTokens(login, password, fingerprint));
         }};
     }
 
