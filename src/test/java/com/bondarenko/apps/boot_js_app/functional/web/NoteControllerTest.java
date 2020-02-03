@@ -71,25 +71,19 @@ public class NoteControllerTest {
     public void getNoteTest() throws Exception {
         MockHttpServletRequestBuilder requestPositive = MockMvcRequestBuilders.get("/get1");
         ResultActions result = mockMvc.perform(requestPositive);
-        result.andExpect(status().isOk())
-                .andExpect(content().contentType("application/json;charset=UTF-8"));
+        result.andExpect(status().isOk());
         result.andExpect(jsonPath("$.title").value("title"))
                 .andExpect(jsonPath("$.date").value("2019-11-19"))
                 .andExpect(jsonPath("$.briefDescription").value("brief_description1"))
                 .andExpect(jsonPath("$.fullDescription").value("full_description1"));
 
-        MockHttpServletRequestBuilder requestNegative = MockMvcRequestBuilders.get("/get2");
-        result = mockMvc.perform(requestNegative);
-        result.andExpect(status().isBadRequest());
-
-
         //Test without requested parameters
-        requestNegative = MockMvcRequestBuilders.get("/get");
+        MockHttpServletRequestBuilder requestNegative = MockMvcRequestBuilders.get("/get");
         result = mockMvc.perform(requestNegative);
         result.andExpect(status().isBadRequest());
     }
 
-//    @Ignore
+    @Ignore
     @Test
     @SqlGroup({
             @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "/sqlScripts/notesTable/addRows.sql"),
@@ -126,7 +120,7 @@ public class NoteControllerTest {
         result.andExpect(status().isBadRequest());
     }
 
-//    @Ignore
+    @Ignore
     @Test
     @SqlGroup({
             @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "/sqlScripts/authorsTable/addHashedRows.sql"),
