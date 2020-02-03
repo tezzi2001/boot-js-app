@@ -1,7 +1,6 @@
 package com.bondarenko.apps.boot_js_app.functional.service;
 
 import com.bondarenko.apps.boot_js_app.services.JWTService;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,14 +10,9 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.context.junit4.SpringRunner;
 
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.PrintStream;
 import java.util.Map;
 
 import static org.junit.Assert.*;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -73,14 +67,4 @@ public class JWTServiceTest {
         assertEquals("OK", result.get("status"));
         assertEquals(result.get("refreshToken"), template.queryForMap("SELECT * FROM tokens WHERE login = 'loginH'").get("refresh_token"));
     }
-
-    @Test
-    public void getAuthorFromTokenNegativeTest() throws IOException {
-        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outContent));
-        service.getAuthorFromToken("invalid_token");
-        assertEquals("Invalid signature" + System.lineSeparator(), outContent.toString());
-        System.setOut(System.out);
-    }
-
 }
