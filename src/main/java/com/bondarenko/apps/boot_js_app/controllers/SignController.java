@@ -34,13 +34,13 @@ public class SignController {
     }
 
     /**
-     * Authorizes the user
-     * @see ISignService#authorize(String, String)
+     * Authenticates the user
+     * @see IJWTService#getTokens(String, String, String)
      * @param response HTTP response of the servlet
      * @return JSON object with fields "status", "accessToken" and "refreshToken" or HTTP response with empty body and status 400
      */
     @PostMapping("/login")
-    public Map authorize(String login, String password, String fingerprint, HttpServletResponse response) {
+    public Map authenticate(String login, String password, String fingerprint, HttpServletResponse response) {
         if (login == null || password == null) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return null;

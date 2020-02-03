@@ -1,4 +1,5 @@
 package com.bondarenko.apps.boot_js_app.controllers;
+
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.bondarenko.apps.boot_js_app.domain.entities.Author;
 import com.bondarenko.apps.boot_js_app.domain.entities.Note;
@@ -10,8 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;

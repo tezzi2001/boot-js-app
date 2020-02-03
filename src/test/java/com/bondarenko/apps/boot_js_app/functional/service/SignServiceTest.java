@@ -34,10 +34,10 @@ public class SignServiceTest {
             @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "/sqlScripts/authorsTable/addHashedRows.sql"),
     })
     public void authorizeTest() {
-        assertNull(service.authorize("logan", "password")); // Negative test; condition: current login does not match login in DB.
-        assertNull(service.authorize("loginH", "passworld")); // Negative test; condition: current password does not match password in DB.
-        assertNull(service.authorize("logan", "passworld")); // Negative test; condition: current login and password do not match login and password in DB.
-        assertNotNull(service.authorize("loginH", "password")); // Positive test; condition: current login and password match login and password in DB.
+        assertNull(service.authenticate("logan", "password")); // Negative test; condition: current login does not match login in DB.
+        assertNull(service.authenticate("loginH", "passworld")); // Negative test; condition: current password does not match password in DB.
+        assertNull(service.authenticate("logan", "passworld")); // Negative test; condition: current login and password do not match login and password in DB.
+        assertNotNull(service.authenticate("loginH", "password")); // Positive test; condition: current login and password match login and password in DB.
     }
 
     @Test

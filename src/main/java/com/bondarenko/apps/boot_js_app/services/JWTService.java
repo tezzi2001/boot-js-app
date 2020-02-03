@@ -2,7 +2,6 @@ package com.bondarenko.apps.boot_js_app.services;
 
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.bondarenko.apps.boot_js_app.domain.entities.Author;
 import com.bondarenko.apps.boot_js_app.domain.entities.Session;
@@ -89,7 +88,7 @@ public class JWTService implements IJWTService {
             tokens.put("status", "NULL_FIELD");
             return tokens;
         }
-        Author author = service.authorize(login, password);
+        Author author = service.authenticate(login, password);
         if (author == null) {
             tokens.put("status", "INVALID_USER");
             return tokens;

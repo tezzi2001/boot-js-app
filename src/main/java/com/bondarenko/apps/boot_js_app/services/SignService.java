@@ -40,7 +40,7 @@ public class SignService implements ISignService {
     }
 
     @Override
-    public Author authorize(String login, String password) {
+    public Author authenticate(String login, String password) {
         Optional<Author> optionalAuthor = authorRepository.findById(login);
         if (optionalAuthor.isPresent()) {
             if (BCrypt.checkpw(password+localParameter, optionalAuthor.get().getPassword())) {
