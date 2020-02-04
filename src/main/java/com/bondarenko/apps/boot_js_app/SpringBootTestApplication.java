@@ -8,7 +8,17 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 @SpringBootApplication
 public class SpringBootTestApplication extends SpringBootServletInitializer {
     public static void main(String[] args) {
-        SpringApplication.run(SpringBootTestApplication.class, args);
+        String dbUrl = System.getenv("DATABASE_URL");
+        if (dbUrl == null) {
+            System.err.println("Env var 'DATABASE_URL' is not defined!\n" +
+                    "Its value should be equals to 'dev' on develop server");
+            System.exit(0);
+        }
+        if ("dev".equals(dbUrl)) {
+            SpringApplication.run(SpringBootTestApplication.class, args).getEnvironment().setActiveProfiles("dev");
+        } else {
+            SpringApplication.run(SpringBootTestApplication.class, args).getEnvironment().setActiveProfiles("prod");
+        }
     }
 
     @Override

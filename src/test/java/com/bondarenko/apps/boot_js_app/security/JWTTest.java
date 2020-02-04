@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -20,6 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@ActiveProfiles("dev")
 public class JWTTest {
     @Autowired
     WebApplicationContext wac;
@@ -55,7 +57,7 @@ public class JWTTest {
         result.andExpect(status().isBadRequest());
 
         MockHttpServletRequestBuilder wrongLoginRequest = MockMvcRequestBuilders.post("/login");
-        nullRequest.param("login", "wrongLogin")
+        wrongLoginRequest.param("login", "wrongLogin")
                 .param("password", "password")
                 .param("fingerprint", "test");
         result = mockMvc.perform(wrongLoginRequest);
@@ -63,7 +65,7 @@ public class JWTTest {
         result.andExpect(jsonPath("$.status").value("INVALID_USER"));
 
         MockHttpServletRequestBuilder wrongPasswordRequest = MockMvcRequestBuilders.post("/login");
-        nullRequest.param("login", "loginH")
+        wrongPasswordRequest.param("login", "loginH")
                 .param("password", "wrongPassword")
                 .param("fingerprint", "test");
         result = mockMvc.perform(wrongPasswordRequest);
