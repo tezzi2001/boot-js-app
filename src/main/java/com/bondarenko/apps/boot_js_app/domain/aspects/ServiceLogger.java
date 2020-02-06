@@ -17,7 +17,7 @@ public class ServiceLogger {
     private Logger logger;
     private JWTRepository jwtRepository;
 
-    @Pointcut(value = "execution(* com.bondarenko.apps.boot_js_app.services.JWTService.refreshTokens(String,..)) && args(fingerprint,..))", argNames = "fingerprint")
+    @Pointcut(value = "execution(* com.bondarenko.apps.boot_js_app.services.JWTService.refreshTokens(String, String)) && args(String, fingerprint))", argNames = "fingerprint")
     private void callAtRefreshing(String fingerprint) {}
 
     @AfterReturning(value = "callAtRefreshing(fingerprint)", returning = "map", argNames = "fingerprint,map")
