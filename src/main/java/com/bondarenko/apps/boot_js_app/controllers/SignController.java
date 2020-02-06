@@ -3,11 +3,9 @@ package com.bondarenko.apps.boot_js_app.controllers;
 import com.bondarenko.apps.boot_js_app.services.IJWTService;
 import com.bondarenko.apps.boot_js_app.services.ISignService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,30 +33,20 @@ public class SignController {
     /**
      * Authenticates the user
      * @see IJWTService#getTokens(String, String, String)
-     * @param response HTTP response of the servlet
      * @return JSON object with fields "status", "accessToken" and "refreshToken" or HTTP response with empty body and status 400
      */
     @PostMapping("/login")
-    public Map authenticate(String login, String password, String fingerprint, HttpServletResponse response) {
-        if (login == null || password == null) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return null;
-        }
+    public Map authenticate(String login, String password, String fingerprint) {
         return jwtService.getTokens(login, password, fingerprint);
     }
 
     /**
      * Registers the user
      * @see ISignService#register(String, String, String, String)
-     * @param response HTTP response of the servlet
      * @return JSON object with field "isRegistered" or HTTP response with empty body and status 400
      */
     @PostMapping("/register")
-    public Map register(String login, String password, String fingerprint, String name, String email, HttpServletResponse response) {
-        if (login == null || password == null || name == null || email == null) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return null;
-        }
+    public Map register(String login, String password, String fingerprint, String name, String email) {
         return new HashMap<String, String>() {{
             put("isRegistered", String.valueOf(signService.register(login, password, name, email)));
             putAll(jwtService.getTokens(login, password, fingerprint));
@@ -68,15 +56,10 @@ public class SignController {
     /**
      * Checks if user with current login exist in DB
      * @see ISignService#checkLogin(String)
-     * @param response HTTP response of the servlet
      * @return JSON object with field "isExist" or HTTP response with empty body and status 400
      */
     @PostMapping("/checkLogin")
-    public Map checkLogin(String login, HttpServletResponse response) {
-        if (login == null) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return null;
-        }
+    public Map checkLogin(String login) {
         return new HashMap<String, Boolean>() {{
             put("isExist", signService.checkLogin(login));
         }};
@@ -85,15 +68,10 @@ public class SignController {
     /**
      * Checks if user with current email exist in DB
      * @see ISignService#checkEmail(String)
-     * @param response HTTP response of the servlet
      * @return JSON object with field "isExist" or HTTP response with empty body and status 400
      */
     @PostMapping("/checkEmail")
-    public Map checkEmail(String email, HttpServletResponse response) {
-        if (email == null) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return null;
-        }
+    public Map checkEmail(String email) {
         return new HashMap<String, Boolean>() {{
             put("isExist", signService.checkEmail(email));
         }};
