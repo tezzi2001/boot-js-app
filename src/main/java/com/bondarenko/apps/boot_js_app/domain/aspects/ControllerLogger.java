@@ -35,8 +35,10 @@ public class ControllerLogger {
     @SneakyThrows
     @AfterReturning(value = "callAtNoteAddition(token)", returning = "map", argNames = "token,map")
     public void log(String token, Map map) {
-        Author author = jwtService.getAuthorFromToken(token);
-        logger.info("User " + author.getLogin() + " has added note with ID " + map.get("id"));
+        if (Boolean.TRUE.toString().equals(map.get("isAdded"))) {
+            Author author = jwtService.getAuthorFromToken(token);
+            logger.info("User " + author.getLogin() + " has added note with ID " + map.get("id"));
+        }
     }
 
     @SneakyThrows
