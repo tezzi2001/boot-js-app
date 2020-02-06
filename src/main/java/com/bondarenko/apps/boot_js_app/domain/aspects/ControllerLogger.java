@@ -1,6 +1,5 @@
 package com.bondarenko.apps.boot_js_app.domain.aspects;
 
-import com.bondarenko.apps.boot_js_app.controllers.SignController;
 import com.bondarenko.apps.boot_js_app.domain.entities.Author;
 import com.bondarenko.apps.boot_js_app.services.JWTService;
 import lombok.AllArgsConstructor;
@@ -10,7 +9,6 @@ import org.aspectj.lang.annotation.*;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
 import java.util.Map;
 
 @Aspect
@@ -54,15 +52,10 @@ public class ControllerLogger {
 
     @AfterReturning(value = "callAtAuthActions(login, fingerprint)", returning = "map", argNames = "login,fingerprint,map")
     public void log(String login, String fingerprint, Map map) {
-        if ("OK".equals(map.get("status"))) {
-            if (map.containsKey("isRegistered")) {
-                if (Boolean.TRUE.toString().equals(map.get("isRegistered"))) {
-                    logger.info("User " + login + " has entered in a system with fingerprint " + fingerprint);
-                } else {
-                    return;
-                }
+        if (Boolean.TRUE.toString().equals(map.get("isRegistered"))) {
+            if ("OK".equals(map.get("status"))) {
+                logger.info("User " + login + " has entered in a system with fingerprint " + fingerprint);
             }
-            logger.info("User " + login + " has entered in a system with fingerprint " + fingerprint);
         }
     }
 }
