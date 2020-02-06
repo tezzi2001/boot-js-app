@@ -38,10 +38,15 @@ public class SignController {
      */
     @PostMapping("/register")
     public Map register(String login, String fingerprint, String password, String name, String email) {
-        return new HashMap<String, String>() {{
-            put("isRegistered", String.valueOf(signService.register(login, password, name, email)));
-            putAll(jwtService.getTokens(login, password, fingerprint));
-        }};
+        boolean isRegistered = signService.register(login, password, name, email);
+        if (isRegistered) {
+            return new HashMap<String, String>() {{
+                put("isRegistered", "true");
+                putAll(jwtService.getTokens(login, password, fingerprint));
+            }};
+        } else {
+            return null;
+        }
     }
 
     /**
