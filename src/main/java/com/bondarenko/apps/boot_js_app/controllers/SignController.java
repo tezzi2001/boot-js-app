@@ -3,7 +3,6 @@ package com.bondarenko.apps.boot_js_app.controllers;
 import com.bondarenko.apps.boot_js_app.services.IJWTService;
 import com.bondarenko.apps.boot_js_app.services.ISignService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,7 +27,7 @@ public class SignController {
      * @return JSON object with fields "status", "accessToken" and "refreshToken" or HTTP response with empty body and status 400
      */
     @PostMapping("/login")
-    public Map authenticate(String login, String password, String fingerprint) {
+    public Map authenticate(String login, String fingerprint, String password) {
         return jwtService.getTokens(login, password, fingerprint);
     }
 
@@ -38,7 +37,7 @@ public class SignController {
      * @return JSON object with field "isRegistered" or HTTP response with empty body and status 400
      */
     @PostMapping("/register")
-    public Map register(String login, String password, String fingerprint, String name, String email) {
+    public Map register(String login, String fingerprint, String password, String name, String email) {
         return new HashMap<String, String>() {{
             put("isRegistered", String.valueOf(signService.register(login, password, name, email)));
             putAll(jwtService.getTokens(login, password, fingerprint));

@@ -7,7 +7,6 @@ import com.bondarenko.apps.boot_js_app.services.IJWTService;
 import com.bondarenko.apps.boot_js_app.services.INoteService;
 import com.bondarenko.apps.boot_js_app.services.ISignService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -91,7 +90,7 @@ public class NoteController {
      * @return JSON object with field "isDeleted" or HTTP response with empty body and status 400
      */
     @PostMapping("/delete{id}")
-    public Map deleteNote(@PathVariable int id, String token) {
+    public Map deleteNote(String token, @PathVariable Integer id) {
         try {
             Author author = jwtService.getAuthorFromToken(token);
             boolean isAdmin = author.getRole().equals(Author.ADMINISTRATOR);

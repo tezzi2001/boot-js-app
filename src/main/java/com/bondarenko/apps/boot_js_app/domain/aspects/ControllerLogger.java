@@ -1,5 +1,6 @@
 package com.bondarenko.apps.boot_js_app.domain.aspects;
 
+import com.bondarenko.apps.boot_js_app.controllers.SignController;
 import com.bondarenko.apps.boot_js_app.domain.entities.Author;
 import com.bondarenko.apps.boot_js_app.services.JWTService;
 import lombok.AllArgsConstructor;
@@ -9,6 +10,7 @@ import org.aspectj.lang.annotation.*;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
 import java.util.Map;
 
 @Aspect
@@ -20,11 +22,11 @@ public class ControllerLogger {
 
     @Pointcut(value = "execution(* com.bondarenko.apps.boot_js_app.controllers.*.*(..)) && args(token,..)", argNames = "token")
     private void callAtAuthenticatedUser(String token) {}
-    @Pointcut(value = "execution(* com.bondarenko.apps.boot_js_app.controllers.NoteController.deleteNote()) && args(id, token)", argNames = "id,token")
-    private void callAtNoteDeletion(Integer id, String token) {}
-    @Pointcut(value = "execution(* com.bondarenko.apps.boot_js_app.controllers.NoteController.addNote()) && args(token,..)", argNames = "token")
+    @Pointcut(value = "execution(* com.bondarenko.apps.boot_js_app.controllers.NoteController.deleteNote(String, Integer)) && args(token, id)", argNames = "token,id")
+    private void callAtNoteDeletion(String token, Integer id) {}
+    @Pointcut(value = "execution(* com.bondarenko.apps.boot_js_app.controllers.NoteController.addNote(String,..)) && args(token,..)", argNames = "token")
     private void callAtNoteAddition(String token) {}
-    @Pointcut(value = "execution(* com.bondarenko.apps.boot_js_app.controllers.SignController.*.*(..)) && args(login, fingerprint,..)", argNames = "login,fingerprint")
+    @Pointcut(value = "execution(* com.bondarenko.apps.boot_js_app.controllers.SignController.*(..)) && args(login, fingerprint,..)", argNames = "login,fingerprint")
     private void callAtAuthActions(String login, String fingerprint) {}
 
     @AfterThrowing(pointcut = "callAtAuthenticatedUser(token)", throwing = "e", argNames = "jp,e,token")
@@ -42,7 +44,7 @@ public class ControllerLogger {
     }
 
     @SneakyThrows
-    @AfterReturning(value = "callAtNoteDeletion(id, token)", returning = "map", argNames = "id,token,map")
+    @AfterReturning(value = "callAtNoteDeletion(token, id)", returning = "map", argNames = "id,token,map")
     public void log(Integer id, String token, Map map) {
         if (Boolean.TRUE.equals(map.get("isDeleted"))) {
             Author author = jwtService.getAuthorFromToken(token);
@@ -52,6 +54,15 @@ public class ControllerLogger {
 
     @AfterReturning(value = "callAtAuthActions(login, fingerprint)", returning = "map", argNames = "login,fingerprint,map")
     public void log(String login, String fingerprint, Map map) {
-        if ("OK".equals(map.get("status"))) logger.info("User " + login + " has entered in a system with fingerprint " + fingerprint);
+        if ("OK".equals(map.get("status"))) {
+            if (map.containsKey("isRegistered")) {
+                if (Boolean.TRUE.toString().equals(map.get("isRegistered"))) {
+                    logger.info("User " + login + " has entered in a system with fingerprint " + fingerprint);
+                } else {
+                    return;
+                }
+            }
+            logger.info("User " + login + " has entered in a system with fingerprint " + fingerprint);
+        }
     }
 }
