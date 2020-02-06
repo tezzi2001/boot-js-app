@@ -6,6 +6,7 @@ import com.bondarenko.apps.boot_js_app.domain.entities.Note;
 import com.bondarenko.apps.boot_js_app.services.IJWTService;
 import com.bondarenko.apps.boot_js_app.services.INoteService;
 import com.bondarenko.apps.boot_js_app.services.ISignService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -23,26 +24,12 @@ import java.util.Map;
  * @author Bohdan Bondarenko
  * @version 1.0.1
  */
+@AllArgsConstructor
 @RestController
 public class NoteController {
     private INoteService noteService;
     private IJWTService jwtService;
     private ISignService signService;
-
-    @Autowired
-    public void setService(ISignService service) {
-        this.signService = service;
-    }
-
-    @Autowired
-    public void setService(INoteService service) {
-        this.noteService = service;
-    }
-
-    @Autowired
-    public void setService(IJWTService service) {
-        this.jwtService = service;
-    }
 
     /**
      * Returns all notes from DB

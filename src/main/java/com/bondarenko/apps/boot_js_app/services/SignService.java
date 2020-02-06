@@ -2,7 +2,7 @@ package com.bondarenko.apps.boot_js_app.services;
 
 import com.bondarenko.apps.boot_js_app.domain.entities.Author;
 import com.bondarenko.apps.boot_js_app.repositories.AuthorRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -10,17 +10,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@AllArgsConstructor
 @Service
 @PropertySource("classpath:application.properties")
 public class SignService implements ISignService {
     private AuthorRepository authorRepository;
     @Value("${security.local-parameter}")
     private String localParameter;
-
-    @Autowired
-    public void setAuthorRepository(AuthorRepository authorRepository) {
-        this.authorRepository = authorRepository;
-    }
 
     @Override
     public boolean register(String login, String password, String name, String email) {

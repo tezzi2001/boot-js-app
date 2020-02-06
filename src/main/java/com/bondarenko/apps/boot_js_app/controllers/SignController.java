@@ -2,6 +2,7 @@ package com.bondarenko.apps.boot_js_app.controllers;
 
 import com.bondarenko.apps.boot_js_app.services.IJWTService;
 import com.bondarenko.apps.boot_js_app.services.ISignService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,20 +16,11 @@ import java.util.Map;
  * @author Bohdan Bondarenko
  * @version 1.0.1
  */
+@AllArgsConstructor
 @RestController
 public class SignController {
     private ISignService signService;
     private IJWTService jwtService;
-
-    @Autowired
-    public void setService(ISignService service) {
-        this.signService = service;
-    }
-
-    @Autowired
-    public void setService(IJWTService service) {
-        this.jwtService = service;
-    }
 
     /**
      * Authenticates the user

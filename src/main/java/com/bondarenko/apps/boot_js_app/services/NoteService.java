@@ -4,26 +4,17 @@ import com.bondarenko.apps.boot_js_app.domain.entities.Author;
 import com.bondarenko.apps.boot_js_app.domain.entities.Note;
 import com.bondarenko.apps.boot_js_app.repositories.AuthorRepository;
 import com.bondarenko.apps.boot_js_app.repositories.NoteRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@AllArgsConstructor
 @Service
 public class NoteService implements INoteService {
     private AuthorRepository authorRepository;
     private NoteRepository noteRepository;
-
-    @Autowired
-    public void setAuthorRepository(AuthorRepository authorRepository) {
-        this.authorRepository = authorRepository;
-    }
-
-    @Autowired
-    public void setNoteRepository(NoteRepository noteRepository) {
-        this.noteRepository = noteRepository;
-    }
 
     @Override
     public List<Note> getNotes() {
