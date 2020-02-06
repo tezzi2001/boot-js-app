@@ -35,11 +35,6 @@ public class JWTService implements IJWTService {
     public Map<String, String> refreshTokens(String oldRefreshToken, String fingerprint) {
         Map<String, String> tokens = new HashMap<>();
 
-        if (oldRefreshToken == null || fingerprint == null) {
-            tokens.put("status", "NULL_FIELD");
-            return tokens;
-        }
-
         Optional<Session> optSession = jwtRepository.findJWTByRefreshToken(oldRefreshToken);
         Session session;
         if (optSession.isPresent()) {
@@ -84,10 +79,6 @@ public class JWTService implements IJWTService {
 
         if (jwtRepository.existsJWTByFingerprint(fingerprint)) jwtRepository.deleteJWTByFingerprint(fingerprint);
 
-        if (login == null || password == null || fingerprint == null) {
-            tokens.put("status", "NULL_FIELD");
-            return tokens;
-        }
         Author author = service.authenticate(login, password);
         if (author == null) {
             tokens.put("status", "INVALID_USER");
