@@ -11,5 +11,5 @@ public interface INoteService {
     boolean deleteNote(int id);
     boolean existsById(int id);
     @Transactional
-    void incLikes(int id);
+    int incLikes(int id);
 }
