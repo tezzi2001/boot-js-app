@@ -14,7 +14,7 @@ public class SpringBootTestApplication extends SpringBootServletInitializer {
                     "Its value should be equals to 'dev' on develop server");
             System.exit(0);
         }
-        if ("dev".equals(dbUrl)) {
+        if ("DEV".equals(dbUrl)) {
             SpringApplication.run(SpringBootTestApplication.class, args).getEnvironment().setActiveProfiles("dev");
         } else {
             SpringApplication.run(SpringBootTestApplication.class, args).getEnvironment().setActiveProfiles("prod");
