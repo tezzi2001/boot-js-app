@@ -61,7 +61,7 @@ public class NoteController {
         try {
             Map<String, String> responseBody = new HashMap<>();
             Author author = jwtService.getAuthorFromToken(token);
-            Note note = noteService.addNote(new Note(briefDescription, fullDescription, new Date(), title), author.getLogin());
+            Note note = noteService.addNote(new Note(briefDescription, fullDescription, new Date(), title, 0), author.getLogin());
 
             if (note == null) {
                 responseBody.put("isAdded", "false");
