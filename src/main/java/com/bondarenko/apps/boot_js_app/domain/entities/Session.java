@@ -19,9 +19,9 @@ import java.util.Date;
 public class Session extends BaseEntity{
     @Column(name = "login", length = 60, nullable = false)
     private String login;
-    @Column(name = "refreshToken", length = 1300, nullable = false)
+    @Column(name = "refreshToken", nullable = false)
     private String refreshToken;
-    @Column(name = "fingerprint", length = 1300, nullable = false)
+    @Column(name = "fingerprint", nullable = false)
     private String fingerprint;
     @Column(name = "expiresAt", nullable = false)
     private Date expiresAt;
