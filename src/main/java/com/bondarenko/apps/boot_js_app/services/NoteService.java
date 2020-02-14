@@ -52,7 +52,7 @@ public class NoteService implements INoteService {
     @Override
     public void incLikes(int id) {
         Note note = getNoteById(id);
-        note.setLikeNums(note.getLikeNums()+1);
+        note.setLikesNum(note.getLikesNum()+1);
         deleteNote(id);
         noteRepository.save(note);
     }
