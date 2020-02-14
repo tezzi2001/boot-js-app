@@ -29,7 +29,7 @@ public class ControllerLogger {
 
     @AfterThrowing(pointcut = "callAtAuthenticatedUser(token)", throwing = "e", argNames = "jp,e,token")
     public void log(JoinPoint jp, Exception e, String token) {
-        logger.warn("Caught exception in " + jp.getSignature() + ". Exception: " + e.getMessage() + ". Token :" + token);
+        logger.warn("Aspect: Caught exception in " + jp.getSignature() + ". Exception: " + e.getMessage() + ". Token :" + token);
     }
 
     @SneakyThrows
@@ -37,7 +37,7 @@ public class ControllerLogger {
     public void log(String token, Map map) {
         if (Boolean.TRUE.toString().equals(map.get("isAdded"))) {
             Author author = jwtService.getAuthorFromToken(token);
-            logger.info("User " + author.getLogin() + " has added note with ID " + map.get("id"));
+            logger.info("Aspect: User " + author.getLogin() + " has added note with ID " + map.get("id"));
         }
     }
 
@@ -46,7 +46,7 @@ public class ControllerLogger {
     public void log(Integer id, String token, Map map) {
         if (Boolean.TRUE.equals(map.get("isDeleted"))) {
             Author author = jwtService.getAuthorFromToken(token);
-            logger.info("User " + author.getLogin() + " has deleted note with ID " + id);
+            logger.info("Aspect: User " + author.getLogin() + " has deleted note with ID " + id);
         }
     }
 
@@ -54,7 +54,7 @@ public class ControllerLogger {
     public void log(String login, String fingerprint, Map map) {
         if (Boolean.TRUE.toString().equals(map.get("isRegistered"))) {
             if ("OK".equals(map.get("status"))) {
-                logger.info("User " + login + " has entered in a system with fingerprint " + fingerprint);
+                logger.info("Aspect: User " + login + " has entered in a system with fingerprint " + fingerprint);
             }
         }
     }

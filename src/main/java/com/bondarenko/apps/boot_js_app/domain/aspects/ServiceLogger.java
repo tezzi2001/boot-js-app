@@ -23,9 +23,9 @@ public class ServiceLogger {
     @AfterReturning(value = "callAtRefreshing(fingerprint)", returning = "map", argNames = "fingerprint,map")
     public void log(String fingerprint, Map map) {
         if ("OK".equals(map.get("status"))) {
-            logger.info("User " + jwtRepository.findJWTByRefreshToken(map.get("refreshToken").toString()).get().getLogin() + " with fingerprint " + fingerprint + " has refreshed JWT tokens");
+            logger.info("Aspect: User " + jwtRepository.findJWTByRefreshToken(map.get("refreshToken").toString()).get().getLogin() + " with fingerprint " + fingerprint + " has refreshed JWT tokens");
         } else {
-            logger.warn("User " + jwtRepository.findJWTByRefreshToken(map.get("refreshToken").toString()).get().getLogin() + " is not able to refresh tokens. Status: " + map.get("status"));
+            logger.warn("Aspect: User " + jwtRepository.findJWTByRefreshToken(map.get("refreshToken").toString()).get().getLogin() + " is not able to refresh tokens. Status: " + map.get("status"));
         }
     }
 }
