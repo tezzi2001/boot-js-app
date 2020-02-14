@@ -53,7 +53,6 @@ public class NoteService implements INoteService {
     public int incLikes(int id) {
         Note note = getNoteById(id);
         note.setLikesNum(note.getLikesNum()+1);
-        deleteNote(id);
         noteRepository.save(note);
         return note.getLikesNum();
     }
