@@ -48,4 +48,12 @@ public class NoteService implements INoteService {
     public boolean existsById(int id) {
         return noteRepository.existsById(id);
     }
+
+    @Override
+    public void incLikes(int id) {
+        Note note = getNoteById(id);
+        note.setLikeNums(note.getLikeNums()+1);
+        deleteNote(id);
+        noteRepository.save(note);
+    }
 }

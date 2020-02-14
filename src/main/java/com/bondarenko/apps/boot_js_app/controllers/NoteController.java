@@ -109,4 +109,18 @@ public class NoteController {
         } catch (UnsupportedOperationException e){
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not enough permissions to perform action", e);        }
     }
+
+    @PostMapping()
+    public void incLikes(Integer id, String token) {
+        try {
+            jwtService.getAuthorFromToken(token);
+            noteService.incLikes(id);
+        } catch (NullPointerException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Received JSON has null parameter(s)", e);
+        } catch (JWTVerificationException e){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid signature", e);
+        } catch (IOException e) {
+            throw new ResponseStatusException(HttpStatus.I_AM_A_TEAPOT, "Can not parse JSON", e);
+        }
+    }
 }
