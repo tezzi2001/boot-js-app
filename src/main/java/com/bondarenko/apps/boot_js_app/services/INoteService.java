@@ -12,4 +12,6 @@ public interface INoteService {
     boolean existsById(int id);
     @Transactional
     int incLikes(int id);
+    @Transactional
+    int decLikes(int id);
 }

@@ -125,4 +125,20 @@ public class NoteController {
             throw new ResponseStatusException(HttpStatus.I_AM_A_TEAPOT, "Can not parse JSON", e);
         }
     }
+
+    @PostMapping("/dec")
+    public Map decLikes(Integer id, String token) {
+        try {
+            jwtService.getAuthorFromToken(token);
+            return new HashMap<String, Integer>() {{
+                put("updatedLikesNum", noteService.decLikes(id));
+            }};
+        } catch (NullPointerException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Received JSON has null parameter(s)", e);
+        } catch (JWTVerificationException e){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid signature", e);
+        } catch (IOException e) {
+            throw new ResponseStatusException(HttpStatus.I_AM_A_TEAPOT, "Can not parse JSON", e);
+        }
+    }
 }

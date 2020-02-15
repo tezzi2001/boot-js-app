@@ -56,4 +56,12 @@ public class NoteService implements INoteService {
         noteRepository.save(note);
         return note.getLikesNum();
     }
+
+    @Override
+    public int decLikes(int id) {
+        Note note = getNoteById(id);
+        note.setLikesNum(note.getLikesNum()-1);
+        noteRepository.save(note);
+        return note.getLikesNum();
+    }
 }

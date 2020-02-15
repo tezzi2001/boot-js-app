@@ -58,7 +58,7 @@ public class NoteRepositoryTest {
     @Test
     @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "/sqlScripts/notesTable/deleteSpecialRows.sql")
     public void saveTest() {
-        Note note = repository.save(new Note("briefDescriptionForSave", "fullDescription", new Date(), "special", 0));
+        Note note = repository.save(new Note("briefDescriptionForSave", "fullDescription", new Date(), "special", 0, null));
         assertEquals(note.getBriefDescription(), "briefDescriptionForSave"); // Positive test; condition: the note has been saved to embedded DB.
         assertEquals(template.queryForMap("SELECT brief_description FROM notes WHERE brief_description = 'briefDescriptionForSave'").get("brief_description"), "briefDescriptionForSave"); // Positive test; condition: the note has been saved to DB.
     }
