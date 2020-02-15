@@ -8,6 +8,7 @@ import com.bondarenko.apps.boot_js_app.domain.entities.Session;
 import com.bondarenko.apps.boot_js_app.domain.json.JWT;
 import com.bondarenko.apps.boot_js_app.repositories.JWTRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.SneakyThrows;
 import org.springframework.security.crypto.keygen.KeyGenerators;
 import org.springframework.stereotype.Service;
 
@@ -94,12 +95,24 @@ public class JWTService implements IJWTService {
 
     @Override
     public Author getAuthorFromToken(String token) throws IOException {
-        JWTVerifier verifier = com.auth0.jwt.JWT.require(algorithm)
+        return getJWTFromToken(token).toAuthor();
+    }
+
+    @Override
+    @SneakyThrows
+    public String getAccessTokenWithNewLikedNotesId(String token, Author author) {
+        JWT jwt = getJWTFromToken(token);
+        return com.auth0.jwt.JWT
+                .create()
+                .withClaim("login", author.getLogin())
+                .withClaim("name", author.getName())
+                .withClaim("email", author.getEmail())
+                .withClaim("role", author.getRole())
+                .withClaim("likedNotesId", author.getNotesId().toString())
                 .withIssuer(issuer)
-                .build();
-        DecodedJWT jwt = verifier.verify(token);
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.readValue(Base64.getDecoder().decode(jwt.getPayload()), JWT.class).toAuthor();
+                .withIssuedAt(new Date(jwt.getIat()))
+                .withExpiresAt(new Date(jwt.getExp()))
+                .sign(algorithm);
     }
 
     private String generateRefreshToken() {
@@ -118,9 +131,19 @@ public class JWTService implements IJWTService {
                 .withClaim("name", author.getName())
                 .withClaim("email", author.getEmail())
                 .withClaim("role", author.getRole())
+                .withClaim("likedNotesId", author.getNotesId().toString())
                 .withIssuer(issuer)
                 .withIssuedAt(new Date())
                 .withExpiresAt(new Date(System.currentTimeMillis()+ACCESS_TOKEN_DURATION))
                 .sign(algorithm);
+    }
+
+    private JWT getJWTFromToken(String token) throws IOException {
+        JWTVerifier verifier = com.auth0.jwt.JWT.require(algorithm)
+                .withIssuer(issuer)
+                .build();
+        DecodedJWT jwt = verifier.verify(token);
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.readValue(Base64.getDecoder().decode(jwt.getPayload()), JWT.class);
     }
 }

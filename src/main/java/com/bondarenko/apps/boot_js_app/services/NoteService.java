@@ -7,7 +7,9 @@ import com.bondarenko.apps.boot_js_app.repositories.NoteRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @AllArgsConstructor
@@ -15,6 +17,7 @@ import java.util.Optional;
 public class NoteService implements INoteService {
     private AuthorRepository authorRepository;
     private NoteRepository noteRepository;
+    private JWTService jwtService;
 
     @Override
     public List<Note> getNotes() {
@@ -50,18 +53,32 @@ public class NoteService implements INoteService {
     }
 
     @Override
-    public int incLikes(int id) {
+    public Map incLikes(int id, Author author, String token) {
         Note note = getNoteById(id);
         note.setLikesNum(note.getLikesNum()+1);
         noteRepository.save(note);
-        return note.getLikesNum();
+
+        author.addLikedNoteId(id);
+        authorRepository.save(author);
+
+        return new HashMap<String, String>() {{
+            put("updatedLikesNum", note.getLikesNum().toString());
+            put("token", jwtService.getAccessTokenWithNewLikedNotesId(token, author));
+        }};
     }
 
     @Override
-    public int decLikes(int id) {
+    public Map decLikes(int id, Author author, String token) {
         Note note = getNoteById(id);
         note.setLikesNum(note.getLikesNum()-1);
         noteRepository.save(note);
-        return note.getLikesNum();
+
+        author.removeLikedNoteId(id);
+        authorRepository.save(author);
+
+        return new HashMap<String, String>() {{
+            put("updatedLikesNum", note.getLikesNum().toString());
+            put("token", jwtService.getAccessTokenWithNewLikedNotesId(token, author));
+        }};
     }
 }

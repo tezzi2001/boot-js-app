@@ -13,13 +13,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class JWT extends Author {
     @JsonProperty("exp")
-    private String exp;
+    private int exp;
     @JsonProperty("iat")
-    private String iat;
+    private int iat;
     @JsonProperty("iss")
     private String iss;
 
     public Author toAuthor() {
-        return new Author(login, "null", name, email, role);
+        return new Author(login, "null", name, email, role, null);
     }
 }

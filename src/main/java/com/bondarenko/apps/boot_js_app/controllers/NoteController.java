@@ -113,10 +113,8 @@ public class NoteController {
     @PostMapping("/inc")
     public Map incLikes(Integer id, String token) {
         try {
-            jwtService.getAuthorFromToken(token);
-            return new HashMap<String, Integer>() {{
-                put("updatedLikesNum", noteService.incLikes(id));
-            }};
+            Author author = jwtService.getAuthorFromToken(token);
+            return noteService.incLikes(id, author, token);
         } catch (NullPointerException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Received JSON has null parameter(s)", e);
         } catch (JWTVerificationException e){
@@ -129,10 +127,8 @@ public class NoteController {
     @PostMapping("/dec")
     public Map decLikes(Integer id, String token) {
         try {
-            jwtService.getAuthorFromToken(token);
-            return new HashMap<String, Integer>() {{
-                put("updatedLikesNum", noteService.decLikes(id));
-            }};
+            Author author = jwtService.getAuthorFromToken(token);
+            return noteService.decLikes(id, author, token);
         } catch (NullPointerException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Received JSON has null parameter(s)", e);
         } catch (JWTVerificationException e){
