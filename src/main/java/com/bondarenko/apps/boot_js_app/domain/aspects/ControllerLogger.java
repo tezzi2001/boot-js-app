@@ -5,7 +5,10 @@ import com.bondarenko.apps.boot_js_app.services.JWTService;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.*;
+import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.AfterThrowing;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 

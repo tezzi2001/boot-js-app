@@ -2,7 +2,6 @@ package com.bondarenko.apps.boot_js_app.services;
 
 import com.bondarenko.apps.boot_js_app.domain.entities.Author;
 import com.bondarenko.apps.boot_js_app.repositories.AuthorRepository;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;

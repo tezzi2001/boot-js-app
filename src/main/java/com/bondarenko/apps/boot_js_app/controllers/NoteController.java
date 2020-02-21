@@ -8,7 +8,10 @@ import com.bondarenko.apps.boot_js_app.services.INoteService;
 import com.bondarenko.apps.boot_js_app.services.ISignService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
@@ -107,7 +110,8 @@ public class NoteController {
         } catch (IOException e) {
             throw new ResponseStatusException(HttpStatus.I_AM_A_TEAPOT, "Can not parse JSON", e);
         } catch (UnsupportedOperationException e){
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not enough permissions to perform action", e);        }
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not enough permissions to perform action", e);
+        }
     }
 
     @PostMapping("/inc")
@@ -116,7 +120,6 @@ public class NoteController {
             Author author = jwtService.getAuthorFromToken(token);
             return noteService.incLikes(id, author, token);
         } catch (NullPointerException e) {
-            e.printStackTrace();
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Received JSON has null parameter(s)", e);
         } catch (JWTVerificationException e){
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid signature", e);
