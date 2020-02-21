@@ -13,9 +13,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class JWT extends Author {
     @JsonProperty("exp")
-    private int exp;
+    private long exp;
     @JsonProperty("iat")
-    private int iat;
+    private long iat;
     @JsonProperty("iss")
     private String iss;
 

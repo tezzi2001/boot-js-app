@@ -116,6 +116,7 @@ public class NoteController {
             Author author = jwtService.getAuthorFromToken(token);
             return noteService.incLikes(id, author, token);
         } catch (NullPointerException e) {
+            e.printStackTrace();
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Received JSON has null parameter(s)", e);
         } catch (JWTVerificationException e){
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid signature", e);

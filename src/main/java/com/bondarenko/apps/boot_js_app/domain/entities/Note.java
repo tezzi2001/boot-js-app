@@ -27,7 +27,7 @@ public class Note extends BaseEntity{
     @Column(name = "title", length = 80, nullable = false)
     private String title;
     @Column(name = "likes_num", nullable = false)
-    private Integer likesNum;
+    private Integer likesNum = 0;
 
     public String getDate() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");

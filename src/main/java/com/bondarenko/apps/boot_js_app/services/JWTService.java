@@ -22,8 +22,8 @@ public class JWTService implements IJWTService {
     private Algorithm algorithm;
     private String issuer;
 
-    private final int ACCESS_TOKEN_DURATION = 1*60*1000; // 1 minutes
-    private final int REFRESH_TOKEN_DURATION = 90*1000; // Token expires in 1.5 minutes
+    private final int ACCESS_TOKEN_DURATION = 10*60*1000; // 10 minutes
+    private final int REFRESH_TOKEN_DURATION = 900*1000; // Token expires in 15 minutes
 
     public JWTService(ISignService service, JWTRepository jwtRepository) {
         this.service = service;
@@ -108,10 +108,10 @@ public class JWTService implements IJWTService {
                 .withClaim("name", author.getName())
                 .withClaim("email", author.getEmail())
                 .withClaim("role", author.getRole())
-                .withClaim("likedNotesId", author.getNotesId().toString())
+                .withClaim("likedNotesId", author.getLikedNotesId().toString())
                 .withIssuer(issuer)
-                .withIssuedAt(new Date(jwt.getIat()))
-                .withExpiresAt(new Date(jwt.getExp()))
+                .withClaim("iat", jwt.getIat())
+                .withClaim("exp", jwt.getExp())
                 .sign(algorithm);
     }
 
@@ -131,7 +131,7 @@ public class JWTService implements IJWTService {
                 .withClaim("name", author.getName())
                 .withClaim("email", author.getEmail())
                 .withClaim("role", author.getRole())
-                .withClaim("likedNotesId", author.getNotesId().toString())
+                .withArrayClaim("likedNotesId", author.getLikedNotesIdAsArray())
                 .withIssuer(issuer)
                 .withIssuedAt(new Date())
                 .withExpiresAt(new Date(System.currentTimeMillis()+ACCESS_TOKEN_DURATION))

@@ -1,1 +1,1 @@
-INSERT INTO authors (login, email, name, password, role) VALUES ('login', 'login@test.com', 'none', 'password', 'ADMIN');
+INSERT INTO authors (login, email, name, password, role, liked_notes_id) VALUES ('login', 'login@test.com', 'none', 'password', 'ADMIN', '');
