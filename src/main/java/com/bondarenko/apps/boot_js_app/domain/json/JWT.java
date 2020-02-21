@@ -20,6 +20,6 @@ public class JWT extends Author {
     private String iss;
 
     public Author toAuthor() {
-        return new Author(login, "null", name, email, role, null);
+        return new Author(login, "null", name, email, role, likedNotesId);
     }
 }
