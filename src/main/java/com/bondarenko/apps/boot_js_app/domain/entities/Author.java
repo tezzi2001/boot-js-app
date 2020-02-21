@@ -39,7 +39,7 @@ public class Author {
         likedNotesId.add(noteId);
     }
 
-    public void removeLikedNoteId(int noteId) {
+    public void removeLikedNoteId(Integer noteId) {
         likedNotesId.remove(noteId);
     }
 

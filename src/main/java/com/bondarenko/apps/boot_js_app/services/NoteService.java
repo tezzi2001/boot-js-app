@@ -74,12 +74,13 @@ public class NoteService implements INoteService {
         note.setLikesNum(note.getLikesNum()-1);
         noteRepository.save(note);
 
-        author.removeLikedNoteId(id);
-        authorRepository.save(author);
+        Author currentAuthor = authorRepository.getOne(author.getLogin()); // This new entity prevents from saving null-password author
+        currentAuthor.removeLikedNoteId(id);
+        authorRepository.save(currentAuthor);
 
         return new HashMap<String, String>() {{
             put("updatedLikesNum", note.getLikesNum().toString());
-            put("token", jwtService.getAccessTokenWithNewLikedNotesId(token, author));
+            put("token", jwtService.getAccessTokenWithNewLikedNotesId(token, currentAuthor));
         }};
     }
 }
