@@ -31,7 +31,7 @@ public class Author {
     @JsonProperty("role")
     protected String role;
     @ElementCollection
-    @JsonProperty("likedNotesId")
+    @JsonProperty("likedNewsIds")
     protected List<Integer> likedNotesId;
 
     public void addLikedNoteId(int noteId) {

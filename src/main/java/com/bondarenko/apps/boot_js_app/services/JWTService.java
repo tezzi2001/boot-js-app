@@ -131,7 +131,7 @@ public class JWTService implements IJWTService {
                 .withClaim("name", author.getName())
                 .withClaim("email", author.getEmail())
                 .withClaim("role", author.getRole())
-                .withArrayClaim("likedNotesId", author.getLikedNotesIdAsArray())
+                .withArrayClaim("likedNewsIds", author.getLikedNotesIdAsArray())
                 .withIssuer(issuer)
                 .withIssuedAt(new Date())
                 .withExpiresAt(new Date(System.currentTimeMillis()+ACCESS_TOKEN_DURATION))
