@@ -108,7 +108,7 @@ public class JWTService implements IJWTService {
                 .withClaim("name", author.getName())
                 .withClaim("email", author.getEmail())
                 .withClaim("role", author.getRole())
-                .withClaim("likedNotesId", author.getLikedNotesId().toString())
+                .withArrayClaim("likedNewsIds", author.getLikedNotesIdAsArray())
                 .withIssuer(issuer)
                 .withClaim("iat", jwt.getIat())
                 .withClaim("exp", jwt.getExp())
