@@ -6,7 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Entity
@@ -44,6 +46,7 @@ public class Author {
     }
 
     public Integer[] getLikedNotesIdAsArray() {
+        System.out.println("[DEBUG] likedNotesIds: " + likedNotesId);
         if (likedNotesId == null) likedNotesId = new ArrayList<>();
         return likedNotesId.toArray(new Integer[likedNotesId.size()]);
     }
