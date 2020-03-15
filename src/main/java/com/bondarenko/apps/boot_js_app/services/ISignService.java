@@ -8,4 +8,5 @@ public interface ISignService {
     Author authenticate(String login, String password);
     boolean checkLogin(String login);
     boolean checkEmail(String email);
+    Author getAuthorById(String login);
 }

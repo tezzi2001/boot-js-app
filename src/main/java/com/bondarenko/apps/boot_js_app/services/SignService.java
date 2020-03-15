@@ -55,4 +55,9 @@ public class SignService implements ISignService {
     public boolean checkEmail(String email) {
         return authorRepository.existsAuthorByEmail(email);
     }
+
+    @Override
+    public Author getAuthorById(String login){
+        return authorRepository.findById(login).orElse(null);
+    }
 }

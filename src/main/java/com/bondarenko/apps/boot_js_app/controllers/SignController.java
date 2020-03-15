@@ -80,4 +80,9 @@ public class SignController {
     public Map refresh(String refreshToken, String fingerprint) {
         return jwtService.refreshTokens(refreshToken, fingerprint);
     }
+
+    @PostMapping("/getUserInfo")
+    public String refreshInfo(String accessToken, String login) {
+        return jwtService.getAccessTokenWithNewLikedNotesId(accessToken, signService.getAuthorById(login));
+    }
 }
